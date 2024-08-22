@@ -1,0 +1,37 @@
+body {
+    font-family: Arial, sans-serif;
+}
+nav {
+    background-color: #f0f0f0;
+    padding: 10px;
+    display: flex;
+    justify-content: space-around;
+}
+nav a {
+    text-decoration: none;
+    color: black;
+    padding: 10px;
+}
+.container {
+    padding: 20px;
+}
+.proximo-paciente {
+    margin-bottom: 20px;
+}
+.columns {
+    display: flex;
+    justify-content: space-between;
+}
+.column {
+    width: 45%;
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+.pendientes, .atendidos {
+    margin-bottom: 10px;
+}
+.pendientes div, .atendidos div {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
