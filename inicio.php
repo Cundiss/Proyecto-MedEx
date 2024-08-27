@@ -17,8 +17,8 @@ if (!isset($_SESSION['medico_id'])) {
 <body>
 
     <nav>
-        <a href="#">Turnos</a>
-        <a href="#">Pacientes</a>
+        <a href="turnos.php">Turnos</a>
+        <a href="pacientes.php">Pacientes</a>
         <a href="#">Inicio</a>
         <a href="#">Calendario</a>
         <a href="#">Buscar</a>
