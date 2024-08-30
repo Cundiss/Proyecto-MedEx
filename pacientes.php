@@ -83,7 +83,7 @@ if (isset($_GET['delete'])) {
         <a href="#">Buscar</a>
     </nav>
 
-    <h2>Gestión de Pacientes</h2>
+    <h1>Gestión de Pacientes</h1>
     <form action="pacientes.php" method="POST">
         <input type="text" name="nombre" placeholder="Nombre" required>
         <input type="text" name="apellido" placeholder="Apellido" required>
@@ -115,7 +115,7 @@ if (isset($_GET['delete'])) {
             while($row = $result->fetch_assoc()) {
                 echo "<tr>
                     <form action='pacientes.php' method='POST'>
-                        <input type='hidden' name='id' value='{$row['paciente_id']}'>
+                        <input type='hidden' name='paciente_id' value='{$row['paciente_id']}'>
                         <td><input type='text' name='nombre' value='{$row['nombre']}'></td>
                         <td><input type='text' name='apellido' value='{$row['apellido']}'></td>
                         <td><input type='number' name='edad' value='{$row['edad']}'></td>
@@ -125,7 +125,8 @@ if (isset($_GET['delete'])) {
                         <td><input type='text' name='telefono' value='{$row['telefono']}'></td>
                         <td>
                             <button type='submit' name='update'>Guardar</button>
-                            <a href='pacientes.php?delete={$row['paciente_id']}'>Borrar</a>
+                            <a href='pacientes.php?delete={$row['paciente_id']}' style='text-decoration: none; color: black;'>Borrar</a>
+
                         </td>
                     </form>
                 </tr>";

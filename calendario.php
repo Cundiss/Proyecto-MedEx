@@ -45,76 +45,89 @@ $conexion->close();
     <title>Calendario de Turnos</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f7f7f7;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-        .calendar-container {
-            width: 80%;
-            max-width: 900px;
-            background-color: #fff;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .calendar-header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .calendar-header h2 {
-            margin: 0;
-            font-size: 24px;
-        }
-        .calendar-nav {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-        .calendar-nav a {
-            text-decoration: none;
-            padding: 10px 20px;
-            background-color: #3498db;
-            color: #fff;
-            border-radius: 5px;
-        }
-        table.calendar {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        table.calendar th, table.calendar td {
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: center;
-            vertical-align: top;
-        }
-        table.calendar th {
-            background-color: #3498db;
-            color: #fff;
-        }
-        .day-cell {
-            height: 100px;
-        }
-        .day-cell span {
-            font-weight: bold;
-        }
-        .turnos-list {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-        }
-        .turnos-list li {
-            background-color: #f1c40f;
-            margin-top: 5px;
-            padding: 3px;
-            border-radius: 3px;
-        }
-    </style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f7f7f7;
+        margin: 0;
+        padding: 0;
+        /* Elimina display: flex y justify-content/align-items para evitar la superposición con el nav */
+        min-height: 100vh;
+    }
+
+    /* Contenedor del calendario */
+    .calendar-container {
+        width: 80%;
+        max-width: 900px;
+        background-color: #fff;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin: 80px auto 20px; /* Ajuste de margen para que el calendario esté centrado, pero debajo del nav */
+    }
+
+    .calendar-header {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .calendar-header h2 {
+        margin: 0;
+        font-size: 24px;
+    }
+
+    .calendar-nav {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+
+    .calendar-nav a {
+        text-decoration: none;
+        padding: 10px 20px;
+        background-color: #3498db;
+        color: #fff;
+        border-radius: 5px;
+    }
+
+    table.calendar {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    table.calendar th, table.calendar td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: center;
+        vertical-align: top;
+    }
+
+    table.calendar th {
+        background-color: #3498db;
+        color: #fff;
+    }
+
+    .day-cell {
+        height: 100px;
+    }
+
+    .day-cell span {
+        font-weight: bold;
+    }
+
+    .turnos-list {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .turnos-list li {
+        background-color: #f1c40f;
+        margin-top: 5px;
+        padding: 3px;
+        border-radius: 3px;
+    }
+</style>
+
 </head>
 <body>
 <nav>
