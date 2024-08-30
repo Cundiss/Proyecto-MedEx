@@ -20,7 +20,7 @@ if (!isset($_SESSION['medico_id'])) {
         <a href="turnos.php">Turnos</a>
         <a href="pacientes.php">Pacientes</a>
         <a href="#">Inicio</a>
-        <a href="#">Calendario</a>
+        <a href="calendario.php">Calendario</a>
         <a href="#">Buscar</a>
     </nav>
 

@@ -1,11 +1,18 @@
-
-
 <?php
-// Incluir la conexión a la base de datos
-include 'config.php';
+// Conexión a la base de datos
+$host = "localhost";
+$user = "root";
+$pass = "";
+$dbname = "medex";
+$conn = new mysqli($host, $user, $pass, $dbname);
 
-// Verificar si el formulario fue enviado
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+// Verificar la conexión
+if ($conn->connect_error) {
+    die("Conexión fallida: " . $conn->connect_error);
+}
+
+// Añadir nuevo paciente
+if (isset($_POST['add'])) {
     $nombre = $_POST['nombre'];
     $apellido = $_POST['apellido'];
     $edad = $_POST['edad'];
@@ -14,16 +21,46 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
     $telefono = $_POST['telefono'];
 
-    // Insertar datos en la tabla "pacientes"
-    $query = "INSERT INTO pacientes (nombre, apellido, edad, dni, mutual, email, telefono) VALUES (?, ?, ?, ?, ?, ?, ?)";
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param("ssissss", $nombre, $apellido, $edad, $dni, $mutual, $email, $telefono);
+    $sql = "INSERT INTO pacientes (nombre, apellido, edad, dni, mutual, email, telefono)
+            VALUES ('$nombre', '$apellido', '$edad', '$dni', '$mutual', '$email', '$telefono')";
 
-    // Ejecutar la consulta y verificar si fue exitosa
-    if ($stmt->execute()) {
-        $mensaje = "Paciente añadido exitosamente.";
+    if ($conn->query($sql) === TRUE) {
+        echo "Nuevo paciente añadido con éxito";
     } else {
-        $mensaje = "Error al añadir el paciente.";
+        echo "Error: " . $sql . "<br>" . $conn->error;
+    }
+}
+
+// Editar paciente
+if (isset($_POST['update'])) {
+    $paciente_id = $_POST['paciente_id'];
+    $nombre = $_POST['nombre'];
+    $apellido = $_POST['apellido'];
+    $edad = $_POST['edad'];
+    $dni = $_POST['dni'];
+    $mutual = $_POST['mutual'];
+    $email = $_POST['email'];
+    $telefono = $_POST['telefono'];
+
+    $sql = "UPDATE pacientes SET nombre='$nombre', apellido='$apellido', edad='$edad', dni='$dni', mutual='$mutual', email='$email', telefono='$telefono' WHERE paciente_id=$paciente_id";
+
+    if ($conn->query($sql) === TRUE) {
+        echo "Paciente actualizado con éxito";
+    } else {
+        echo "Error: " . $sql . "<br>" . $conn->error;
+    }
+}
+
+// Borrar paciente
+if (isset($_GET['delete'])) {
+    $paciente_id = $_GET['delete'];
+
+    $sql = "DELETE FROM pacientes WHERE paciente_id=$paciente_id";
+
+    if ($conn->query($sql) === TRUE) {
+        echo "Paciente borrado con éxito";
+    } else {
+        echo "Error: " . $sql . "<br>" . $conn->error;
     }
 }
 ?>
@@ -33,45 +70,70 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agregar Paciente</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Opcional: Archivo de estilos -->
+    <link rel="stylesheet" href="styles.css">
+    <title>Gestión de Pacientes</title>
 </head>
 <body>
+
 <nav>
-        <a href="#">Turnos</a>
+        <a href="turnos.php">Turnos</a>
         <a href="pacientes.php">Pacientes</a>
         <a href="inicio.php">Inicio</a>
         <a href="#">Calendario</a>
         <a href="#">Buscar</a>
     </nav>
-    <h2>Agregar Nuevo Paciente</h2>
 
-    <!-- Mostrar mensaje si se añadió correctamente -->
-    <?php if (isset($mensaje)) { echo "<p>$mensaje</p>"; } ?>
-
-    <form method="POST" action="pacientes.php">
-        <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" name="nombre" required><br>
-
-        <label for="apellido">Apellido:</label>
-        <input type="text" id="apellido" name="apellido" required><br>
-
-        <label for="edad">Edad:</label>
-        <input type="number" id="edad" name="edad" required><br>
-
-        <label for="dni">DNI:</label>
-        <input type="text" id="dni" name="dni" required><br>
-
-        <label for="mutual">Mutual:</label>
-        <input type="text" id="mutual" name="mutual"><br>
-
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email"><br>
-
-        <label for="telefono">Teléfono:</label>
-        <input type="text" id="telefono" name="telefono"><br>
-
-        <button type="submit">Añadir Paciente</button>
+    <h2>Gestión de Pacientes</h2>
+    <form action="pacientes.php" method="POST">
+        <input type="text" name="nombre" placeholder="Nombre" required>
+        <input type="text" name="apellido" placeholder="Apellido" required>
+        <input type="number" name="edad" placeholder="Edad" required>
+        <input type="text" name="dni" placeholder="DNI" required>
+        <input type="text" name="mutual" placeholder="Mutual" required>
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="text" name="telefono" placeholder="Teléfono" required>
+        <button type="submit" name="add">Añadir Paciente</button>
     </form>
+
+    <h3>Pacientes Registrados</h3>
+    <table border="1">
+        <tr>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Edad</th>
+            <th>DNI</th>
+            <th>Mutual</th>
+            <th>Email</th>
+            <th>Teléfono</th>
+            <th>Acciones</th>
+        </tr>
+        <?php
+        $sql = "SELECT * FROM pacientes";
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0) {
+            while($row = $result->fetch_assoc()) {
+                echo "<tr>
+                    <form action='pacientes.php' method='POST'>
+                        <input type='hidden' name='id' value='{$row['paciente_id']}'>
+                        <td><input type='text' name='nombre' value='{$row['nombre']}'></td>
+                        <td><input type='text' name='apellido' value='{$row['apellido']}'></td>
+                        <td><input type='number' name='edad' value='{$row['edad']}'></td>
+                        <td><input type='text' name='dni' value='{$row['dni']}'></td>
+                        <td><input type='text' name='mutual' value='{$row['mutual']}'></td>
+                        <td><input type='email' name='email' value='{$row['email']}'></td>
+                        <td><input type='text' name='telefono' value='{$row['telefono']}'></td>
+                        <td>
+                            <button type='submit' name='update'>Guardar</button>
+                            <a href='pacientes.php?delete={$row['paciente_id']}'>Borrar</a>
+                        </td>
+                    </form>
+                </tr>";
+            }
+        } else {
+            echo "<tr><td colspan='8'>No hay pacientes registrados</td></tr>";
+        }
+        ?>
+    </table>
 </body>
 </html>

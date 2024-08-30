@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 27-08-2024 a las 02:31:46
+-- Tiempo de generación: 30-08-2024 a las 20:57:04
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -63,7 +63,7 @@ CREATE TABLE `pacientes` (
 --
 
 INSERT INTO `pacientes` (`paciente_id`, `nombre`, `apellido`, `edad`, `dni`, `mutual`, `email`, `telefono`) VALUES
-(1, 'Facu', 'Cari', 20, '45987976', 'IOMA', 'fornosantiago@gmail.com', '3364607112');
+(10, 'facundo', 'carignani', 20, '14124214', 'IOM', 'facucari@gmail.com', '14214124124');
 
 -- --------------------------------------------------------
 
@@ -77,6 +77,13 @@ CREATE TABLE `turnos` (
   `fecha` date NOT NULL,
   `horario` time NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `turnos`
+--
+
+INSERT INTO `turnos` (`turno_id`, `paciente_id`, `fecha`, `horario`) VALUES
+(4, 10, '2024-08-23', '21:00:00');
 
 --
 -- Índices para tablas volcadas
@@ -114,13 +121,13 @@ ALTER TABLE `medicos`
 -- AUTO_INCREMENT de la tabla `pacientes`
 --
 ALTER TABLE `pacientes`
-  MODIFY `paciente_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `paciente_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de la tabla `turnos`
 --
 ALTER TABLE `turnos`
-  MODIFY `turno_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `turno_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
