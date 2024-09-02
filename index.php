@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Verificar la contraseña
         if (password_verify($password, $row['password'])) {
             // Guardar la sesión del médico
-            $_SESSION['medico_id'] = $row['id'];
+            $_SESSION['medico_id'] = $row['medico_id'];
             header("Location: inicio.php");
             exit;
         } else {
