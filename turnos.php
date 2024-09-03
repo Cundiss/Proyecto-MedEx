@@ -75,7 +75,7 @@ $turnos = $conn->query("SELECT t.turno_id, t.fecha, t.horario, p.nombre, p.apell
         <a href="turnos.php">Turnos</a>
         <a href="pacientes.php">Pacientes</a>
         <a href="inicio.php">Inicio</a>
-        <a href="#">Calendario</a>
+        <a href="calendario.php">Calendario</a>
         <a href="#">Buscar</a>
     </nav>
 
