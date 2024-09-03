@@ -24,11 +24,20 @@ if (isset($_POST['add'])) {
     $sql = "INSERT INTO pacientes (nombre, apellido, edad, dni, mutual, email, telefono)
             VALUES ('$nombre', '$apellido', '$edad', '$dni', '$mutual', '$email', '$telefono')";
 
-    if ($conn->query($sql) === TRUE) {
-        echo "Nuevo paciente añadido con éxito";
-    } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
-    }
+if ($conn->query($sql) === TRUE) {
+    echo "<dialog id='modal' open>
+            <p>Nuevo paciente $apellido añadido</p>
+            
+          </dialog>
+          <script>
+            const modal = document.getElementById('modal');
+            setTimeout(() => {
+              modal.close();
+            }, 2000);
+          </script>";
+} else {
+    echo "Error: " . $sql . "<br>" . $conn->error;
+}
 }
 
 // Editar paciente
@@ -45,7 +54,15 @@ if (isset($_POST['update'])) {
     $sql = "UPDATE pacientes SET nombre='$nombre', apellido='$apellido', edad='$edad', dni='$dni', mutual='$mutual', email='$email', telefono='$telefono' WHERE paciente_id=$paciente_id";
 
     if ($conn->query($sql) === TRUE) {
-        echo "Paciente actualizado con éxito";
+        echo "<dialog id='modal' open>
+                <p>Paciente $apellido actualizado</p>
+              </dialog>
+              <script>
+                const modal = document.getElementById('modal');
+                setTimeout(() => {
+                  modal.close();
+                }, 2000);
+              </script>";
     } else {
         echo "Error: " . $sql . "<br>" . $conn->error;
     }
@@ -58,7 +75,15 @@ if (isset($_GET['delete'])) {
     $sql = "DELETE FROM pacientes WHERE paciente_id=$paciente_id";
 
     if ($conn->query($sql) === TRUE) {
-        echo "Paciente borrado con éxito";
+        echo "<dialog id='modal' open>
+                <p>Paciente eliminado</p>
+              </dialog>
+              <script>
+                const modal = document.getElementById('modal');
+                setTimeout(() => {
+                  modal.close();
+                }, 2000);
+              </script>";
     } else {
         echo "Error: " . $sql . "<br>" . $conn->error;
     }
