@@ -21,7 +21,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['agregar_turno'])) {
     $sql = "INSERT INTO turnos (paciente_id, fecha, horario) VALUES ('$paciente_id', '$fecha', '$horario')";
 
     if ($conn->query($sql) === TRUE) {
-        echo "Nuevo turno añadido con éxito";
+        echo "<dialog id='modal' open>
+                <p>Nuevo turno añadido con éxito</p>
+              </dialog>
+              <script>
+                const modal = document.getElementById('modal');
+                setTimeout(() => {
+                  modal.close();
+                }, 2000);
+              </script>";
     } else {
         echo "Error: " . $sql . "<br>" . $conn->error;
     }
@@ -36,7 +44,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['guardar'])) {
     $sql = "UPDATE turnos SET fecha='$fecha', horario='$horario' WHERE turno_id='$turno_id'";
 
     if ($conn->query($sql) === TRUE) {
-        echo "Turno actualizado con éxito";
+        echo "<dialog id='modal' open>
+                <p>Turno actualizado con éxito</p>
+              </dialog>
+              <script>
+                const modal = document.getElementById('modal');
+                setTimeout(() => {
+                  modal.close();
+                }, 2000);
+              </script>";
     } else {
         echo "Error: " . $sql . "<br>" . $conn->error;
     }
@@ -49,11 +65,20 @@ if (isset($_GET['borrar'])) {
     $sql = "DELETE FROM turnos WHERE turno_id='$turno_id'";
 
     if ($conn->query($sql) === TRUE) {
-        echo "Turno borrado con éxito";
+        echo "<dialog id='modal' open>
+                <p>Turno borrado con éxito</p>
+              </dialog>
+              <script>
+                const modal = document.getElementById('modal');
+                setTimeout(() => {
+                  modal.close();
+                }, 2000);
+              </script>";
     } else {
         echo "Error: " . $sql . "<br>" . $conn->error;
     }
 }
+
 
 // Obtener pacientes
 $pacientes = $conn->query("SELECT * FROM pacientes");

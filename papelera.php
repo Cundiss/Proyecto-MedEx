@@ -19,6 +19,7 @@ if (isset($_GET['restore'])) {
     $sql = "SELECT * FROM pacientes_eliminados WHERE paciente_eliminado_id=$paciente_eliminado_id";
     $result = $conn->query($sql);
     $row = $result->fetch_assoc();
+    $apellido = $row ? $row['apellido'] : '';
 
     if ($row) {
         // Insertar los datos en la tabla "pacientes"
@@ -30,7 +31,7 @@ if (isset($_GET['restore'])) {
             $sql_delete = "DELETE FROM pacientes_eliminados WHERE paciente_eliminado_id=$paciente_eliminado_id";
             $conn->query($sql_delete);
             echo "<dialog id='modal' open>
-                    <p>Paciente restaurado</p>
+                    <p>Paciente {$apellido} restaurado</p>
                   </dialog>
                   <script>
                     const modal = document.getElementById('modal');
@@ -44,13 +45,21 @@ if (isset($_GET['restore'])) {
     }
 }
 
+
 // Borrar paciente definitivamente
 if (isset($_GET['delete'])) {
     $paciente_eliminado_id = $_GET['delete'];
+
+    // Obtener el apellido del paciente antes de eliminar
+    $sql = "SELECT apellido FROM pacientes_eliminados WHERE paciente_eliminado_id=$paciente_eliminado_id";
+    $result = $conn->query($sql);
+    $row = $result->fetch_assoc();
+    $apellido = $row ? $row['apellido'] : '';
+
     $sql_delete = "DELETE FROM pacientes_eliminados WHERE paciente_eliminado_id=$paciente_eliminado_id";
     if ($conn->query($sql_delete) === TRUE) {
         echo "<dialog id='modal' open>
-                <p>Paciente eliminado definitivamente</p>
+                <p>Paciente {$apellido} eliminado definitivamente</p>
               </dialog>
               <script>
                 const modal = document.getElementById('modal');
@@ -62,6 +71,7 @@ if (isset($_GET['delete'])) {
         echo "Error al eliminar definitivamente el paciente: " . $conn->error;
     }
 }
+
 ?>
 
 <!DOCTYPE html>

@@ -26,7 +26,7 @@ if (isset($_POST['add'])) {
 
     if ($conn->query($sql) === TRUE) {
         echo "<dialog id='modal' open>
-                <p>Nuevo paciente $apellido añadido</p>
+                <p>Nuevo paciente añadido</p>
               </dialog>
               <script>
                 const modal = document.getElementById('modal');
@@ -76,6 +76,7 @@ if (isset($_GET['delete'])) {
     $sql = "SELECT * FROM pacientes WHERE paciente_id=$paciente_id";
     $result = $conn->query($sql);
     $row = $result->fetch_assoc();
+    $apellido = $row ? $row['apellido'] : '';
 
     if ($row) {
         // Insertar los datos en la tabla "pacientes_eliminados"
@@ -87,7 +88,7 @@ if (isset($_GET['delete'])) {
             $sql_delete = "DELETE FROM pacientes WHERE paciente_id=$paciente_id";
             if ($conn->query($sql_delete) === TRUE) {
                 echo "<dialog id='modal' open>
-                        <p>Paciente movido a la papelera</p>
+                        <p>Paciente {$apellido} movido a la papelera</p>
                       </dialog>
                       <script>
                         const modal = document.getElementById('modal');
@@ -103,6 +104,7 @@ if (isset($_GET['delete'])) {
         }
     }
 }
+
 ?>
 
 <!DOCTYPE html>
