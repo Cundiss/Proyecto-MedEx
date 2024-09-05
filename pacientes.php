@@ -188,7 +188,7 @@ if (isset($_GET['delete'])) {
                     <td><a href='turnos.php?paciente_id={$paciente_id}&nombre={$row['nombre']}&apellido={$row['apellido']}'>Agendar Turno</a></td>
                     <td>
                         <button type='submit' name='update'>Guardar</button>
-                        <a href='pacientes.php?delete={$row['paciente_id']}' style='text-decoration: none; color: black;'>Borrar</a>
+                        <a href='pacientes.php?delete={$row['paciente_id']}'>Borrar</a>
                     </td>
                 </form>
             </tr>";

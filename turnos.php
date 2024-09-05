@@ -12,6 +12,11 @@ if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }
 
+// Obtener el paciente de la URL (si viene de pacientes.php)
+$paciente_id_selected = isset($_GET['paciente_id']) ? $_GET['paciente_id'] : '';
+$nombre_paciente_selected = isset($_GET['nombre']) ? $_GET['nombre'] : '';
+$apellido_paciente_selected = isset($_GET['apellido']) ? $_GET['apellido'] : '';
+
 // Agregar turno
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['agregar_turno'])) {
     $paciente_id = $_POST['paciente_id'];
@@ -78,7 +83,6 @@ if (isset($_GET['borrar'])) {
         echo "Error: " . $sql . "<br>" . $conn->error;
     }
 }
-
 
 // Obtener pacientes
 $pacientes = $conn->query("SELECT * FROM pacientes");
@@ -189,4 +193,5 @@ $turnos = $conn->query($sql);
 <?php
 $conn->close();
 ?>
+
 
