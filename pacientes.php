@@ -158,6 +158,7 @@ if (isset($_GET['delete'])) {
         <th>Email</th>
         <th>Teléfono</th>
         <th>Agendar Turno</th>
+        <th>Historial</th>
         <th>Acciones</th>
     </tr>
     <?php
@@ -185,10 +186,11 @@ if (isset($_GET['delete'])) {
                     <td><input type='text' name='mutual' value='{$row['mutual']}'></td>
                     <td><input type='email' name='email' value='{$row['email']}'></td>
                     <td><input type='text' name='telefono' value='{$row['telefono']}'></td>
-                    <td><a href='turnos.php?paciente_id={$paciente_id}&nombre={$row['nombre']}&apellido={$row['apellido']}'>Agendar Turno</a></td>
-                    <td>
+                    <td style='text-align: center;'><a href='turnos.php?paciente_id={$paciente_id}&nombre={$row['nombre']}&apellido={$row['apellido']}'>Agendar Turno</a></td>
+                    <td style='text-align: center;'><a href='historial.php?paciente_id={$row['paciente_id']}'>Ver</a></td>
+                    <td style='text-align: center;'>
                         <button type='submit' name='update'>Guardar</button>
-                        <a href='pacientes.php?delete={$row['paciente_id']}'>Borrar</a>
+                        <a href='pacientes.php?delete={$row['paciente_id']}' style='text-decoration: none; color: black;'>Borrar</a>
                     </td>
                 </form>
             </tr>";
