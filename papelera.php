@@ -45,7 +45,6 @@ if (isset($_GET['restore'])) {
     }
 }
 
-
 // Borrar paciente definitivamente
 if (isset($_GET['delete'])) {
     $paciente_eliminado_id = $_GET['delete'];
@@ -72,6 +71,18 @@ if (isset($_GET['delete'])) {
     }
 }
 
+// Barra de búsqueda
+$search = isset($_GET['search']) ? $_GET['search'] : '';
+
+// Si hay un criterio de búsqueda, modifica la consulta
+if ($search) {
+    $sql = "SELECT * FROM pacientes_eliminados WHERE nombre LIKE '%$search%' OR apellido LIKE '%$search%'";
+} else {
+    $sql = "SELECT * FROM pacientes_eliminados";
+}
+
+$result = $conn->query($sql);
+
 ?>
 
 <!DOCTYPE html>
@@ -93,6 +104,14 @@ if (isset($_GET['delete'])) {
 </nav>
 
 <h1>Papelera de Pacientes</h1>
+
+<!-- Barra de búsqueda -->
+<form method="GET" action="papelera.php">
+    <input type="text" name="search" placeholder="Buscar por nombre o apellido" value="<?php echo isset($_GET['search']) ? $_GET['search'] : ''; ?>">
+    <button type="submit">Buscar</button>
+    <a href="papelera.php"><button type="button">Quitar Filtro</button></a>
+</form>
+
 <h3>Pacientes Eliminados</h3>
 <table border="1">
     <tr>
@@ -106,9 +125,6 @@ if (isset($_GET['delete'])) {
         <th>Acciones</th>
     </tr>
     <?php
-    $sql = "SELECT * FROM pacientes_eliminados";
-    $result = $conn->query($sql);
-
     if ($result->num_rows > 0) {
         while($row = $result->fetch_assoc()) {
             echo "<tr>
@@ -130,5 +146,6 @@ if (isset($_GET['delete'])) {
     }
     ?>
 </table>
+
 </body>
 </html>
