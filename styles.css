@@ -21,12 +21,14 @@ nav a {
 .columns {
     display: flex;
     justify-content: space-between;
+    align-items: flex-start;
 }
+
 .column {
-    width: 45%;
-    padding: 10px;
-    border: 1px solid #ccc;
+    width: 48%;  /* Ajusta según el espacio que quieras entre las columnas */
+    box-sizing: border-box;
 }
+
 .pendientes, .atendidos {
     margin-bottom: 10px;
 }

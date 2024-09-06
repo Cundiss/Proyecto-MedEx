@@ -95,30 +95,30 @@ $atendidos = $conn->query($sql_atendidos);
     </div>
 
     <div class="columns">
-        <div class="column pendientes">
-            <h3>Pendientes</h3>
-            <?php while ($row = $pendientes->fetch_assoc()): ?>
-                <div>
-                    <span><?= $row['fecha'] ?> <?= $row['horario'] ?></span>
-                    <span><?= $row['nombre'] ?> <?= $row['apellido'] ?></span>
-                    <span><?= $row['dni'] ?></span>
-                    <a href="?atender=<?= $row['turno_id'] ?>">Atender</a>
-                </div>
-            <?php endwhile; ?>
+    <div class="column pendientes">
+    <h3>Pendientes</h3>
+    <?php while ($row = $pendientes->fetch_assoc()): ?>
+        <div>
+            <span><?= date('d-m-Y', strtotime($row['fecha'])) ?> <?= $row['horario'] ?></span> <!-- Fecha formateada -->
+            <span><?= $row['nombre'] ?> <?= $row['apellido'] ?></span>
+            <span><?= $row['dni'] ?></span>
+            <a href="?atender=<?= $row['turno_id'] ?>">Atender</a>
         </div>
+    <?php endwhile; ?>
+</div>
+<div class="column atendidos">
+    <h3>Atendidos</h3>
+    <?php while ($row = $atendidos->fetch_assoc()): ?>
+        <div>
+            <span><?= $row['nombre'] ?> <?= $row['apellido'] ?></span>
+            <span><?= $row['dni'] ?></span>
+            <span><?= date('d-m-Y', strtotime($row['fecha_atencion'])) ?></span> <!-- Fecha formateada -->
+            <a href="?delete_atendido=<?= $row['atendido_id'] ?>">Borrar</a>
+        </div>
+    <?php endwhile; ?>
+    <a href="?vaciar_atendidos=true">Vaciar Atendidos</a>
+</div>
 
-        <div class="column atendidos">
-            <h3>Atendidos</h3>
-            <?php while ($row = $atendidos->fetch_assoc()): ?>
-                <div>
-                    <span><?= $row['nombre'] ?> <?= $row['apellido'] ?></span>
-                    <span><?= $row['dni'] ?></span>
-                    <span><?= $row['fecha_atencion'] ?></span>
-                    <a href="?delete_atendido=<?= $row['atendido_id'] ?>">Borrar</a>
-                </div>
-            <?php endwhile; ?>
-            <a href="?vaciar_atendidos=true">Vaciar Atendidos</a>
-        </div>
     </div>
 </div>
 

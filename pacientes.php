@@ -203,3 +203,7 @@ if (isset($_GET['delete'])) {
 </body>
 </html>
 
+<?php
+$conn->close();
+?>
+
