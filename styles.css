@@ -25,7 +25,7 @@ nav a {
 }
 
 .column {
-    width: 48%;  /* Ajusta según el espacio que quieras entre las columnas */
+    width: 48%;
     box-sizing: border-box;
 }
 
