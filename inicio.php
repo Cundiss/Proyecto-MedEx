@@ -63,7 +63,7 @@ $atendidos = $conn->query($sql_atendidos);
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -77,7 +77,7 @@ $atendidos = $conn->query($sql_atendidos);
     <a href="pacientes.php">Pacientes</a>
     <a href="#">Inicio</a>
     <a href="calendario.php">Calendario</a>
-    <a href="#">Buscar</a>
+    <a href="papelera.php">Papelera</a>
 </nav>
 
 <div class="container">
@@ -95,32 +95,33 @@ $atendidos = $conn->query($sql_atendidos);
     </div>
 
     <div class="columns">
-    <div class="column pendientes">
-    <h3>Pendientes</h3>
-    <?php while ($row = $pendientes->fetch_assoc()): ?>
-        <div>
-            <span><?= date('d-m-Y', strtotime($row['fecha'])) ?> <?= $row['horario'] ?></span> <!-- Fecha formateada -->
-            <span><?= $row['nombre'] ?> <?= $row['apellido'] ?></span>
-            <span><?= $row['dni'] ?></span>
-            <a href="?atender=<?= $row['turno_id'] ?>">Atender</a>
+        <div class="column pendientes-box"> <!-- Encierra en un cuadro -->
+            <h3>Pendientes</h3>
+            <?php while ($row = $pendientes->fetch_assoc()): ?>
+                <div class="pendiente-item">
+                    <span><?= date('d-m-Y', strtotime($row['fecha'])) ?> <?= $row['horario'] ?></span>
+                    <span><?= $row['nombre'] ?> <?= $row['apellido'] ?></span>
+                    <span><?= $row['dni'] ?></span>
+                    <a href="?atender=<?= $row['turno_id'] ?>" class="btn-atender">Atender</a>
+                </div>
+            <?php endwhile; ?>
         </div>
-    <?php endwhile; ?>
-</div>
-<div class="column atendidos">
-    <h3>Atendidos</h3>
-    <?php while ($row = $atendidos->fetch_assoc()): ?>
-        <div>
-            <span><?= $row['nombre'] ?> <?= $row['apellido'] ?></span>
-            <span><?= $row['dni'] ?></span>
-            <span><?= date('d-m-Y', strtotime($row['fecha_atencion'])) ?></span> <!-- Fecha formateada -->
-            <a href="?delete_atendido=<?= $row['atendido_id'] ?>">Borrar</a>
-        </div>
-    <?php endwhile; ?>
-    <a href="?vaciar_atendidos=true">Vaciar Atendidos</a>
-</div>
 
+        <div class="column atendidos-box"> <!-- Encierra en un cuadro -->
+            <h3>Atendidos</h3>
+            <?php while ($row = $atendidos->fetch_assoc()): ?>
+                <div class="atendido-item">
+                    <span><?= $row['nombre'] ?> <?= $row['apellido'] ?></span>
+                    <span><?= $row['dni'] ?></span>
+                    <span><?= date('d-m-Y', strtotime($row['fecha_atencion'])) ?></span>
+                    <a href="?delete_atendido=<?= $row['atendido_id'] ?>" class="btn-borrar">Borrar</a>
+                </div>
+            <?php endwhile; ?>
+            <a href="?vaciar_atendidos=true" class="btn-vaciar">Vaciar Atendidos</a>
+        </div>
     </div>
 </div>
+
 
 <a href="logout.php">Cerrar Sesión</a>
 

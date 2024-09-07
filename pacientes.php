@@ -127,14 +127,7 @@ if (isset($_GET['delete'])) {
 
 <h1>Gestión de Pacientes</h1>
 
-<!-- Formulario de búsqueda -->
-<form action="pacientes.php" method="GET">
-    <input type="text" name="search" placeholder="Buscar por nombre, apellido o DNI" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
-    <button type="submit">Buscar</button>
-    <?php if (isset($_GET['search'])): ?>
-        <a href="pacientes.php" class="button">Quitar Filtro</a>
-    <?php endif; ?>
-</form>
+
 
 <form action="pacientes.php" method="POST">
     <input type="text" name="nombre" placeholder="Nombre" required>
@@ -145,6 +138,15 @@ if (isset($_GET['delete'])) {
     <input type="email" name="email" placeholder="Email" required>
     <input type="text" name="telefono" placeholder="Teléfono" required>
     <button type="submit" name="add">Añadir Paciente</button>
+</form>
+
+<!-- Formulario de búsqueda -->
+<form action="pacientes.php" method="GET">
+    <input type="text" name="search" placeholder="Buscar por nombre, apellido o DNI" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
+    <button type="submit">Buscar</button>
+    <?php if (isset($_GET['search'])): ?>
+        <a href="pacientes.php" class="button">Quitar Filtro</a>
+    <?php endif; ?>
 </form>
 
 <h3>Pacientes Registrados</h3>
@@ -186,7 +188,7 @@ if (isset($_GET['delete'])) {
                     <td><input type='text' name='mutual' value='{$row['mutual']}'></td>
                     <td><input type='email' name='email' value='{$row['email']}'></td>
                     <td><input type='text' name='telefono' value='{$row['telefono']}'></td>
-                    <td style='text-align: center;'><a href='turnos.php?paciente_id={$paciente_id}&nombre={$row['nombre']}&apellido={$row['apellido']}'>Agendar Turno</a></td>
+                    <td style='text-align: center;'><a href='turnos.php?paciente_id={$paciente_id}&nombre={$row['nombre']}&apellido={$row['apellido']}'>Agendar</a></td>
                     <td style='text-align: center;'><a href='historial.php?paciente_id={$row['paciente_id']}'>Ver</a></td>
                     <td style='text-align: center;'>
                         <button type='submit' name='update'>Guardar</button>
@@ -206,4 +208,5 @@ if (isset($_GET['delete'])) {
 <?php
 $conn->close();
 ?>
+
 

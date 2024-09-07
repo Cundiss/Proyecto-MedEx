@@ -128,7 +128,7 @@ $turnos = $conn->query($sql);
     <a href="pacientes.php">Pacientes</a>
     <a href="inicio.php">Inicio</a>
     <a href="calendario.php">Calendario</a>
-    <a href="#">Buscar</a>
+    <a href="papelera.php">Papelera</a>
 </nav>
 
 <h1>Gestión de Turnos</h1>

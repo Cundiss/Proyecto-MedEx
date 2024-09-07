@@ -73,7 +73,7 @@ $dayOfWeek = date("w", $firstDayOfMonth); // 0 (Domingo) a 6 (Sábado)
     <a href="pacientes.php">Pacientes</a>
     <a href="inicio.php">Inicio</a>
     <a href="calendario.php">Calendario</a>
-    <a href="#">Buscar</a>
+    <a href="papelera.php">Papelera</a>
 </nav>
 <div class="calendar-container">
     <table class="calendar">

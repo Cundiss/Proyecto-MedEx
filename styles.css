@@ -1,23 +1,46 @@
+/* Estilos generales */
 body {
     font-family: Arial, sans-serif;
+    background-color: #f4f6f7;
+    margin: 0;
+    padding: 20px;
+    color: #333;
 }
+
+a{
+    text-decoration: none;
+}
+
+
+/* Estilos para la navegación */
 nav {
-    background-color: #f0f0f0;
+    background-color: #007bff; /* Se mantiene un color uniforme */
     padding: 10px;
     display: flex;
     justify-content: space-around;
+    width: 100%;
+    box-sizing: border-box;
 }
+
 nav a {
     text-decoration: none;
-    color: black;
+    color: white; /* Se ajusta para que sea consistente con el nav */
     padding: 10px;
+    font-size: 18px;
+    margin: 0 10px;
 }
+
+nav a:hover {
+    background-color: #0056b3;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+/* Contenedores y columnas */
 .container {
     padding: 20px;
 }
-.proximo-paciente {
-    margin-bottom: 20px;
-}
+
 .columns {
     display: flex;
     justify-content: space-between;
@@ -29,16 +52,442 @@ nav a {
     box-sizing: border-box;
 }
 
-.pendientes, .atendidos {
-    margin-bottom: 10px;
-}
-.pendientes div, .atendidos div {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
+/* Estilos para tablas */
+table {
+    width: 100%;
+    margin: 20px 0;
+    border-collapse: collapse;
 }
 
-a{
-    color: black;
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 12px;
+    text-align: center;
+}
+
+th {
+    background-color: #007bff;
+    color: white;
+}
+
+td a {
+    color: #007bff;
     text-decoration: none;
+}
+
+td a:hover {
+    text-decoration: none;
+}
+
+/* Estilo de formularios */
+form {
+    margin: 20px auto;
+    width: 80%;
+    max-width: 600px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+input, button {
+    width: calc(50% - 10px);
+    padding: 10px;
+    margin: 10px 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+input[type="text"], input[type="email"], input[type="number"] {
+    width: calc(100% - 22px);
+}
+
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Estilos específicos de secciones */
+.pendientes-box, .atendidos-box {
+    border: 2px solid #ddd;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    background-color: #f9f9f9;
+}
+
+.pendiente-item, .atendido-item {
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Botones */
+.btn-atender {
+    background-color: #28a745;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+}
+.btn-borrar, .btn-vaciar{
+    background-color: #dc3545;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+
+}
+
+.btn-borrar {
+    background-color: #dc3545;
+}
+
+.btn-vaciar {
+    background-color: #ffc107;
+    display: block;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.btn-atender:hover, .btn-borrar:hover, .btn-vaciar:hover {
+    background-color: #0069d9;
+    cursor: pointer;
+}
+
+/* Modal */
+.modal {
+    background-color: rgba(0, 0, 0, 0.7);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal p {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f6f7;
+    margin: 0;
+    padding: 20px;
+    color: #333;
+}
+
+h1, h2, h3 {
+    text-align: center;
+    color: #007bff;
+}
+
+/* Estilos para el nav */
+nav {
+    background-color: #007bff;
+    padding: 15px;
+    text-align: center;
+}
+
+nav a {
+    margin: 0 10px;
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+nav a:hover {
+    background-color: #0056b3;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+/* Formularios */
+form {
+    margin: 20px auto;
+    width: 80%;
+    max-width: 600px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+select, input[type="date"], input[type="time"], input[type="text"], button, input[type="submit"] {
+    width: calc(100% - 22px);
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+button, input[type="submit"] {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+
+button:hover, input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+/* Tablas */
+table {
+    width: 100%;
+    margin: 20px 0;
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 12px;
+    text-align: center;
+}
+
+th {
+    background-color: #007bff;
+    color: white;
+}
+
+/* Estilos para los botones en las tablas */
+td a {
+    color: #dc3545;
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    background-color: #f8d7da;
+}
+
+td a:hover {
+    background-color: #f5c6cb;
+}
+
+td input[type="submit"] {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+td input[type="submit"]:hover {
+    background-color: #218838;
+}
+
+/* Botón de eliminar */
+td a.delete {
+    background-color: #dc3545;
+    color: white;
+}
+
+td a.delete:hover {
+    background-color: #c82333;
+}
+
+/* Modal */
+dialog {
+    background-color: rgba(0, 0, 0, 0.7);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+dialog p {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+/* Hacer que los cuadros de texto se vean discretos */
+.discreto-texto {
+    width: 100%;
+    border: none;
+    background-color: transparent;
+    resize: none;
+    font-size: 14px;
+    color: #333;
+}
+
+.discreto-texto:focus {
+    outline: none;
+    border-bottom: 1px solid #ccc;
+    background-color: #f9f9f9;
+}
+
+/* Estilizar los botones para que sean discretos */
+.discreto-boton {
+    background-color: transparent;
+    border: none;
+    color: #007bff;
+    cursor: pointer;
+    padding: 5px 10px;
+    text-decoration: underline;
+}
+
+.discreto-boton:hover {
+    color: #0056b3;
+    text-decoration: none;
+}
+
+
+/* Estilos para el calendario */
+.calendar-container {
+    margin: 20px auto;
+    max-width: 90%;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+table.calendar {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.calendar th {
+    background-color: #007bff;
+    color: white;
+    font-size: 16px;
+    padding: 10px 0;
+    text-align: center;
+}
+
+.calendar td {
+    border: 1px solid #ddd;
+    text-align: center;
+    vertical-align: top;
+    padding: 10px;
+}
+
+.day-cell {
+    position: relative;
+    height: 150px;
+    font-size: 14px;
+}
+
+.day-cell span {
+    font-size: 22px;
+    font-weight: bold;
+    color: #333;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.turnos-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.turnos-list li {
+    font-size: 12px;
+    margin: 3px 0;
+}
+
+/* Diferenciar turnos ocupados y libres */
+.turnos-list li {
+    padding: 3px;
+    border-radius: 3px;
+}
+
+.turnos-list li:hover {
+    background-color: #f1f1f1;
+}
+
+.turnos-list li:before {
+    content: "";
+    margin-right: 5px;
+    display: inline-block;
+}
+
+.turnos-list li:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+.turnos-list li:nth-child(even) {
+    background-color: #e9e9e9;
+}
+
+.turnos-list li.ocupado {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.turnos-list li.libre {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+/* Botones de acción */
+button, .btn {
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover, .btn:hover {
+    opacity: 0.9;
+}
+
+.btn-borrar {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-guardar {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-azul {
+    background-color: #007bff;
+    color: white;
+}
+
+/* Extra */
+@media (max-width: 768px) {
+    .calendar-container {
+        padding: 10px;
+    }
+    
+    .day-cell {
+        height: 120px;
+    }
+    
+    .turnos-list li {
+        font-size: 10px;
+    }
 }
