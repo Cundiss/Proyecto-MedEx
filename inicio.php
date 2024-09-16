@@ -17,6 +17,9 @@ if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }
 
+// Obtener el medico_id de la sesión
+$medico_id = $_SESSION['medico_id'];
+
 // Mover paciente a la sección "Atendidos"
 if (isset($_GET['atender'])) {
     $turno_id = $_GET['atender'];
@@ -25,14 +28,14 @@ if (isset($_GET['atender'])) {
     $sql = "SELECT t.*, p.nombre, p.apellido, p.dni 
             FROM turnos t
             JOIN pacientes p ON t.paciente_id = p.paciente_id 
-            WHERE t.turno_id = $turno_id";
+            WHERE t.turno_id = $turno_id AND p.medico_id = $medico_id";
     $result = $conn->query($sql);
     $row = $result->fetch_assoc();
 
     if ($row) {
         // Insertar en la tabla "atendidos"
         $sql_insert = "INSERT INTO atendidos (pacientes_id, medico_id, fecha_atencion, nombre, apellido, dni, motivo)
-                       VALUES ('{$row['paciente_id']}', '{$_SESSION['medico_id']}', NOW(), '{$row['nombre']}', '{$row['apellido']}', '{$row['dni']}', '')";
+                       VALUES ('{$row['paciente_id']}', '$medico_id', NOW(), '{$row['nombre']}', '{$row['apellido']}', '{$row['dni']}', '')";
 
         if ($conn->query($sql_insert) === TRUE) {
             // Eliminar el turno de la tabla "turnos"
@@ -42,23 +45,27 @@ if (isset($_GET['atender'])) {
     }
 }
 
-// Obtener el próximo paciente (turno más cercano)
+// Obtener el próximo paciente (turno más cercano) del médico
 $sql_proximo = "SELECT t.*, p.nombre, p.apellido, p.dni 
                 FROM turnos t
                 JOIN pacientes p ON t.paciente_id = p.paciente_id 
+                WHERE p.medico_id = $medico_id 
                 ORDER BY t.fecha ASC, t.horario ASC LIMIT 1";
 $result_proximo = $conn->query($sql_proximo);
 $proximo_paciente = $result_proximo->fetch_assoc();
 
-// Obtener los pacientes pendientes
+// Obtener los pacientes pendientes del médico
 $sql_pendientes = "SELECT t.*, p.nombre, p.apellido, p.dni 
                    FROM turnos t
                    JOIN pacientes p ON t.paciente_id = p.paciente_id 
+                   WHERE p.medico_id = $medico_id 
                    ORDER BY t.fecha ASC, t.horario ASC";
 $pendientes = $conn->query($sql_pendientes);
 
-// Obtener los pacientes atendidos
-$sql_atendidos = "SELECT * FROM atendidos ORDER BY fecha_atencion DESC";
+// Obtener los pacientes atendidos por el médico
+$sql_atendidos = "SELECT * FROM atendidos 
+                  WHERE medico_id = $medico_id 
+                  ORDER BY fecha_atencion DESC";
 $atendidos = $conn->query($sql_atendidos);
 ?>
 
@@ -95,7 +102,7 @@ $atendidos = $conn->query($sql_atendidos);
     </div>
 
     <div class="columns">
-        <div class="column pendientes-box"> <!-- Encierra en un cuadro -->
+        <div class="column pendientes-box">
             <h3>Pendientes</h3>
             <?php while ($row = $pendientes->fetch_assoc()): ?>
                 <div class="pendiente-item">
@@ -107,7 +114,7 @@ $atendidos = $conn->query($sql_atendidos);
             <?php endwhile; ?>
         </div>
 
-        <div class="column atendidos-box"> <!-- Encierra en un cuadro -->
+        <div class="column atendidos-box">
             <h3>Atendidos</h3>
             <?php while ($row = $atendidos->fetch_assoc()): ?>
                 <div class="atendido-item">
@@ -122,7 +129,6 @@ $atendidos = $conn->query($sql_atendidos);
     </div>
 </div>
 
-
 <a href="logout.php">Cerrar Sesión</a>
 
 <footer>
@@ -136,16 +142,17 @@ $atendidos = $conn->query($sql_atendidos);
 // Borrar un paciente atendido individualmente
 if (isset($_GET['delete_atendido'])) {
     $atendido_id = $_GET['delete_atendido'];
-    $sql_delete = "DELETE FROM atendidos WHERE atendido_id=$atendido_id";
+    $sql_delete = "DELETE FROM atendidos WHERE atendido_id=$atendido_id AND medico_id=$medico_id";
     $conn->query($sql_delete);
 }
 
-// Vaciar todos los pacientes atendidos
+// Vaciar todos los pacientes atendidos del médico
 if (isset($_GET['vaciar_atendidos'])) {
-    $sql_vaciar = "DELETE FROM atendidos";
+    $sql_vaciar = "DELETE FROM atendidos WHERE medico_id=$medico_id";
     $conn->query($sql_vaciar);
 }
 
 $conn->close();
 ?>
+
 

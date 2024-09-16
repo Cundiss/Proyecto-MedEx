@@ -11,6 +11,10 @@ if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }
 
+// Simular el medico_id de la sesión (aquí deberías obtener el medico_id de la sesión de tu sistema de autenticación)
+session_start();
+$medico_id = $_SESSION['medico_id'];
+
 // Añadir nuevo paciente
 if (isset($_POST['add'])) {
     $nombre = $_POST['nombre'];
@@ -21,8 +25,9 @@ if (isset($_POST['add'])) {
     $email = $_POST['email'];
     $telefono = $_POST['telefono'];
 
-    $sql = "INSERT INTO pacientes (nombre, apellido, edad, dni, mutual, email, telefono)
-            VALUES ('$nombre', '$apellido', '$edad', '$dni', '$mutual', '$email', '$telefono')";
+    // Insertar el nuevo paciente con el medico_id correspondiente
+    $sql = "INSERT INTO pacientes (medico_id, nombre, apellido, edad, dni, mutual, email, telefono)
+            VALUES ('$medico_id', '$nombre', '$apellido', '$edad', '$dni', '$mutual', '$email', '$telefono')";
 
     if ($conn->query($sql) === TRUE) {
         echo "<dialog id='modal' open>
@@ -50,7 +55,9 @@ if (isset($_POST['update'])) {
     $email = $_POST['email'];
     $telefono = $_POST['telefono'];
 
-    $sql = "UPDATE pacientes SET nombre='$nombre', apellido='$apellido', edad='$edad', dni='$dni', mutual='$mutual', email='$email', telefono='$telefono' WHERE paciente_id=$paciente_id";
+    // Asegurarse de que el paciente pertenece al médico antes de actualizar
+    $sql = "UPDATE pacientes SET nombre='$nombre', apellido='$apellido', edad='$edad', dni='$dni', mutual='$mutual', email='$email', telefono='$telefono'
+            WHERE paciente_id=$paciente_id AND medico_id='$medico_id'";
 
     if ($conn->query($sql) === TRUE) {
         echo "<dialog id='modal' open>
@@ -67,13 +74,12 @@ if (isset($_POST['update'])) {
     }
 }
 
-// Borrar paciente
-// Mover paciente a la tabla "pacientes_eliminados"
+// Borrar paciente (moverlo a la tabla "pacientes_eliminados")
 if (isset($_GET['delete'])) {
     $paciente_id = $_GET['delete'];
 
     // Obtener los datos del paciente a eliminar
-    $sql = "SELECT * FROM pacientes WHERE paciente_id=$paciente_id";
+    $sql = "SELECT * FROM pacientes WHERE paciente_id=$paciente_id AND medico_id='$medico_id'";
     $result = $conn->query($sql);
     $row = $result->fetch_assoc();
     $apellido = $row ? $row['apellido'] : '';
@@ -85,7 +91,7 @@ if (isset($_GET['delete'])) {
         
         if ($conn->query($sql_insert) === TRUE) {
             // Eliminar el paciente de la tabla "pacientes"
-            $sql_delete = "DELETE FROM pacientes WHERE paciente_id=$paciente_id";
+            $sql_delete = "DELETE FROM pacientes WHERE paciente_id=$paciente_id AND medico_id='$medico_id'";
             if ($conn->query($sql_delete) === TRUE) {
                 echo "<dialog id='modal' open>
                         <p>Paciente {$apellido} movido a la papelera</p>
@@ -127,8 +133,6 @@ if (isset($_GET['delete'])) {
 
 <h1>Gestión de Pacientes</h1>
 
-
-
 <form action="pacientes.php" method="POST">
     <input type="text" name="nombre" placeholder="Nombre" required>
     <input type="text" name="apellido" placeholder="Apellido" required>
@@ -167,11 +171,11 @@ if (isset($_GET['delete'])) {
     $search_query = "";
     if (isset($_GET['search'])) {
         $search = $_GET['search'];
-        $search_query = "WHERE nombre LIKE '%$search%' OR apellido LIKE '%$search%' OR dni LIKE '%$search%'";
+        $search_query = "AND (nombre LIKE '%$search%' OR apellido LIKE '%$search%' OR dni LIKE '%$search%')";
     }
 
-    // Obtener los pacientes de la base de datos
-    $sql = "SELECT * FROM pacientes $search_query";
+    // Obtener los pacientes del médico que ha iniciado sesión
+    $sql = "SELECT * FROM pacientes WHERE medico_id='$medico_id' $search_query";
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
@@ -188,25 +192,22 @@ if (isset($_GET['delete'])) {
                     <td><input type='text' name='mutual' value='{$row['mutual']}'></td>
                     <td><input type='email' name='email' value='{$row['email']}'></td>
                     <td><input type='text' name='telefono' value='{$row['telefono']}'></td>
-                    <td style='text-align: center;'><a href='turnos.php?paciente_id={$paciente_id}&nombre={$row['nombre']}&apellido={$row['apellido']}'>Agendar</a></td>
-                    <td style='text-align: center;'><a href='historial.php?paciente_id={$row['paciente_id']}'>Ver</a></td>
-                    <td style='text-align: center;'>
-                        <button type='submit' name='update'>Guardar</button>
-                        <a href='pacientes.php?delete={$row['paciente_id']}' style='text-decoration: none; color: black;'>Borrar</a>
+                    <td><a href='turnos.php?paciente_id=$paciente_id'>Agendar Turno</a></td>
+                    <td><a href='historial.php?paciente_id=$paciente_id'>Ver Historial</a></td>
+                    <td>
+                        <button type='submit' name='update'>Editar</button>
+                        <a href='pacientes.php?delete=$paciente_id'>Eliminar</a>
                     </td>
                 </form>
             </tr>";
         }
     } else {
-        echo "<tr><td colspan='9'>No hay pacientes registrados</td></tr>";
+        echo "<tr><td colspan='10'>No se encontraron pacientes</td></tr>";
     }
     ?>
 </table>
+
 </body>
 </html>
 
-<?php
-$conn->close();
-?>
-
-
+<?php $conn->close(); ?>

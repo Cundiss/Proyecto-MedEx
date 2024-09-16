@@ -1,4 +1,10 @@
 <?php
+session_start();
+if (!isset($_SESSION['medico_id'])) {
+    header("Location: index.php");
+    exit;
+}
+
 // Conexión a la base de datos
 $servername = "localhost";
 $username = "root";
@@ -12,6 +18,9 @@ if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }
 
+// Obtener el medico_id de la sesión
+$medico_id = $_SESSION['medico_id'];
+
 // Obtener el paciente de la URL (si viene de pacientes.php)
 $paciente_id_selected = isset($_GET['paciente_id']) ? $_GET['paciente_id'] : '';
 $nombre_paciente_selected = isset($_GET['nombre']) ? $_GET['nombre'] : '';
@@ -23,7 +32,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['agregar_turno'])) {
     $fecha = $_POST['fecha'];
     $horario = $_POST['horario'];
 
-    $sql = "INSERT INTO turnos (paciente_id, fecha, horario) VALUES ('$paciente_id', '$fecha', '$horario')";
+    // Insertar turno solo para los pacientes del médico logueado
+    $sql = "INSERT INTO turnos (paciente_id, fecha, horario) 
+            SELECT p.paciente_id, '$fecha', '$horario' 
+            FROM pacientes p 
+            WHERE p.paciente_id = '$paciente_id' AND p.medico_id = '$medico_id'";
 
     if ($conn->query($sql) === TRUE) {
         echo "<dialog id='modal' open>
@@ -46,7 +59,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['guardar'])) {
     $fecha = $_POST['fecha'];
     $horario = $_POST['horario'];
 
-    $sql = "UPDATE turnos SET fecha='$fecha', horario='$horario' WHERE turno_id='$turno_id'";
+    // Actualizar el turno solo si pertenece al médico logueado
+    $sql = "UPDATE turnos t 
+            JOIN pacientes p ON t.paciente_id = p.paciente_id 
+            SET t.fecha='$fecha', t.horario='$horario' 
+            WHERE t.turno_id='$turno_id' AND p.medico_id='$medico_id'";
 
     if ($conn->query($sql) === TRUE) {
         echo "<dialog id='modal' open>
@@ -67,7 +84,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['guardar'])) {
 if (isset($_GET['borrar'])) {
     $turno_id = $_GET['borrar'];
 
-    $sql = "DELETE FROM turnos WHERE turno_id='$turno_id'";
+    // Borrar solo si el turno pertenece a un paciente del médico logueado
+    $sql = "DELETE t 
+            FROM turnos t 
+            JOIN pacientes p ON t.paciente_id = p.paciente_id 
+            WHERE t.turno_id='$turno_id' AND p.medico_id='$medico_id'";
 
     if ($conn->query($sql) === TRUE) {
         echo "<dialog id='modal' open>
@@ -84,10 +105,10 @@ if (isset($_GET['borrar'])) {
     }
 }
 
-// Obtener pacientes
-$pacientes = $conn->query("SELECT * FROM pacientes");
+// Obtener pacientes del médico logueado
+$pacientes = $conn->query("SELECT * FROM pacientes WHERE medico_id = '$medico_id'");
 
-// Filtrar turnos por paciente, fecha y horario
+// Filtrar turnos por paciente, fecha y horario, solo para los pacientes del médico
 $filter_query = "";
 if (isset($_GET['buscar_paciente']) && !empty($_GET['buscar_paciente'])) {
     $busqueda_paciente = $_GET['buscar_paciente'];
@@ -104,11 +125,11 @@ if (isset($_GET['horario']) && !empty($_GET['horario'])) {
     $filter_query .= " AND t.horario = '$horario'";
 }
 
-// Obtener turnos con filtros aplicados
+// Obtener turnos del médico con filtros aplicados
 $sql = "SELECT t.turno_id, t.fecha, t.horario, p.nombre, p.apellido
         FROM turnos t
         JOIN pacientes p ON t.paciente_id = p.paciente_id
-        WHERE 1=1 $filter_query";
+        WHERE p.medico_id = '$medico_id' $filter_query";
 
 $turnos = $conn->query($sql);
 ?>
@@ -187,11 +208,15 @@ $turnos = $conn->query($sql);
     </tr>
     <?php endwhile; ?>
 </table>
+
+<?php if ($turnos->num_rows == 0): ?>
+    <p>No se encontraron turnos registrados.</p>
+<?php endif; ?>
+
 </body>
 </html>
 
 <?php
+// Cerrar la conexión
 $conn->close();
 ?>
-
-
