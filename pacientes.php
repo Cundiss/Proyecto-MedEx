@@ -30,15 +30,8 @@ if (isset($_POST['add'])) {
             VALUES ('$medico_id', '$nombre', '$apellido', '$edad', '$dni', '$mutual', '$email', '$telefono')";
 
     if ($conn->query($sql) === TRUE) {
-        echo "<dialog id='modal' open>
-                <p>Nuevo paciente añadido</p>
-              </dialog>
-              <script>
-                const modal = document.getElementById('modal');
-                setTimeout(() => {
-                  modal.close();
-                }, 2000);
-              </script>";
+        header("Location: pacientes.php?mensaje=añadido");
+        exit(); // Para detener la ejecución del script
     } else {
         echo "Error: " . $sql . "<br>" . $conn->error;
     }
@@ -60,15 +53,8 @@ if (isset($_POST['update'])) {
             WHERE paciente_id=$paciente_id AND medico_id='$medico_id'";
 
     if ($conn->query($sql) === TRUE) {
-        echo "<dialog id='modal' open>
-                <p>Paciente $apellido actualizado</p>
-              </dialog>
-              <script>
-                const modal = document.getElementById('modal');
-                setTimeout(() => {
-                  modal.close();
-                }, 2000);
-              </script>";
+        header("Location: pacientes.php?mensaje=actualizado");
+        exit(); // Para detener la ejecución del script
     } else {
         echo "Error: " . $sql . "<br>" . $conn->error;
     }
@@ -82,26 +68,18 @@ if (isset($_GET['delete'])) {
     $sql = "SELECT * FROM pacientes WHERE paciente_id=$paciente_id AND medico_id='$medico_id'";
     $result = $conn->query($sql);
     $row = $result->fetch_assoc();
-    $apellido = $row ? $row['apellido'] : '';
 
     if ($row) {
         // Insertar los datos en la tabla "pacientes_eliminados"
         $sql_insert = "INSERT INTO pacientes_eliminados (paciente_id, medico_id, nombre, apellido, edad, dni, mutual, email, telefono)
                        VALUES ('{$row['paciente_id']}', '{$row['medico_id']}', '{$row['nombre']}', '{$row['apellido']}', '{$row['edad']}', '{$row['dni']}', '{$row['mutual']}', '{$row['email']}', '{$row['telefono']}')";
-        
+
         if ($conn->query($sql_insert) === TRUE) {
             // Eliminar el paciente de la tabla "pacientes"
             $sql_delete = "DELETE FROM pacientes WHERE paciente_id=$paciente_id AND medico_id='$medico_id'";
             if ($conn->query($sql_delete) === TRUE) {
-                echo "<dialog id='modal' open>
-                        <p>Paciente {$apellido} movido a la papelera</p>
-                      </dialog>
-                      <script>
-                        const modal = document.getElementById('modal');
-                        setTimeout(() => {
-                          modal.close();
-                        }, 2000);
-                      </script>";
+                header("Location: pacientes.php?mensaje=borrado");
+                exit(); // Para detener la ejecución del script
             } else {
                 echo "Error al eliminar el paciente: " . $conn->error;
             }
@@ -111,6 +89,21 @@ if (isset($_GET['delete'])) {
     }
 }
 
+// Capturar el parámetro 'mensaje' de la URL para mostrar el modal correspondiente
+$mensaje = '';
+if (isset($_GET['mensaje'])) {
+    switch ($_GET['mensaje']) {
+        case 'añadido':
+            $mensaje = "Nuevo paciente añadido con éxito";
+            break;
+        case 'actualizado':
+            $mensaje = "Paciente actualizado con éxito";
+            break;
+        case 'borrado':
+            $mensaje = "Paciente movido a la papelera con éxito";
+            break;
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -120,6 +113,7 @@ if (isset($_GET['delete'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
     <title>Gestión de Pacientes</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- SweetAlert2 -->
 </head>
 <body>
 
@@ -133,6 +127,7 @@ if (isset($_GET['delete'])) {
 
 <h1>Gestión de Pacientes</h1>
 
+<!-- Formulario para añadir pacientes -->
 <form action="pacientes.php" method="POST">
     <input type="text" name="nombre" placeholder="Nombre" required>
     <input type="text" name="apellido" placeholder="Apellido" required>
@@ -195,8 +190,8 @@ if (isset($_GET['delete'])) {
                     <td><a href='turnos.php?paciente_id=$paciente_id'>Agendar Turno</a></td>
                     <td><a href='historial.php?paciente_id=$paciente_id'>Ver Historial</a></td>
                     <td>
-                        <button type='submit' name='update'>Editar</button>
-                        <a href='pacientes.php?delete=$paciente_id'>Eliminar</a>
+                        <button type='submit' name='update'>Actualizar</button>
+                        <a href='pacientes.php?delete=$paciente_id' class='button'>Eliminar</a>
                     </td>
                 </form>
             </tr>";
@@ -207,7 +202,36 @@ if (isset($_GET['delete'])) {
     ?>
 </table>
 
+<!-- SweetAlert para notificaciones -->
+<?php if ($mensaje): ?>
+<script>
+    Swal.fire({
+        icon: 'success',
+        title: '<?= $mensaje; ?>',
+        showConfirmButton: false,
+        timer: 2000
+    });
+</script>
+<?php endif; ?>
+<script>
+// Guardar la posición del scroll antes de recargar la página
+window.addEventListener('beforeunload', function () {
+    localStorage.setItem('scrollPosition', window.scrollY);
+});
+
+// Restaurar la posición del scroll después de recargar la página
+window.addEventListener('load', function () {
+    const scrollPosition = localStorage.getItem('scrollPosition');
+    if (scrollPosition) {
+        window.scrollTo(0, scrollPosition);
+        localStorage.removeItem('scrollPosition'); // Limpiar después de restaurar
+    }
+});
+</script>
+
+
 </body>
 </html>
 
 <?php $conn->close(); ?>
+

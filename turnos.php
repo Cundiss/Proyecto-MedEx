@@ -26,6 +26,9 @@ $paciente_id_selected = isset($_GET['paciente_id']) ? $_GET['paciente_id'] : '';
 $nombre_paciente_selected = isset($_GET['nombre']) ? $_GET['nombre'] : '';
 $apellido_paciente_selected = isset($_GET['apellido']) ? $_GET['apellido'] : '';
 
+// Variable para el mensaje de SweetAlert2
+$mensaje = "";
+
 // Agregar turno
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['agregar_turno'])) {
     $paciente_id = $_POST['paciente_id'];
@@ -39,17 +42,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['agregar_turno'])) {
             WHERE p.paciente_id = '$paciente_id' AND p.medico_id = '$medico_id'";
 
     if ($conn->query($sql) === TRUE) {
-        echo "<dialog id='modal' open>
-                <p>Nuevo turno añadido con éxito</p>
-              </dialog>
-              <script>
-                const modal = document.getElementById('modal');
-                setTimeout(() => {
-                  modal.close();
-                }, 2000);
-              </script>";
+        $mensaje = "Nuevo turno añadido con éxito";
     } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
+        $mensaje = "Error al agregar el turno: " . $conn->error;
     }
 }
 
@@ -66,17 +61,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['guardar'])) {
             WHERE t.turno_id='$turno_id' AND p.medico_id='$medico_id'";
 
     if ($conn->query($sql) === TRUE) {
-        echo "<dialog id='modal' open>
-                <p>Turno actualizado con éxito</p>
-              </dialog>
-              <script>
-                const modal = document.getElementById('modal');
-                setTimeout(() => {
-                  modal.close();
-                }, 2000);
-              </script>";
+        $mensaje = "Turno actualizado con éxito";
     } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
+        $mensaje = "Error al actualizar el turno: " . $conn->error;
     }
 }
 
@@ -91,17 +78,9 @@ if (isset($_GET['borrar'])) {
             WHERE t.turno_id='$turno_id' AND p.medico_id='$medico_id'";
 
     if ($conn->query($sql) === TRUE) {
-        echo "<dialog id='modal' open>
-                <p>Turno borrado con éxito</p>
-              </dialog>
-              <script>
-                const modal = document.getElementById('modal');
-                setTimeout(() => {
-                  modal.close();
-                }, 2000);
-              </script>";
+        $mensaje = "Turno borrado con éxito";
     } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
+        $mensaje = "Error al borrar el turno: " . $conn->error;
     }
 }
 
@@ -141,6 +120,8 @@ $turnos = $conn->query($sql);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Turnos</title>
     <link rel="stylesheet" href="styles.css">
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
 
@@ -213,6 +194,35 @@ $turnos = $conn->query($sql);
     <p>No se encontraron turnos registrados.</p>
 <?php endif; ?>
 
+<!-- SweetAlert para notificaciones -->
+<?php if ($mensaje): ?>
+<script>
+    Swal.fire({
+        icon: 'success',
+        title: '<?= $mensaje; ?>',
+        showConfirmButton: false,
+        timer: 2000
+    });
+</script>
+<?php endif; ?>
+
+<script>
+// Guardar la posición del scroll antes de recargar la página
+window.addEventListener('beforeunload', function () {
+    localStorage.setItem('scrollPosition', window.scrollY);
+});
+
+// Restaurar la posición del scroll después de recargar la página
+window.addEventListener('load', function () {
+    const scrollPosition = localStorage.getItem('scrollPosition');
+    if (scrollPosition) {
+        window.scrollTo(0, scrollPosition);
+        localStorage.removeItem('scrollPosition'); // Limpiar después de restaurar
+    }
+});
+</script>
+
+
 </body>
 </html>
 
@@ -220,3 +230,4 @@ $turnos = $conn->query($sql);
 // Cerrar la conexión
 $conn->close();
 ?>
+

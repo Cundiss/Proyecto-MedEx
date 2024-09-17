@@ -11,12 +11,16 @@ if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }
 
+// Iniciar sesión para acceder a medico_id
+session_start();
+$medico_id = $_SESSION['medico_id'];
+
 // Restaurar paciente
 if (isset($_GET['restore'])) {
     $paciente_eliminado_id = $_GET['restore'];
 
     // Obtener los datos del paciente eliminado
-    $sql = "SELECT * FROM pacientes_eliminados WHERE paciente_eliminado_id=$paciente_eliminado_id";
+    $sql = "SELECT * FROM pacientes_eliminados WHERE paciente_eliminado_id=$paciente_eliminado_id AND medico_id='$medico_id'";
     $result = $conn->query($sql);
     $row = $result->fetch_assoc();
     $apellido = $row ? $row['apellido'] : '';
@@ -28,7 +32,7 @@ if (isset($_GET['restore'])) {
 
         if ($conn->query($sql_restore) === TRUE) {
             // Eliminar el registro de la tabla "pacientes_eliminados"
-            $sql_delete = "DELETE FROM pacientes_eliminados WHERE paciente_eliminado_id=$paciente_eliminado_id";
+            $sql_delete = "DELETE FROM pacientes_eliminados WHERE paciente_eliminado_id=$paciente_eliminado_id AND medico_id='$medico_id'";
             $conn->query($sql_delete);
             echo "<dialog id='modal' open>
                     <p>Paciente {$apellido} restaurado</p>
@@ -50,12 +54,12 @@ if (isset($_GET['delete'])) {
     $paciente_eliminado_id = $_GET['delete'];
 
     // Obtener el apellido del paciente antes de eliminar
-    $sql = "SELECT apellido FROM pacientes_eliminados WHERE paciente_eliminado_id=$paciente_eliminado_id";
+    $sql = "SELECT apellido FROM pacientes_eliminados WHERE paciente_eliminado_id=$paciente_eliminado_id AND medico_id='$medico_id'";
     $result = $conn->query($sql);
     $row = $result->fetch_assoc();
     $apellido = $row ? $row['apellido'] : '';
 
-    $sql_delete = "DELETE FROM pacientes_eliminados WHERE paciente_eliminado_id=$paciente_eliminado_id";
+    $sql_delete = "DELETE FROM pacientes_eliminados WHERE paciente_eliminado_id=$paciente_eliminado_id AND medico_id='$medico_id'";
     if ($conn->query($sql_delete) === TRUE) {
         echo "<dialog id='modal' open>
                 <p>Paciente {$apellido} eliminado definitivamente</p>
@@ -74,11 +78,11 @@ if (isset($_GET['delete'])) {
 // Barra de búsqueda
 $search = isset($_GET['search']) ? $_GET['search'] : '';
 
-// Si hay un criterio de búsqueda, modifica la consulta
+// Si hay un criterio de búsqueda, modifica la consulta para incluir el medico_id
 if ($search) {
-    $sql = "SELECT * FROM pacientes_eliminados WHERE nombre LIKE '%$search%' OR apellido LIKE '%$search%'";
+    $sql = "SELECT * FROM pacientes_eliminados WHERE medico_id='$medico_id' AND (nombre LIKE '%$search%' OR apellido LIKE '%$search%')";
 } else {
-    $sql = "SELECT * FROM pacientes_eliminados";
+    $sql = "SELECT * FROM pacientes_eliminados WHERE medico_id='$medico_id'";
 }
 
 $result = $conn->query($sql);
@@ -149,3 +153,4 @@ $result = $conn->query($sql);
 
 </body>
 </html>
+
