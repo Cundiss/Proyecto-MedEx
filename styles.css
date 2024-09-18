@@ -177,14 +177,13 @@ button:hover {
     justify-content: center;
     align-items: center;
 }
-
 .modal p {
     background-color: white;
     padding: 20px;
     border-radius: 10px;
     text-align: center;
 }
-    */
+*/
 
 /* Estilos generales */
 body {
@@ -238,6 +237,8 @@ select, input[type="date"], input[type="time"], input[type="text"], button, inpu
     border-radius: 5px;
     border: 1px solid #ccc;
 }
+
+
 
 button, input[type="submit"] {
     background-color: #007bff;

@@ -69,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['guardar_historial'])) 
 }
 
 // Borrar historial
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['borrar_historial'])) {
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['confirmar_borrado'])) {
     $historial_id = $_POST['historial_id'];
 
     $sql = "DELETE FROM historial WHERE historial_id='$historial_id'";
@@ -112,7 +112,7 @@ if (isset($_GET['mensaje'])) {
         };
 
         // Función para confirmar eliminación con SweetAlert2
-        function confirmarEliminacion(historial_id, paciente_id) {
+        function confirmarEliminacion(historial_id) {
             Swal.fire({
                 title: '¿Estás seguro?',
                 text: "No podrás deshacer esta acción",
@@ -124,11 +124,28 @@ if (isset($_GET['mensaje'])) {
                 cancelButtonText: 'Cancelar'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Redirigir al formulario para eliminar el historial
-                    window.location.href = `historial.php?paciente_id=${paciente_id}&borrar_historial=1&historial_id=${historial_id}`;
+                    // Enviar el formulario de eliminación con POST
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = 'historial.php?paciente_id=<?= $paciente_id; ?>';
+
+                    const inputHistorialId = document.createElement('input');
+                    inputHistorialId.type = 'hidden';
+                    inputHistorialId.name = 'historial_id';
+                    inputHistorialId.value = historial_id;
+
+                    const inputConfirmarBorrado = document.createElement('input');
+                    inputConfirmarBorrado.type = 'hidden';
+                    inputConfirmarBorrado.name = 'confirmar_borrado';
+                    inputConfirmarBorrado.value = '1';
+
+                    form.appendChild(inputHistorialId);
+                    form.appendChild(inputConfirmarBorrado);
+
+                    document.body.appendChild(form);
+                    form.submit();
                 }
             });
-            return false;  // Prevenir que el formulario se envíe sin confirmación
         }
     </script>
 </head>
@@ -169,7 +186,7 @@ if (isset($_GET['mensaje'])) {
                 <input type="hidden" name="historial_id" value="<?= $row['historial_id']; ?>">
                 <input type="submit" name="guardar_historial" value="Guardar">
                 <!-- Botón modificado para confirmar con SweetAlert2 -->
-                <button type="button" onclick="confirmarEliminacion(<?= $row['historial_id']; ?>, <?= $paciente_id; ?>)">Borrar</button>
+                <button type="button" onclick="confirmarEliminacion(<?= $row['historial_id']; ?>)">Borrar</button>
             </td>
         </form>
     </tr>
@@ -202,10 +219,6 @@ window.addEventListener('load', function () {
     }
 });
 </script>
-
-</body>
-</html>
-
 
 </body>
 </html>

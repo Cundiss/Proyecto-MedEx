@@ -47,7 +47,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <button type="submit">Iniciar Sesión</button>
     </form>
     <?php if (isset($error)) { echo "<p style='color: red;'>$error</p>"; } ?>
-    <a href="registro.php">Registrarse</a>
+    <form method="GET" action="registro.php">
+        <button type="submit">Registrarse</button>
+    </form>
 </body>
 </html>
 
