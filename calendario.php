@@ -1,18 +1,17 @@
 <?php
-// Conexión a la base de datos
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "medex";
-
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Verifica la conexión
-if ($conn->connect_error) {
-    die("Conexión fallida: " . $conn->connect_error);
+session_start();
+if (!isset($_SESSION['medico_id'])) {
+    header("Location: index.php");
+    exit;
 }
 
-// Definir el rango de horas (ajústalo según tus necesidades)
+// Conexión a la base de datos
+include 'config.php';
+
+// Obtener el medico_id de la sesión
+$medico_id = $_SESSION['medico_id'];
+
+// Definir el rango de horas
 $horarioInicio = "08:00";
 $horarioFin = "18:00";
 
@@ -23,27 +22,27 @@ function generarIntervalos($inicio, $fin) {
     $horaFin = strtotime($fin);
 
     while ($horaActual < $horaFin) {
-        $intervalos[] = date("H:i", $horaActual); // Formatear a H:i (sin segundos)
+        $intervalos[] = date("H:i", $horaActual); 
         $horaActual = strtotime('+30 minutes', $horaActual);
     }
     return $intervalos;
 }
 
-// Consultar los turnos ocupados de la base de datos
-$sql = "SELECT fecha, horario FROM turnos";
-$result = $conn->query($sql);
+// Consultar los turnos ocupados de la base de datos para el médico logueado
+$sql = "SELECT t.fecha, t.horario, p.nombre, p.apellido 
+        FROM turnos t 
+        JOIN pacientes p ON t.paciente_id = p.paciente_id 
+        WHERE p.medico_id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $medico_id);
+$stmt->execute();
+$result = $stmt->get_result();
 
-// Inicializar el array de turnos ocupados
 $turnos_ocupados = [];
-
-// Verificar si la consulta fue exitosa
-if ($result && $result->num_rows > 0) {
-    // Almacenar los turnos ocupados en un array
-    while ($row = $result->fetch_assoc()) {
-        $dia = date("j", strtotime($row['fecha'])); // Obtener el día del mes
-        $hora_turno = date("H:i", strtotime($row['horario'])); // Formatear a H:i
-        $turnos_ocupados[$dia][] = $hora_turno;
-    }
+while ($row = $result->fetch_assoc()) {
+    $dia = date("j", strtotime($row['fecha']));
+    $hora_turno = date("H:i", strtotime($row['horario']));
+    $turnos_ocupados[$dia][] = ['hora' => $hora_turno, 'paciente' => $row['nombre'] . ' ' . $row['apellido']];
 }
 
 // Definir el mes y el año actual
@@ -56,7 +55,6 @@ $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $mes, $año);
 // Calcular el día de la semana del primer día del mes
 $firstDayOfMonth = mktime(0, 0, 0, $mes, 1, $año);
 $dayOfWeek = date("w", $firstDayOfMonth); // 0 (Domingo) a 6 (Sábado)
-
 ?>
 
 <!DOCTYPE html>
@@ -64,8 +62,10 @@ $dayOfWeek = date("w", $firstDayOfMonth); // 0 (Domingo) a 6 (Sábado)
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agenda de Turnos Libres</title>
+    <title>Agenda de Turnos</title>
     <link rel="stylesheet" href="styles.css">
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
 <nav>
@@ -75,6 +75,7 @@ $dayOfWeek = date("w", $firstDayOfMonth); // 0 (Domingo) a 6 (Sábado)
     <a href="calendario.php">Calendario</a>
     <a href="papelera.php">Papelera</a>
 </nav>
+
 <div class="calendar-container">
     <table class="calendar">
         <tr>
@@ -113,12 +114,29 @@ $dayOfWeek = date("w", $firstDayOfMonth); // 0 (Domingo) a 6 (Sábado)
             // Mostrar los turnos disponibles
             echo "<ul class='turnos-list'>";
             foreach ($intervalos as $intervalo) {
-                // Verificar si el intervalo está ocupado
-                if (isset($turnos_ocupados[$currentDay]) && in_array($intervalo, $turnos_ocupados[$currentDay])) {
-                    // Si el horario está ocupado, mostrar como ocupado
-                    echo "<li>Ocupado: $intervalo</li>";
+                // Buscar si el intervalo está ocupado
+                $turnosDelDia = isset($turnos_ocupados[$currentDay]) ? $turnos_ocupados[$currentDay] : [];
+                $turno_encontrado = false;
+                $pacientes_en_turno = [];
+
+                foreach ($turnosDelDia as $turno) {
+                    // Comparamos si el turno cae dentro de los 30 minutos antes o después del intervalo
+                    $hora_turno = strtotime($turno['hora']);
+                    $intervalo_inicio = strtotime($intervalo);
+                    $intervalo_fin = strtotime('+30 minutes', $intervalo_inicio);
+
+                    if ($hora_turno >= $intervalo_inicio && $hora_turno < $intervalo_fin) {
+                        $turno_encontrado = true;
+                        $pacientes_en_turno[] = "{$turno['hora']} - {$turno['paciente']}";
+                    }
+                }
+
+                if ($turno_encontrado) {
+                    // Mostrar como ocupado con los pacientes y sus horas exactas
+                    $pacientes_lista = implode("<br>", $pacientes_en_turno);
+                    echo "<li class='ocupado' onclick='mostrarPacientes(\"$pacientes_lista\")'>Ocupado: $intervalo</li>";
                 } else {
-                    // Si no está ocupado, mostrar como libre
+                    // Mostrar como libre
                     echo "<li>Libre: $intervalo</li>";
                 }
             }
@@ -139,9 +157,23 @@ $dayOfWeek = date("w", $firstDayOfMonth); // 0 (Domingo) a 6 (Sábado)
         </tr>
     </table>
 </div>
+
+<script>
+// Función para mostrar la ventana flotante con pacientes y sus horarios usando SweetAlert2
+function mostrarPacientes(pacientes) {
+    Swal.fire({
+        title: 'Pacientes con turno',
+        html: `<p>${pacientes}</p>`,
+        showCloseButton: true,
+        showConfirmButton: false
+    });
+}
+</script>
+
 </body>
 </html>
 
 <?php
 $conn->close();
 ?>
+
