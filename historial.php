@@ -110,6 +110,26 @@ if (isset($_GET['mensaje'])) {
             var hoy = new Date().toISOString().split('T')[0];  // Obtener la fecha actual en formato YYYY-MM-DD
             document.getElementById('fecha').value = hoy;  // Establecer la fecha en el campo de fecha
         };
+
+        // Función para confirmar eliminación con SweetAlert2
+        function confirmarEliminacion(historial_id, paciente_id) {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "No podrás deshacer esta acción",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminarlo',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Redirigir al formulario para eliminar el historial
+                    window.location.href = `historial.php?paciente_id=${paciente_id}&borrar_historial=1&historial_id=${historial_id}`;
+                }
+            });
+            return false;  // Prevenir que el formulario se envíe sin confirmación
+        }
     </script>
 </head>
 <body>
@@ -148,13 +168,13 @@ if (isset($_GET['mensaje'])) {
             <td>
                 <input type="hidden" name="historial_id" value="<?= $row['historial_id']; ?>">
                 <input type="submit" name="guardar_historial" value="Guardar">
-                <input type="submit" name="borrar_historial" value="Borrar" onclick="return confirm('¿Estás seguro de que deseas borrar este historial?');">
+                <!-- Botón modificado para confirmar con SweetAlert2 -->
+                <button type="button" onclick="confirmarEliminacion(<?= $row['historial_id']; ?>, <?= $paciente_id; ?>)">Borrar</button>
             </td>
         </form>
     </tr>
     <?php endwhile; ?>
 </table>
-
 
 <?php if ($mensaje): ?>
 <script>
@@ -166,6 +186,7 @@ if (isset($_GET['mensaje'])) {
     });
 </script>
 <?php endif; ?>
+
 <script>
 // Guardar la posición del scroll antes de recargar la página
 window.addEventListener('beforeunload', function () {
@@ -181,6 +202,9 @@ window.addEventListener('load', function () {
     }
 });
 </script>
+
+</body>
+</html>
 
 
 </body>

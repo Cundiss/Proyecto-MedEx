@@ -15,6 +15,9 @@ if ($conn->connect_error) {
 session_start();
 $medico_id = $_SESSION['medico_id'];
 
+// Variable para almacenar mensajes
+$mensaje = '';
+
 // Restaurar paciente
 if (isset($_GET['restore'])) {
     $paciente_eliminado_id = $_GET['restore'];
@@ -34,15 +37,7 @@ if (isset($_GET['restore'])) {
             // Eliminar el registro de la tabla "pacientes_eliminados"
             $sql_delete = "DELETE FROM pacientes_eliminados WHERE paciente_eliminado_id=$paciente_eliminado_id AND medico_id='$medico_id'";
             $conn->query($sql_delete);
-            echo "<dialog id='modal' open>
-                    <p>Paciente {$apellido} restaurado</p>
-                  </dialog>
-                  <script>
-                    const modal = document.getElementById('modal');
-                    setTimeout(() => {
-                      modal.close();
-                    }, 2000);
-                  </script>";
+            $mensaje = "Paciente {$apellido} restaurado con éxito";
         } else {
             echo "Error al restaurar el paciente: " . $conn->error;
         }
@@ -61,15 +56,7 @@ if (isset($_GET['delete'])) {
 
     $sql_delete = "DELETE FROM pacientes_eliminados WHERE paciente_eliminado_id=$paciente_eliminado_id AND medico_id='$medico_id'";
     if ($conn->query($sql_delete) === TRUE) {
-        echo "<dialog id='modal' open>
-                <p>Paciente {$apellido} eliminado definitivamente</p>
-              </dialog>
-              <script>
-                const modal = document.getElementById('modal');
-                setTimeout(() => {
-                  modal.close();
-                }, 2000);
-              </script>";
+        $mensaje = "Paciente {$apellido} eliminado definitivamente";
     } else {
         echo "Error al eliminar definitivamente el paciente: " . $conn->error;
     }
@@ -86,7 +73,6 @@ if ($search) {
 }
 
 $result = $conn->query($sql);
-
 ?>
 
 <!DOCTYPE html>
@@ -96,6 +82,7 @@ $result = $conn->query($sql);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
     <title>Papelera de Pacientes</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- SweetAlert2 -->
 </head>
 <body>
 
@@ -141,7 +128,7 @@ $result = $conn->query($sql);
                 <td>{$row['telefono']}</td>
                 <td>
                     <a href='papelera.php?restore={$row['paciente_eliminado_id']}'>Restaurar</a>
-                    <a href='papelera.php?delete={$row['paciente_eliminado_id']}' style='color: red;'>Eliminar definitivamente</a>
+                    <a href='#' onclick='confirmDelete({$row['paciente_eliminado_id']})' style='color: red;'>Eliminar definitivamente</a>
                 </td>
             </tr>";
         }
@@ -151,6 +138,38 @@ $result = $conn->query($sql);
     ?>
 </table>
 
+<script>
+// Confirmar antes de eliminar definitivamente
+function confirmDelete(id) {
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: "Esta acción no se puede deshacer",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, eliminarlo',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = 'papelera.php?delete=' + id;
+        }
+    })
+}
+
+// Mostrar el mensaje de éxito con SweetAlert2
+<?php if ($mensaje): ?>
+Swal.fire({
+    icon: 'success',
+    title: '<?= $mensaje; ?>',
+    showConfirmButton: false,
+    timer: 2000
+});
+<?php endif; ?>
+</script>
+
 </body>
 </html>
+
+<?php $conn->close(); ?>
 
