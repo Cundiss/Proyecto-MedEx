@@ -1,0 +1,169 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f6f7;
+    margin: 0;
+    padding: 20px;
+    color: #333;
+}
+.nav {
+    background-color: #007bff; /* Se mantiene un color uniforme */
+    padding: 10px;
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.nav a {
+    text-decoration: none;
+    color: white; /* Se ajusta para que sea consistente con el nav */
+    padding: 10px;
+    font-size: 18px;
+    margin: 0 10px;
+}
+
+.nav a:hover {
+    background-color: #0056b3;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.container {
+    padding: 20px;
+}
+
+.columns {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.column {
+    width: 48%;
+    box-sizing: border-box;
+}
+
+/* Estilos para tablas */
+table {
+    width: 100%;
+    margin: 20px 0;
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 12px;
+    text-align: center;
+}
+
+th {
+    background-color: #007bff;
+    color: white;
+}
+
+td a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+td a:hover {
+    text-decoration: none;
+}
+
+/* Estilo de formularios */
+form {
+    margin: 20px auto;
+    width: 80%;
+    max-width: 600px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+input, button {
+    width: calc(50% - 10px);
+    padding: 10px;
+    margin: 10px 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Estilos específicos de secciones */
+.pendientes-box, .atendidos-box {
+    margin-top: 20px;
+    border: 2px solid #ddd;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    background-color: #f9f9f9;
+}
+
+.pendiente-item, .atendido-item {
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Botones */
+.btn-atender {
+    background-color: #28a745;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+}
+.btn-borrar, .btn-vaciar{
+    background-color: #dc3545;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+
+}
+
+.btn-borrar {
+    background-color: #dc3545;
+}
+
+.btn-vaciar {
+    background-color: #ffc107;
+    display: block;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.btn-atender:hover, .btn-borrar:hover, .btn-vaciar:hover {
+    background-color: #0069d9;
+    cursor: pointer;
+}
+
+a{
+    text-decoration: none;
+}
+.spanProxPaciente{
+    margin-left: 60px;
+    font-size: 20px;
+}
+h2{
+    margin-left: 175px;
+}
+.MedEx{
+    text-align: center;
+    font-size: 30px;
+}

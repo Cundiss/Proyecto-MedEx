@@ -74,31 +74,24 @@ $atendidos = $conn->query($sql_atendidos);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="Styles/StyleInicio.css">
     <title>MedEx</title>
 </head>
 <body>
+<header>
+    <nav class="nav">
+        <a href="turnos.php">Turnos</a>
+        <a href="pacientes.php">Pacientes</a>
+        <a href="#">Inicio</a>
+        <a href="calendario.php">Calendario</a>
+        <a href="papelera.php">Papelera</a>
+    </nav>
+</header>
 
-<nav>
-    <a href="turnos.php">Turnos</a>
-    <a href="pacientes.php">Pacientes</a>
-    <a href="#">Inicio</a>
-    <a href="calendario.php">Calendario</a>
-    <a href="papelera.php">Papelera</a>
-</nav>
 
 <div class="container">
-    <div class="proximo-paciente">
-        <h2>Próximo Paciente</h2>
-        <?php if ($proximo_paciente): ?>
-            <div>
-                <span><?= $proximo_paciente['horario'] ?></span>
-                <span><?= $proximo_paciente['nombre'] ?> <?= $proximo_paciente['apellido'] ?></span>
-                <span><?= $proximo_paciente['dni'] ?></span>
-            </div>
-        <?php else: ?>
-            <p>No hay pacientes próximos.</p>
-        <?php endif; ?>
+    <div class="MedEx">
+        <h1>MedEx</h1>
     </div>
 
     <div class="columns">
