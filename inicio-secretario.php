@@ -83,7 +83,7 @@ $atendidos = $conn->query($sql_atendidos);
         <a href="turnos.php">Turnos</a>
         <a href="pacientes-secretario.php">Pacientes</a>
         <a href="#">Inicio</a>
-        <a href="calendario.php">Calendario</a>
+        <a href="calendario-secretario.php">Calendario</a>
         <a href="papelera.php">Papelera</a>
     </nav>
 </header>
@@ -94,33 +94,7 @@ $atendidos = $conn->query($sql_atendidos);
         <h1>MedEx</h1>
     </div>
 
-    <div class="columns">
-        <div class="column pendientes-box">
-            <h3>Pendientes</h3>
-            <?php while ($row = $pendientes->fetch_assoc()): ?>
-                <div class="pendiente-item">
-                    <span><?= date('d-m-Y', strtotime($row['fecha'])) ?> <?= $row['horario'] ?></span>
-                    <span><?= $row['nombre'] ?> <?= $row['apellido'] ?></span>
-                    <span><?= $row['dni'] ?></span>
-                    <a href="?atender=<?= $row['turno_id'] ?>" class="btn-atender">Atender</a>
-                </div>
-            <?php endwhile; ?>
-        </div>
 
-        <div class="column atendidos-box">
-            <h3>Atendidos</h3>
-            <?php while ($row = $atendidos->fetch_assoc()): ?>
-                <div class="atendido-item">
-                    <span><?= $row['nombre'] ?> <?= $row['apellido'] ?></span>
-                    <span><?= $row['dni'] ?></span>
-                    <span><?= date('d-m-Y', strtotime($row['fecha_atencion'])) ?></span>
-                    <a href="?delete_atendido=<?= $row['atendido_id'] ?>" class="btn-borrar">Borrar</a>
-                </div>
-            <?php endwhile; ?>
-            <a href="?vaciar_atendidos=true" class="btn-vaciar">Vaciar Atendidos</a>
-        </div>
-    </div>
-</div>
 
 <a href="logout.php">Cerrar Sesión</a>
 
