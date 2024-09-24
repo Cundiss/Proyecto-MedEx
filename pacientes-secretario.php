@@ -11,7 +11,7 @@ if (!isset($_SESSION['medico_id'])) {
 
 $medico_id = $_SESSION['medico_id'];
 
-// Añadir nuevo paciente (esta parte no se modifica)
+// Añadir nuevo paciente
 if (isset($_POST['add'])) {
     $nombre = $_POST['nombre'];
     $apellido = $_POST['apellido'];
@@ -168,7 +168,6 @@ if (isset($_GET['mensaje'])) {
         <th>Email</th>
         <th>Teléfono</th>
         <th>Asignar Médicos</th>
-        <th>Historial</th>
         <th>Acciones</th>
     </tr>
     <?php
@@ -195,84 +194,72 @@ if (isset($_GET['mensaje'])) {
                     <td><input type='email' name='email' value='{$row['email']}'></td>
                     <td><input type='text' name='telefono' value='{$row['telefono']}'></td>
                     <!-- Botón para asignar múltiples médicos -->
-                    <td><button type='button' class='asignarMedicosBtn' data-paciente-id='$paciente_id'>Asignar Médicos</button></td>
-                    <td><a href='historial.php?paciente_id=$paciente_id'>Ver Historial</a></td>
+                    <td><button type='button' class='asignar-medicos' data-paciente-id='$paciente_id'>Asignar Médicos</button></td>
                     <td>
                         <button type='submit' name='update'>Actualizar</button>
-                        <a href='pacientes-secretario.php?delete=$paciente_id' onclick='return confirm(\"¿Estás seguro de que quieres eliminar este paciente?\")'>Eliminar</a>
+                        <a href='pacientes-secretario.php?delete={$row['paciente_id']}' onclick='return confirm(\"¿Estás seguro de eliminar este paciente?\")'>Borrar</a>
                     </td>
                 </form>
             </tr>";
         }
     } else {
-        echo "<tr><td colspan='10'>No se encontraron pacientes.</td></tr>";
+        echo "<tr><td colspan='9'>No se encontraron pacientes</td></tr>";
     }
     ?>
 </table>
 
+<!-- Script para asignar médicos -->
 <script>
-document.querySelectorAll('.asignarMedicosBtn').forEach(button => {
+document.querySelectorAll('.asignar-medicos').forEach(button => {
     button.addEventListener('click', function() {
-        const paciente_id = this.dataset.pacienteId;
+        const pacienteId = this.getAttribute('data-paciente-id');
 
-        // Realizamos la petición para obtener los médicos
-        fetch('get_medicos.php')
-        .then(response => response.json())
-        .then(data => {
-            let checkboxes = '';
-            data.forEach(medico => {
-                checkboxes += `<input type="checkbox" class="medico-checkbox" value="${medico.medico_id}"> ${medico.nombre}<br>`;
-            });
-
-            // SweetAlert2
-            Swal.fire({
-                title: 'Seleccionar Médicos',
-                html: `<div>${checkboxes}</div>`,
-                showCancelButton: true,
-                confirmButtonText: 'Guardar',
-                cancelButtonText: 'Cancelar',
-                preConfirm: () => {
-                    const selectedMedicos = [];
-                    document.querySelectorAll('.medico-checkbox:checked').forEach(checkbox => {
-                        selectedMedicos.push(checkbox.value);
-                    });
-
-                    if (selectedMedicos.length === 0) {
-                        Swal.showValidationMessage('Debes seleccionar al menos un médico');
-                        return false;  // Evitar que se cierre el SweetAlert si no hay selección
-                    } else {
-                        return selectedMedicos; // Retorna los médicos seleccionados
+        Swal.fire({
+            title: 'Asignar Médicos',
+            html: `
+                <select id="medicos-select" multiple>
+                    <?php
+                    $sql_medicos = "SELECT medico_id, nombre FROM medicos";
+                    $result_medicos = $conn->query($sql_medicos);
+                    while ($medico = $result_medicos->fetch_assoc()) {
+                        echo "<option value='{$medico['medico_id']}'>{$medico['nombre']}</option>";
                     }
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    const selectedMedicos = result.value;
+                    ?>
+                </select>
+            `,
+            showCancelButton: true,
+            confirmButtonText: 'Asignar',
+            preConfirm: () => {
+                const medicosSeleccionados = Array.from(document.getElementById('medicos-select').selectedOptions).map(option => option.value);
+                return medicosSeleccionados.join(',');
+            }
+        }).then(result => {
+            if (result.isConfirmed) {
+                const form = new FormData();
+                form.append('paciente_id', pacienteId);
+                form.append('medicos_seleccionados', result.value);
 
-                    // Creamos el input oculto con los médicos seleccionados
-                    const input = document.createElement('input');
-                    input.type = 'hidden';
-                    input.name = 'medicos_seleccionados';
-                    input.value = selectedMedicos.join(',');
-
-                    // Añadimos el input oculto al formulario y lo enviamos
-                    const form = button.closest('form');
-                    form.appendChild(input);
-                    form.submit();
-                }
-            });
+                fetch('pacientes-secretario.php', {
+                    method: 'POST',
+                    body: form
+                }).then(() => {
+                    Swal.fire('Asignado!', 'Los médicos han sido asignados.', 'success').then(() => {
+                        window.location.reload();
+                    });
+                });
+            }
         });
     });
 });
 </script>
 
-
-<?php if ($mensaje): ?>
+<?php if (!empty($mensaje)): ?>
 <script>
-Swal.fire({
-    title: '<?php echo $mensaje; ?>',
-    icon: 'success',
-    confirmButtonText: 'Ok'
-});
+    Swal.fire({
+        title: '<?php echo $mensaje; ?>',
+        icon: 'success',
+        confirmButtonText: 'Aceptar'
+    });
 </script>
 <?php endif; ?>
 
