@@ -6,17 +6,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nombre = $_POST['nombre'];
     $email = $_POST['email'];
     $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+    $rol = $_POST['rol']; // Obtenemos el rol seleccionado (medico o secretario)
 
-    // Insertar el nuevo médico en la base de datos
-    $query = "INSERT INTO medicos (nombre, email, password) VALUES (?, ?, ?)";
+    // Insertar el nuevo usuario en la base de datos
+    $query = "INSERT INTO medicos (nombre, email, password, rol) VALUES (?, ?, ?, ?)";
     $stmt = $conn->prepare($query);
-    $stmt->bind_param('sss', $nombre, $email, $password);
+    $stmt->bind_param('ssss', $nombre, $email, $password, $rol);
 
     if ($stmt->execute()) {
         header("Location: index.php");
         exit;
     } else {
-        $error = "Hubo un error al registrar al médico.";
+        $error = "Hubo un error al registrar al usuario.";
     }
 }
 ?>
@@ -30,13 +31,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>MedEx - Registro</title>
 </head>
 <body>
-    <h2>Registro de Médico</h2>
+    <h2>Registro</h2>
     <form method="POST" action="registro.php">
         <input type="text" name="nombre" placeholder="Nombre" required>
         <input type="email" name="email" placeholder="Email" required>
         <input type="password" name="password" placeholder="Contraseña" required>
+        <select name="rol" required>
+            <option value="medico">Médico</option>
+            <option value="secretario">Secretario</option>
+        </select>
         <button type="submit">Registrarse</button>
     </form>
     <?php if (isset($error)) { echo "<p style='color: red;'>$error</p>"; } ?>
 </body>
 </html>
+

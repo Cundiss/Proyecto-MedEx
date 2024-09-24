@@ -7,7 +7,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    // Verificar si el médico existe
+    // Verificar si el usuario existe (médico o secretario)
     $query = "SELECT * FROM medicos WHERE email = ?";
     $stmt = $conn->prepare($query);
     $stmt->bind_param('s', $email);
@@ -18,21 +18,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $row = $result->fetch_assoc();
         // Verificar la contraseña
         if (password_verify($password, $row['password'])) {
-            // Guardar la sesión del médico
+            // Guardar la sesión del usuario
             $_SESSION['medico_id'] = $row['medico_id'];
-            header("Location: inicio.php");
+            $_SESSION['rol'] = $row['rol'];
+
+            // Redirigir dependiendo del rol
+            if ($row['rol'] === 'medico') {
+                header("Location: inicio.php"); // Página principal de médicos
+            } elseif ($row['rol'] === 'secretario') {
+                header("Location: inicio-secretario.php"); // Página principal de secretarios
+            }
             exit;
         } else {
             $error = "Contraseña incorrecta.";
         }
     } else {
-        $error = "No existe un médico registrado con ese email.";
+        $error = "No existe un usuario registrado con ese email.";
     }
 }
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -47,10 +54,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <button type="submit">Iniciar Sesión</button>
     </form>
     <?php if (isset($error)) { echo "<p style='color: red;'>$error</p>"; } ?>
+    
     <form method="GET" action="registro.php">
-        <button type="submit">¿No tienes cuenta? Registrate</button>
-        
+        <button type="submit">¿No tienes cuenta? Regístrate</button>
     </form>
 </body>
 </html>
-
