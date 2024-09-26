@@ -70,11 +70,27 @@ if (isset($_GET['delete'])) {
     $row = $result->fetch_assoc();
 
     if ($row) {
+        // Mover el historial del paciente a la tabla "pacientes_eliminados_historial"
+        $sql_historial = "SELECT * FROM historial WHERE paciente_id=$paciente_id";
+        $result_historial = $conn->query($sql_historial);
+
+        if ($result_historial->num_rows > 0) {
+            while ($row_historial = $result_historial->fetch_assoc()) {
+                $sql_move_historial = "INSERT INTO pacientes_eliminados_historial (historial_id, paciente_id, medico_id, detalle, fecha)
+                                       VALUES ('{$row_historial['historial_id']}', '{$row_historial['paciente_id']}', '{$row_historial['medico_id']}', '{$row_historial['detalle']}', '{$row_historial['fecha']}')";
+                $conn->query($sql_move_historial);
+            }
+        }
+
         // Insertar los datos en la tabla "pacientes_eliminados"
         $sql_insert = "INSERT INTO pacientes_eliminados (paciente_id, medico_id, nombre, apellido, edad, dni, mutual, email, telefono)
                        VALUES ('{$row['paciente_id']}', '{$row['medico_id']}', '{$row['nombre']}', '{$row['apellido']}', '{$row['edad']}', '{$row['dni']}', '{$row['mutual']}', '{$row['email']}', '{$row['telefono']}')";
 
         if ($conn->query($sql_insert) === TRUE) {
+            // Eliminar el historial del paciente de la tabla "historial"
+            $sql_delete_historial = "DELETE FROM historial WHERE paciente_id=$paciente_id";
+            $conn->query($sql_delete_historial);
+
             // Eliminar el paciente de la tabla "pacientes"
             $sql_delete = "DELETE FROM pacientes WHERE paciente_id=$paciente_id AND medico_id='$medico_id'";
             if ($conn->query($sql_delete) === TRUE) {
@@ -105,6 +121,7 @@ if (isset($_GET['mensaje'])) {
     }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="es">

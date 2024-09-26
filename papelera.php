@@ -18,7 +18,7 @@ $medico_id = $_SESSION['medico_id'];
 // Variable para almacenar mensajes
 $mensaje = '';
 
-// Restaurar paciente
+// Restaurar paciente junto con su historial
 if (isset($_GET['restore'])) {
     $paciente_eliminado_id = $_GET['restore'];
 
@@ -29,36 +29,62 @@ if (isset($_GET['restore'])) {
     $apellido = $row ? $row['apellido'] : '';
 
     if ($row) {
-        // Insertar los datos en la tabla "pacientes"
+        // Restaurar el paciente a la tabla "pacientes"
         $sql_restore = "INSERT INTO pacientes (medico_id, nombre, apellido, edad, dni, mutual, email, telefono)
                         VALUES ('{$row['medico_id']}', '{$row['nombre']}', '{$row['apellido']}', '{$row['edad']}', '{$row['dni']}', '{$row['mutual']}', '{$row['email']}', '{$row['telefono']}')";
 
         if ($conn->query($sql_restore) === TRUE) {
-            // Eliminar el registro de la tabla "pacientes_eliminados"
-            $sql_delete = "DELETE FROM pacientes_eliminados WHERE paciente_eliminado_id=$paciente_eliminado_id AND medico_id='$medico_id'";
-            $conn->query($sql_delete);
-            $mensaje = "Paciente {$apellido} restaurado con éxito";
+            // Obtener el paciente_id recién restaurado
+            $nuevo_paciente_id = $conn->insert_id;
+
+            // Mover el historial de "pacientes_eliminados_historial" a "historial"
+            $sql_historial = "INSERT INTO historial (paciente_id, medico_id, fecha, detalle)
+                              SELECT '$nuevo_paciente_id', medico_id, fecha, detalle
+                              FROM pacientes_eliminados_historial
+                              WHERE paciente_id={$row['paciente_id']}";
+
+            if ($conn->query($sql_historial) === TRUE) {
+                // Eliminar el historial de la tabla "pacientes_eliminados_historial"
+                $sql_borrar_historial = "DELETE FROM pacientes_eliminados_historial WHERE paciente_id={$row['paciente_id']}";
+                $conn->query($sql_borrar_historial);
+
+                // Eliminar el paciente de la tabla "pacientes_eliminados"
+                $sql_delete = "DELETE FROM pacientes_eliminados WHERE paciente_eliminado_id=$paciente_eliminado_id AND medico_id='$medico_id'";
+                $conn->query($sql_delete);
+
+                $mensaje = "Paciente {$apellido} y su historial restaurados con éxito";
+            } else {
+                echo "Error al restaurar el historial: " . $conn->error;
+            }
         } else {
             echo "Error al restaurar el paciente: " . $conn->error;
         }
     }
 }
 
-// Borrar paciente definitivamente
+// Eliminar definitivamente el paciente junto con su historial
 if (isset($_GET['delete'])) {
     $paciente_eliminado_id = $_GET['delete'];
 
     // Obtener el apellido del paciente antes de eliminar
-    $sql = "SELECT apellido FROM pacientes_eliminados WHERE paciente_eliminado_id=$paciente_eliminado_id AND medico_id='$medico_id'";
+    $sql = "SELECT apellido, paciente_id FROM pacientes_eliminados WHERE paciente_eliminado_id=$paciente_eliminado_id AND medico_id='$medico_id'";
     $result = $conn->query($sql);
     $row = $result->fetch_assoc();
     $apellido = $row ? $row['apellido'] : '';
+    $paciente_id = $row['paciente_id'];
 
-    $sql_delete = "DELETE FROM pacientes_eliminados WHERE paciente_eliminado_id=$paciente_eliminado_id AND medico_id='$medico_id'";
-    if ($conn->query($sql_delete) === TRUE) {
-        $mensaje = "Paciente {$apellido} eliminado definitivamente";
-    } else {
-        echo "Error al eliminar definitivamente el paciente: " . $conn->error;
+    if ($row) {
+        // Eliminar el historial del paciente de "pacientes_eliminados_historial"
+        $sql_borrar_historial = "DELETE FROM pacientes_eliminados_historial WHERE paciente_id=$paciente_id";
+        $conn->query($sql_borrar_historial);
+
+        // Eliminar el paciente de "pacientes_eliminados"
+        $sql_delete = "DELETE FROM pacientes_eliminados WHERE paciente_eliminado_id=$paciente_eliminado_id AND medico_id='$medico_id'";
+        if ($conn->query($sql_delete) === TRUE) {
+            $mensaje = "Paciente {$apellido} y su historial eliminados definitivamente";
+        } else {
+            echo "Error al eliminar definitivamente el paciente: " . $conn->error;
+        }
     }
 }
 
