@@ -156,14 +156,20 @@ if (isset($_GET['mensaje'])) {
     <button type="submit" name="add">Añadir Paciente</button>
 </form>
 
-<!-- Formulario de búsqueda -->
-<form action="pacientes.php" method="GET">
-    <input type="text" name="search" placeholder="Buscar por nombre, apellido o DNI" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
+<!-- Barra de búsqueda -->
+<form method="GET" action="pacientes.php">
+    <input type="text" name="search" placeholder="Buscar por nombre o apellido" value="<?php echo isset($_GET['search']) ? $_GET['search'] : ''; ?>">
     <button type="submit">Buscar</button>
-    <?php if (isset($_GET['search'])): ?>
-        <a href="pacientes.php" class="button">Quitar Filtro</a>
-    <?php endif; ?>
+    
+    <!-- Botón "Quitar Filtro" como un enlace que actúa como botón -->
+    <a href="pacientes.php" style="text-decoration: none;">
+        <button type="button">Quitar Filtro</button>
+    </a>
 </form>
+
+
+
+
 
 <h3>Pacientes Registrados</h3>
 <table border="1">

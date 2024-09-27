@@ -28,13 +28,17 @@ function generarIntervalos($inicio, $fin) {
     return $intervalos;
 }
 
+// Definir el mes y el año actual (o los que se están visualizando)
+$mes = isset($_GET['mes']) ? $_GET['mes'] : date("m");
+$año = isset($_GET['año']) ? $_GET['año'] : date("Y");
+
 // Consultar los turnos ocupados de la base de datos para el médico logueado
 $sql = "SELECT t.fecha, t.horario, p.nombre, p.apellido 
         FROM turnos t 
         JOIN pacientes p ON t.paciente_id = p.paciente_id 
-        WHERE p.medico_id = ?";
+        WHERE p.medico_id = ? AND MONTH(t.fecha) = ? AND YEAR(t.fecha) = ?";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $medico_id);
+$stmt->bind_param("iii", $medico_id, $mes, $año);
 $stmt->execute();
 $result = $stmt->get_result();
 
@@ -44,10 +48,6 @@ while ($row = $result->fetch_assoc()) {
     $hora_turno = date("H:i", strtotime($row['horario']));
     $turnos_ocupados[$dia][] = ['hora' => $hora_turno, 'paciente' => $row['nombre'] . ' ' . $row['apellido']];
 }
-
-// Definir el mes y el año actual
-$mes = date("m");
-$año = date("Y");
 
 // Obtener el número de días en el mes actual
 $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $mes, $año);
@@ -75,6 +75,15 @@ $dayOfWeek = date("w", $firstDayOfMonth); // 0 (Domingo) a 6 (Sábado)
     <a href="calendario.php">Calendario</a>
     <a href="papelera.php">Papelera</a>
 </nav>
+
+<!-- Mostrar el mes y año actual -->
+<div class="calendar-header">
+    <h2><?php echo date("F", mktime(0, 0, 0, $mes, 1, $año)) . " " . $año; ?></h2>
+    <form method="get" action="calendario.php">
+        <button type="submit" name="mes" value="<?php echo $mes == 1 ? 12 : $mes - 1; ?>" name="año" value="<?php echo $mes == 1 ? $año - 1 : $año; ?>">Mes anterior</button>
+        <button type="submit" name="mes" value="<?php echo $mes == 12 ? 1 : $mes + 1; ?>" name="año" value="<?php echo $mes == 12 ? $año + 1 : $año; ?>">Mes siguiente</button>
+    </form>
+</div>
 
 <div class="calendar-container">
     <table class="calendar">
