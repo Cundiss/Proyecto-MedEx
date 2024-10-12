@@ -82,7 +82,7 @@ $atendidos = $conn->query($sql_atendidos);
     <nav class="nav">
         <a href="turnos.php">Turnos</a>
         <a href="pacientes.php">Pacientes</a>
-        <a href="#">Inicio</a>
+        <a href="inicio.php">Inicio</a>
         <a href="calendario.php">Calendario</a>
         <a href="papelera.php">Papelera</a>
     </nav>
