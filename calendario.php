@@ -80,10 +80,18 @@ $dayOfWeek = date("w", $firstDayOfMonth); // 0 (Domingo) a 6 (Sábado)
 <div class="calendar-header">
     <h2><?php echo date("F", mktime(0, 0, 0, $mes, 1, $año)) . " " . $año; ?></h2>
     <form method="get" action="calendario.php">
-        <button type="submit" name="mes" value="<?php echo $mes == 1 ? 12 : $mes - 1; ?>" name="año" value="<?php echo $mes == 1 ? $año - 1 : $año; ?>">Mes anterior</button>
-        <button type="submit" name="mes" value="<?php echo $mes == 12 ? 1 : $mes + 1; ?>" name="año" value="<?php echo $mes == 12 ? $año + 1 : $año; ?>">Mes siguiente</button>
+        <input type="hidden" name="año" value="<?php echo $año; ?>">
+        <button type="submit" name="mes" value="<?php echo $mes == 1 ? 12 : $mes - 1; ?>" 
+                onclick="this.form.año.value = '<?php echo $mes == 1 ? $año - 1 : $año; ?>'">
+            Mes anterior
+        </button>
+        <button type="submit" name="mes" value="<?php echo $mes == 12 ? 1 : $mes + 1; ?>" 
+                onclick="this.form.año.value = '<?php echo $mes == 12 ? $año + 1 : $año; ?>'">
+            Mes siguiente
+        </button>
     </form>
 </div>
+
 
 <div class="calendar-container">
     <table class="calendar">
