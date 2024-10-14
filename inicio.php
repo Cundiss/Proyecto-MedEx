@@ -20,6 +20,11 @@ if ($conn->connect_error) {
 // Obtener el medico_id de la sesión
 $medico_id = $_SESSION['medico_id'];
 
+// Obtener datos del médico logueado
+$sql_medico = "SELECT nombre, email FROM medicos WHERE medico_id = $medico_id";
+$result_medico = $conn->query($sql_medico);
+$medico = $result_medico->fetch_assoc();
+
 // Mover paciente a la sección "Atendidos"
 if (isset($_GET['atender'])) {
     $turno_id = $_GET['atender'];
@@ -84,7 +89,14 @@ $atendidos = $conn->query($sql_atendidos);
         <a href="pacientes.php">Pacientes</a>
         <a href="inicio.php">Inicio</a>
         <a href="calendario.php">Calendario</a>
-        <a href="papelera.php">Papelera</a>
+        <div class="dropdown">
+            <a class="dropbtn">Cuenta</a>
+            <div class="dropdown-content">
+                <p><strong>Nombre:</strong> <?= $medico['nombre']; ?></p>
+                <p><strong>Email:</strong> <?= $medico['email']; ?></p>
+                <a href="logout.php" class="logout-btn">Cerrar Sesión</a>
+            </div>
+        </div>
     </nav>
 </header>
 
@@ -122,14 +134,33 @@ $atendidos = $conn->query($sql_atendidos);
     </div>
 </div>
 
-<a href="logout.php">Cerrar Sesión</a>
-
+<!--
 <footer>
     <p>&copy; 2024 MedEx - Todos los derechos reservados</p>
 </footer>
-
+-->
 </body>
 </html>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var dropdown = document.querySelector('.dropdown');
+    var dropbtn = document.querySelector('.dropbtn');
+
+    // Agregar un evento de clic para mostrar/ocultar el menú
+    dropbtn.addEventListener('click', function() {
+        dropdown.classList.toggle('show'); // Alterna la clase 'show' para el menú
+    });
+
+    // Cerrar el menú si se hace clic fuera del dropdown
+    window.addEventListener('click', function(e) {
+        if (!dropdown.contains(e.target)) {
+            dropdown.classList.remove('show');
+        }
+    });
+});
+</script>
+
+
 
 <?php
 // Borrar un paciente atendido individualmente

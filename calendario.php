@@ -11,6 +11,11 @@ include 'config.php';
 // Obtener el medico_id de la sesión
 $medico_id = $_SESSION['medico_id'];
 
+// Obtener datos del médico logueado
+$sql_medico = "SELECT nombre, email FROM medicos WHERE medico_id = $medico_id";
+$result_medico = $conn->query($sql_medico);
+$medico = $result_medico->fetch_assoc();
+
 // Definir el rango de horas
 $horarioInicio = "08:00";
 $horarioFin = "18:00";
@@ -63,18 +68,27 @@ $dayOfWeek = date("w", $firstDayOfMonth); // 0 (Domingo) a 6 (Sábado)
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agenda de Turnos</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="Styles/StyleCalendario.css">
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
-<nav>
-    <a href="turnos.php">Turnos</a>
-    <a href="pacientes.php">Pacientes</a>
-    <a href="inicio.php">Inicio</a>
-    <a href="calendario.php">Calendario</a>
-    <a href="papelera.php">Papelera</a>
-</nav>
+<header>
+    <nav class="nav">
+        <a href="turnos.php">Turnos</a>
+        <a href="pacientes.php">Pacientes</a>
+        <a href="inicio.php">Inicio</a>
+        <a href="calendario.php">Calendario</a>
+        <div class="dropdown">
+            <a class="dropbtn">Cuenta</a>
+            <div class="dropdown-content">
+                <p><strong>Nombre:</strong> <?= $medico['nombre']; ?></p>
+                <p><strong>Email:</strong> <?= $medico['email']; ?></p>
+                <a href="logout.php" class="logout-btn">Cerrar Sesión</a>
+            </div>
+        </div>
+    </nav>
+</header>
 
 <!-- Mostrar el mes y año actual -->
 <div class="calendar-header">
@@ -174,6 +188,24 @@ $dayOfWeek = date("w", $firstDayOfMonth); // 0 (Domingo) a 6 (Sábado)
         </tr>
     </table>
 </div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var dropdown = document.querySelector('.dropdown');
+    var dropbtn = document.querySelector('.dropbtn');
+
+    // Agregar un evento de clic para mostrar/ocultar el menú
+    dropbtn.addEventListener('click', function() {
+        dropdown.classList.toggle('show'); // Alterna la clase 'show' para el menú
+    });
+
+    // Cerrar el menú si se hace clic fuera del dropdown
+    window.addEventListener('click', function(e) {
+        if (!dropdown.contains(e.target)) {
+            dropdown.classList.remove('show');
+        }
+    });
+});
+</script>
 
 <script>
 // Función para mostrar la ventana flotante con pacientes y sus horarios usando SweetAlert2
