@@ -47,16 +47,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>MedEx - Inicio de Sesión</title>
 </head>
 <body>
-    <h2>Inicio de Sesión</h2>
-    <form method="POST" action="index.php">
-        <input type="email" name="email" placeholder="Email" required>
-        <input type="password" name="password" placeholder="Contraseña" required>
-        <button type="submit">Iniciar Sesión</button>
-    </form>
-    <?php if (isset($error)) { echo "<p style='color: red;'>$error</p>"; } ?>
-    
-    <form method="GET" action="registro.php">
-        <button type="submit">¿No tienes cuenta? Regístrate</button>
-    </form>
+    <div class="container">
+        <!-- Sección izquierda con el logo centrado -->
+        <div class="left-side">
+            <img src="Medex.png" alt="Logo de MedEx">
+        </div>
+        
+        <!-- Sección derecha con el formulario -->
+        <div class="right-side">
+            <h2>Inicio de Sesión</h2>
+            <form method="POST" action="index.php">
+    <input type="email" name="email" placeholder="Email" required>
+    <input type="password" name="password" placeholder="Contraseña" required minlength="3">
+    <button type="submit">Iniciar Sesión</button>
+</form>
+
+            <?php if (isset($error)) { echo "<p style='color: red;'>$error</p>"; } ?>
+
+            <form method="GET" action="registro.php">
+                <button type="submit">¿No tienes cuenta? Regístrate</button>
+            </form>
+        </div>
+    </div>
 </body>
 </html>
+
+
+
+
+
+

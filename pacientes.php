@@ -10,10 +10,20 @@ $conn = new mysqli($host, $user, $pass, $dbname);
 if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }
-
-// Simular el medico_id de la sesión (aquí deberías obtener el medico_id de la sesión de tu sistema de autenticación)
 session_start();
+// Obtener el medico_id de la sesión actual (esto debería estar configurado en tu sistema de autenticación)
+if (!isset($_SESSION['medico_id'])) {
+    // Si no está definida la sesión, redirigir al login
+    header("Location: index.php");
+    exit();
+}
+// Simular el medico_id de la sesión (aquí deberías obtener el medico_id de la sesión de tu sistema de autenticación)
 $medico_id = $_SESSION['medico_id'];
+
+// Consultar los datos del médico para mostrarlos en la sección "Cuenta"
+$sql_medico = "SELECT nombre, email FROM medicos WHERE medico_id='$medico_id'";
+$result_medico = $conn->query($sql_medico);
+$medico = $result_medico->fetch_assoc();
 
 // Añadir nuevo paciente
 if (isset($_POST['add'])) {
@@ -128,19 +138,28 @@ if (isset($_GET['mensaje'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="Styles/StylePacientes.css">
     <title>Gestión de Pacientes</title>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- SweetAlert2 -->
 </head>
 <body>
 
-<nav>
-    <a href="turnos.php">Turnos</a>
-    <a href="pacientes.php">Pacientes</a>
-    <a href="inicio.php">Inicio</a>
-    <a href="calendario.php">Calendario</a>
-    <a href="papelera.php">Papelera</a>
-</nav>
+<header>
+    <nav class="nav">
+        <a href="turnos.php" class="<?= (basename($_SERVER['PHP_SELF']) == 'turnos.php') ? 'activo' : ''; ?>">Turnos</a>
+        <a href="pacientes.php" class="<?= (basename($_SERVER['PHP_SELF']) == 'pacientes.php') ? 'activo' : ''; ?>">Pacientes</a>
+        <a href="inicio.php" class="<?= (basename($_SERVER['PHP_SELF']) == 'inicio.php') ? 'activo' : ''; ?>">Inicio</a>
+        <a href="calendario.php" class="<?= (basename($_SERVER['PHP_SELF']) == 'calendario.php') ? 'activo' : ''; ?>">Calendario</a>
+        <div class="dropdown">
+            <a class="dropbtn">Cuenta</a>
+            <div class="dropdown-content">
+                <p><strong>Nombre:</strong> <?= $medico['nombre']; ?></p>
+                <p><strong>Email:</strong> <?= $medico['email']; ?></p>
+                <a href="logout.php" class="logout-btn">Cerrar Sesión</a>
+            </div>
+        </div>
+    </nav>
+</header>
 
 <h1>Gestión de Pacientes</h1>
 
@@ -155,6 +174,10 @@ if (isset($_GET['mensaje'])) {
     <input type="text" name="telefono" placeholder="Teléfono" required>
     <button type="submit" name="add">Añadir Paciente</button>
 </form>
+<form action="papelera.php" method="get">
+    <button type="submit" class="btn">Ir a Papelera</button>
+</form>
+
 
 <!-- Barra de búsqueda -->
 <form method="GET" action="pacientes.php">
@@ -214,7 +237,7 @@ if (isset($_GET['mensaje'])) {
                     <td><a href='historial.php?paciente_id=$paciente_id'>Ver Historial</a></td>
                     <td>
                         <button type='submit' name='update'>Actualizar</button>
-                        <a href='pacientes.php?delete=$paciente_id' class='button'>Eliminar</a>
+                        <button type='button' class='delete-btn' data-id='$paciente_id'>Eliminar</button>
                     </td>
                 </form>
             </tr>";
@@ -225,8 +248,56 @@ if (isset($_GET['mensaje'])) {
     ?>
 </table>
 
+
+<!-- SweetAlert2 Confirmación para eliminar -->
+<script>
+// Manejar la eliminación con SweetAlert2
+document.querySelectorAll('.delete-btn').forEach(button => {
+    button.addEventListener('click', function() {
+        const pacienteId = this.getAttribute('data-id');
+
+        // Mostrar la alerta de confirmación
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: 'No podrás revertir esto',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Redireccionar a la URL de eliminación si se confirma
+                window.location.href = `pacientes.php?delete=${pacienteId}`;
+            }
+        });
+    });
+});
+</script>
+
+
 <!-- SweetAlert para notificaciones -->
 <?php if ($mensaje): ?>
+
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    var dropdown = document.querySelector('.dropdown');
+    var dropbtn = document.querySelector('.dropbtn');
+
+    // Agregar un evento de clic para mostrar/ocultar el menú
+    dropbtn.addEventListener('click', function() {
+        dropdown.classList.toggle('show'); // Alterna la clase 'show' para el menú
+    });
+
+    // Cerrar el menú si se hace clic fuera del dropdown
+    window.addEventListener('click', function(e) {
+        if (!dropdown.contains(e.target)) {
+            dropdown.classList.remove('show');
+        }
+    });
+});
+</script>
 <script>
     Swal.fire({
         icon: 'success',
@@ -236,6 +307,24 @@ if (isset($_GET['mensaje'])) {
     });
 </script>
 <?php endif; ?>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var dropdown = document.querySelector('.dropdown');
+    var dropbtn = document.querySelector('.dropbtn');
+
+    // Agregar un evento de clic para mostrar/ocultar el menú
+    dropbtn.addEventListener('click', function() {
+        dropdown.classList.toggle('show'); // Alterna la clase 'show' para el menú
+    });
+
+    // Cerrar el menú si se hace clic fuera del dropdown
+    window.addEventListener('click', function(e) {
+        if (!dropdown.contains(e.target)) {
+            dropdown.classList.remove('show');
+        }
+    });
+});
+</script>
 <script>
 // Guardar la posición del scroll antes de recargar la página
 window.addEventListener('beforeunload', function () {

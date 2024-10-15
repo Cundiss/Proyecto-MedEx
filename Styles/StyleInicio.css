@@ -6,6 +6,9 @@ body {
     padding: 0;
     color: #495057;
 }
+a{
+    text-decoration: none;
+}
 
 /* Navegación */
 .nav {
@@ -27,10 +30,10 @@ body {
     line-height: 1.5; /* Ajustar la altura de línea */
 }
 
-.nav a:hover {
+.nav a:hover,
+.nav a.activo { /* Se aplica tanto al hover como al activo */
     background-color: #0056b3;
-    border-radius: 4px;
-}
+    border-radius: 4px; }
 
 /* Dropdown para la sección "Cuenta" */
 .dropdown {
@@ -95,6 +98,7 @@ body {
     text-align: center;
     border-radius: 5px;
     margin-top: 10px;
+    transition: background-color 0.3s;
 }
 
 .dropdown-content a.logout-btn:hover {

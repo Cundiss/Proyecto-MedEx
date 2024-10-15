@@ -61,6 +61,9 @@ $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $mes, $año);
 $firstDayOfMonth = mktime(0, 0, 0, $mes, 1, $año);
 $dayOfWeek = date("w", $firstDayOfMonth); // 0 (Domingo) a 6 (Sábado)
 ?>
+<?php
+$currentPage = basename($_SERVER['PHP_SELF']);
+?>
 
 <!DOCTYPE html>
 <html lang="es">
@@ -74,20 +77,20 @@ $dayOfWeek = date("w", $firstDayOfMonth); // 0 (Domingo) a 6 (Sábado)
 </head>
 <body>
 <header>
-    <nav class="nav">
-        <a href="turnos.php">Turnos</a>
-        <a href="pacientes.php">Pacientes</a>
-        <a href="inicio.php">Inicio</a>
-        <a href="calendario.php">Calendario</a>
-        <div class="dropdown">
-            <a class="dropbtn">Cuenta</a>
-            <div class="dropdown-content">
-                <p><strong>Nombre:</strong> <?= $medico['nombre']; ?></p>
-                <p><strong>Email:</strong> <?= $medico['email']; ?></p>
-                <a href="logout.php" class="logout-btn">Cerrar Sesión</a>
-            </div>
+<nav class="nav">
+    <a href="turnos.php" class="<?= $currentPage == 'turnos.php' ? 'activo' : '' ?>">Turnos</a>
+    <a href="pacientes.php" class="<?= $currentPage == 'pacientes.php' ? 'activo' : '' ?>">Pacientes</a>
+    <a href="inicio.php" class="<?= $currentPage == 'inicio.php' ? 'activo' : '' ?>">Inicio</a>
+    <a href="calendario.php" class="<?= $currentPage == 'calendario.php' ? 'activo' : '' ?>">Calendario</a>
+    <div class="dropdown">
+        <a class="dropbtn">Cuenta</a>
+        <div class="dropdown-content">
+            <p><strong>Nombre:</strong> <?= $medico['nombre']; ?></p>
+            <p><strong>Email:</strong> <?= $medico['email']; ?></p>
+            <a href="logout.php" class="logout-btn">Cerrar Sesión</a>
         </div>
-    </nav>
+    </div>
+</nav>
 </header>
 
 <!-- Mostrar el mes y año actual -->

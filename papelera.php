@@ -15,6 +15,11 @@ if ($conn->connect_error) {
 session_start();
 $medico_id = $_SESSION['medico_id'];
 
+// Consultar los datos del médico para mostrarlos en la sección "Cuenta"
+$sql_medico = "SELECT nombre, email FROM medicos WHERE medico_id='$medico_id'";
+$result_medico = $conn->query($sql_medico);
+$medico = $result_medico->fetch_assoc();
+
 // Variable para almacenar mensajes
 $mensaje = '';
 
@@ -106,20 +111,28 @@ $result = $conn->query($sql);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="Styles/StylePapelera.css">
     <title>Papelera de Pacientes</title>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- SweetAlert2 -->
 </head>
 <body>
 
-<nav>
-    <a href="turnos.php">Turnos</a>
-    <a href="pacientes.php">Pacientes</a>
-    <a href="inicio.php">Inicio</a>
-    <a href="calendario.php">Calendario</a>
-    <a href="papelera.php">Papelera</a>
-</nav>
-
+<header>
+    <nav class="nav">
+        <a href="turnos.php" class="<?= (basename($_SERVER['PHP_SELF']) == 'turnos.php') ? 'activo' : ''; ?>">Turnos</a>
+        <a href="pacientes.php" class="<?= (basename($_SERVER['PHP_SELF']) == 'pacientes.php') ? 'activo' : ''; ?>">Pacientes</a>
+        <a href="inicio.php" class="<?= (basename($_SERVER['PHP_SELF']) == 'inicio.php') ? 'activo' : ''; ?>">Inicio</a>
+        <a href="calendario.php" class="<?= (basename($_SERVER['PHP_SELF']) == 'calendario.php') ? 'activo' : ''; ?>">Calendario</a>
+        <div class="dropdown">
+            <a class="dropbtn">Cuenta</a>
+            <div class="dropdown-content">
+                <p><strong>Nombre:</strong> <?= $medico['nombre']; ?></p>
+                <p><strong>Email:</strong> <?= $medico['email']; ?></p>
+                <a href="logout.php" class="logout-btn">Cerrar Sesión</a>
+            </div>
+        </div>
+    </nav>
+</header>
 <h1>Papelera de Pacientes</h1>
 
 <!-- Barra de búsqueda -->
@@ -154,7 +167,7 @@ $result = $conn->query($sql);
                 <td>{$row['telefono']}</td>
                 <td>
                     <a href='papelera.php?restore={$row['paciente_eliminado_id']}'>Restaurar</a>
-                    <a href='#' onclick='confirmDelete({$row['paciente_eliminado_id']})' style='color: red;'>Eliminar definitivamente</a>
+                    <a href='#' onclick='confirmDelete({$row['paciente_eliminado_id']})'>Eliminar definitivamente</a>
                 </td>
             </tr>";
         }
@@ -192,6 +205,24 @@ Swal.fire({
     timer: 2000
 });
 <?php endif; ?>
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var dropdown = document.querySelector('.dropdown');
+    var dropbtn = document.querySelector('.dropbtn');
+
+    // Agregar un evento de clic para mostrar/ocultar el menú
+    dropbtn.addEventListener('click', function() {
+        dropdown.classList.toggle('show'); // Alterna la clase 'show' para el menú
+    });
+
+    // Cerrar el menú si se hace clic fuera del dropdown
+    window.addEventListener('click', function(e) {
+        if (!dropdown.contains(e.target)) {
+            dropdown.classList.remove('show');
+        }
+    });
+});
 </script>
 
 </body>

@@ -14,6 +14,19 @@ if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }
 
+// Obtener el id del médico desde la sesión
+if (isset($_SESSION['medico_id'])) {
+    $medico_id = $_SESSION['medico_id'];
+} else {
+    die("Médico no autenticado.");
+}
+
+
+// Consultar los datos del médico para mostrarlos en la sección "Cuenta"
+$sql_medico = "SELECT nombre, email FROM medicos WHERE medico_id='$medico_id'";
+$result_medico = $conn->query($sql_medico);
+$medico = $result_medico->fetch_assoc();
+
 // Obtener el nombre y apellido del paciente
 if (isset($_GET['paciente_id'])) {
     $paciente_id = $_GET['paciente_id'];
@@ -25,12 +38,6 @@ if (isset($_GET['paciente_id'])) {
     die("Paciente no especificado.");
 }
 
-// Obtener el id del médico desde la sesión
-if (isset($_SESSION['medico_id'])) {
-    $medico_id = $_SESSION['medico_id'];
-} else {
-    die("Médico no autenticado.");
-}
 
 $mensaje = "";
 
@@ -102,7 +109,7 @@ if (isset($_GET['mensaje'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Historial Médico</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="Styles/StyleHistorial.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         // Función para autocompletar la fecha con la actual
@@ -151,13 +158,22 @@ if (isset($_GET['mensaje'])) {
 </head>
 <body>
 
-<nav>
-    <a href="turnos.php">Turnos</a>
-    <a href="pacientes.php">Pacientes</a>
-    <a href="inicio.php">Inicio</a>
-    <a href="calendario.php">Calendario</a>
-    <a href="papelera.php">Papelera</a>
-</nav>
+<header>
+    <nav class="nav">
+        <a href="turnos.php" class="<?= (basename($_SERVER['PHP_SELF']) == 'turnos.php') ? 'activo' : ''; ?>">Turnos</a>
+        <a href="pacientes.php" class="<?= (basename($_SERVER['PHP_SELF']) == 'pacientes.php') ? 'activo' : ''; ?>">Pacientes</a>
+        <a href="inicio.php" class="<?= (basename($_SERVER['PHP_SELF']) == 'inicio.php') ? 'activo' : ''; ?>">Inicio</a>
+        <a href="calendario.php" class="<?= (basename($_SERVER['PHP_SELF']) == 'calendario.php') ? 'activo' : ''; ?>">Calendario</a>
+        <div class="dropdown">
+            <a class="dropbtn">Cuenta</a>
+            <div class="dropdown-content">
+                <p><strong>Nombre:</strong> <?= $medico['nombre']; ?></p>
+                <p><strong>Email:</strong> <?= $medico['email']; ?></p>
+                <a href="logout.php" class="logout-btn">Cerrar Sesión</a>
+            </div>
+        </div>
+    </nav>
+</header>
 
 <h1>Historial Médico de <?= htmlspecialchars($nombre_completo); ?></h1>
 
@@ -203,6 +219,25 @@ if (isset($_GET['mensaje'])) {
     });
 </script>
 <?php endif; ?>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var dropdown = document.querySelector('.dropdown');
+    var dropbtn = document.querySelector('.dropbtn');
+
+    // Agregar un evento de clic para mostrar/ocultar el menú
+    dropbtn.addEventListener('click', function() {
+        dropdown.classList.toggle('show'); // Alterna la clase 'show' para el menú
+    });
+
+    // Cerrar el menú si se hace clic fuera del dropdown
+    window.addEventListener('click', function(e) {
+        if (!dropdown.contains(e.target)) {
+            dropdown.classList.remove('show');
+        }
+    });
+});
+</script>
 
 <script>
 // Guardar la posición del scroll antes de recargar la página

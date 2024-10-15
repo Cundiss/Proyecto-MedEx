@@ -31,9 +31,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>MedEx - Registro</title>
 </head>
 <body>
+<div class="container">
+        <!-- Sección izquierda con el logo centrado -->
+        <div class="left-side">
+            <img src="Medex.png" alt="Logo de MedEx">
+        </div>
+        <!-- Sección derecha con el formulario -->
+        <div class="right-side">
     <h2>Registro</h2>
     <form method="POST" action="registro.php">
-        <input type="text" name="nombre" placeholder="Nombre" required>
+        <input type="text" name="nombre" placeholder="Nombre y Apellido" required>
         <input type="email" name="email" placeholder="Email" required>
         <input type="password" name="password" placeholder="Contraseña" required>
         <select name="rol" required>
@@ -42,6 +49,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </select>
         <button type="submit">Registrarse</button>
     </form>
+    <form action="index.php" method="get">
+    <button type="submit">Volver</button>
+</form>
+    </div>
     <?php if (isset($error)) { echo "<p style='color: red;'>$error</p>"; } ?>
 </body>
 </html>

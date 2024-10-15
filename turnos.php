@@ -21,6 +21,11 @@ if ($conn->connect_error) {
 // Obtener el medico_id de la sesión
 $medico_id = $_SESSION['medico_id'];
 
+// Consultar los datos del médico para mostrarlos en la sección "Cuenta"
+$sql_medico = "SELECT nombre, email FROM medicos WHERE medico_id='$medico_id'";
+$result_medico = $conn->query($sql_medico);
+$medico = $result_medico->fetch_assoc();
+
 // Obtener el paciente de la URL (si viene de pacientes.php)
 $paciente_id_selected = isset($_GET['paciente_id']) ? $_GET['paciente_id'] : '';
 $nombre_paciente_selected = isset($_GET['nombre']) ? $_GET['nombre'] : '';
@@ -119,19 +124,28 @@ $turnos = $conn->query($sql);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Turnos</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="Styles/StyleTurnos.css">
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
 
-<nav>
-    <a href="turnos.php">Turnos</a>
-    <a href="pacientes.php">Pacientes</a>
-    <a href="inicio.php">Inicio</a>
-    <a href="calendario.php">Calendario</a>
-    <a href="papelera.php">Papelera</a>
-</nav>
+<header>
+    <nav class="nav">
+        <a href="turnos.php" class="<?= (basename($_SERVER['PHP_SELF']) == 'turnos.php') ? 'activo' : ''; ?>">Turnos</a>
+        <a href="pacientes.php" class="<?= (basename($_SERVER['PHP_SELF']) == 'pacientes.php') ? 'activo' : ''; ?>">Pacientes</a>
+        <a href="inicio.php" class="<?= (basename($_SERVER['PHP_SELF']) == 'inicio.php') ? 'activo' : ''; ?>">Inicio</a>
+        <a href="calendario.php" class="<?= (basename($_SERVER['PHP_SELF']) == 'calendario.php') ? 'activo' : ''; ?>">Calendario</a>
+        <div class="dropdown">
+            <a class="dropbtn">Cuenta</a>
+            <div class="dropdown-content">
+                <p><strong>Nombre:</strong> <?= $medico['nombre']; ?></p>
+                <p><strong>Email:</strong> <?= $medico['email']; ?></p>
+                <a href="logout.php" class="logout-btn">Cerrar Sesión</a>
+            </div>
+        </div>
+    </nav>
+</header>
 
 <h1>Gestión de Turnos</h1>
 
@@ -175,19 +189,21 @@ $turnos = $conn->query($sql);
         <th>Acciones</th>
     </tr>
     <?php while($row = $turnos->fetch_assoc()): ?>
-    <tr>
-        <form action="turnos.php" method="post">
-            <td><?= $row['nombre'] . " " . $row['apellido']; ?></td>
-            <td><input type="date" name="fecha" value="<?= $row['fecha']; ?>"></td>
-            <td><input type="time" name="horario" value="<?= $row['horario']; ?>"></td>
-            <td>
-                <input type="hidden" name="turno_id" value="<?= $row['turno_id']; ?>">
-                <input type="submit" name="guardar" value="Guardar">
-                <a href="turnos.php?borrar=<?= $row['turno_id']; ?>">Borrar</a>
-            </td>
-        </form>
-    </tr>
-    <?php endwhile; ?>
+<tr>
+    <form action="turnos.php" method="post">
+        <td><?= $row['nombre'] . " " . $row['apellido']; ?></td>
+        <td><input type="date" name="fecha" value="<?= $row['fecha']; ?>"></td>
+        <td><input type="time" name="horario" value="<?= $row['horario']; ?>"></td>
+        <td>
+            <input type="hidden" name="turno_id" value="<?= $row['turno_id']; ?>">
+            <input type="submit" name="guardar" value="Guardar">
+            <!-- Enlace modificado para usar SweetAlert2 -->
+            <a href="#" class="borrar-turno" data-id="<?= $row['turno_id']; ?>">Borrar</a>
+        </td>
+    </form>
+</tr>
+<?php endwhile; ?>
+
 </table>
 
 <?php if ($turnos->num_rows == 0): ?>
@@ -205,6 +221,58 @@ $turnos = $conn->query($sql);
     });
 </script>
 <?php endif; ?>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var dropdown = document.querySelector('.dropdown');
+    var dropbtn = document.querySelector('.dropbtn');
+
+    // Agregar un evento de clic para mostrar/ocultar el menú
+    dropbtn.addEventListener('click', function() {
+        dropdown.classList.toggle('show'); // Alterna la clase 'show' para el menú
+    });
+
+    // Cerrar el menú si se hace clic fuera del dropdown
+    window.addEventListener('click', function(e) {
+        if (!dropdown.contains(e.target)) {
+            dropdown.classList.remove('show');
+        }
+    });
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Seleccionar todos los enlaces de borrado
+    const borrarTurnoLinks = document.querySelectorAll('.borrar-turno');
+    
+    borrarTurnoLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault(); // Evita que el enlace redirija la página
+
+            const turnoId = this.getAttribute('data-id'); // Obtén el ID del turno
+
+            // Mostrar SweetAlert2 para confirmar la eliminación
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "No podrás revertir esta acción",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Si el usuario confirma, redirigir para borrar el turno
+                    window.location.href = `turnos.php?borrar=${turnoId}`;
+                }
+            });
+        });
+    });
+});
+</script>
+
+
 
 <script>
 // Guardar la posición del scroll antes de recargar la página

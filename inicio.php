@@ -74,6 +74,7 @@ $sql_atendidos = "SELECT * FROM atendidos
 $atendidos = $conn->query($sql_atendidos);
 ?>
 
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -85,10 +86,10 @@ $atendidos = $conn->query($sql_atendidos);
 <body>
 <header>
     <nav class="nav">
-        <a href="turnos.php">Turnos</a>
-        <a href="pacientes.php">Pacientes</a>
-        <a href="inicio.php">Inicio</a>
-        <a href="calendario.php">Calendario</a>
+        <a href="turnos.php" class="<?= (basename($_SERVER['PHP_SELF']) == 'turnos.php') ? 'activo' : ''; ?>">Turnos</a>
+        <a href="pacientes.php" class="<?= (basename($_SERVER['PHP_SELF']) == 'pacientes.php') ? 'activo' : ''; ?>">Pacientes</a>
+        <a href="inicio.php" class="<?= (basename($_SERVER['PHP_SELF']) == 'inicio.php') ? 'activo' : ''; ?>">Inicio</a>
+        <a href="calendario.php" class="<?= (basename($_SERVER['PHP_SELF']) == 'calendario.php') ? 'activo' : ''; ?>">Calendario</a>
         <div class="dropdown">
             <a class="dropbtn">Cuenta</a>
             <div class="dropdown-content">
@@ -99,6 +100,7 @@ $atendidos = $conn->query($sql_atendidos);
         </div>
     </nav>
 </header>
+
 
 
 <div class="container">
