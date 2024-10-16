@@ -13,7 +13,7 @@ body {
 
 .left-side {
     width: 35%;
-    background-color: #ffffff; 
+    background-color: #ffffff;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -26,45 +26,204 @@ body {
 
 .right-side {
     width: 65%;
-    background-color: #6381A8; 
+    background-color: #6381A8;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
-h2 {
-    font-size: 45px;
-    color: #ffffff;
-}
-
 form {
     width: 80%;
     max-width: 400px;
-    margin: 0 auto; /* Centramos el formulario */
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 20px auto;
 }
 
 input, button {
     width: 100%;
-    padding: 12px; /* Ajuste del padding */
-    margin: 12px 0; /* Ajuste del margen */
+    padding: 10px;
+    margin: 10px 0;
     border-radius: 5px;
-    border: 1px solid #000000;
-    box-sizing: border-box; /* Esto asegura que el padding no desajuste el ancho */
+    border: 1px solid #ccc;
 }
 
-/* Quitar el efecto de agrandamiento al hover */
+input {
+    box-sizing: border-box; /* Asegura que el padding no se sume al ancho */
+    text-align: center; /* Alinea el texto de entrada en el centro */
+}
+
 button {
     background-color: #007bff;
     color: white;
     border: none;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 button:hover {
-    background-color: #0056b3; /* Solo cambia el color sin modificar el tamaño */
+    background-color: #0056b3;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
 }
+
+button:active {
+    transform: scale(0.98); /* Pequeño efecto de "click" al presionar */
+}
+
+button:focus {
+    outline: none;
+    box-shadow: 0px 0px 5px 2px #0056b3;
+}
+
+input:focus {
+    outline: none;
+    border-color: #007bff;
+}
+
+p {
+    margin-top: 10px;
+    color: red;
+}
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    height: 100vh;
+    background-color: #e9f1f7;
+}
+
+.container {
+    display: flex;
+    width: 100%;
+}
+
+.left-side {
+    width: 35%;
+    background-color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.left-side img {
+    max-width: 90%;
+    height: 330px;
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.right-side {
+    width: 65%;
+    background: linear-gradient(135deg, #6381A8, #3A5371);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    color: white;
+}
+
+
+form {
+    width: 80%;
+    max-width: 400px;
+    text-align: center;
+    padding: 40px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s ease-in-out;
+}
+
+form:hover {
+    transform: scale(1.05);
+}
+
+input, button {
+    width: 100%;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    font-size: 16px;
+    transition: background-color 0.3s ease, border 0.3s ease;
+}
+
+input:focus {
+    outline: none;
+    background-color: rgba(255, 255, 255, 0.3);
+    border: 1px solid #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+button {
+    background-color: #007bff;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+    box-shadow: 0 4px 15px rgba(0, 91, 187, 0.4);
+}
+
+.error-message {
+    color: #ff4d4d;
+    font-size: 14px;
+    margin-top: 10px;
+    display: none; /* Oculto por defecto */
+}
+
+
+/* Mejora del título */
+h2 {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 45px;
+    color: #ffffff;
+    letter-spacing: 0px; /* Espaciado entre letras */
+    margin-bottom: 20px;
+    background: linear-gradient(90deg, #ffffff, #ffffff); /* Gradiente de color */
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+
+form.active {
+    transform: scale(1.05); /* Aumenta el tamaño del formulario cuando está activo */
+}
+
+/* Estilo para el mensaje de error */
+.error-message {
+    color: red;
+    font-weight: bold;
+    animation: blink 1s;
+}
+
+/* Animación para el parpadeo */
+@keyframes blink {
+    0%, 50%, 100% {
+        opacity: 1;
+    }
+    25%, 75% {
+        opacity: 0;
+    }
+}
+
 
 
