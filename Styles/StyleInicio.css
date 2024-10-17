@@ -12,11 +12,11 @@ a{
 
 /* Navegación */
 .nav {
-    background-color: #007bff;
+    background-color: #6381A8; /* Nuevo color del nav */
     padding: 15px 10px;
     display: flex;
     justify-content: space-between;
-    align-items: center; /* Asegura que todo esté centrado verticalmente */
+    align-items: center;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
@@ -25,15 +25,17 @@ a{
     color: white;
     font-size: 18px;
     padding: 10px 20px;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, border-bottom 0.3s ease;
     display: inline-block;
-    line-height: 1.5; /* Ajustar la altura de línea */
+    line-height: 1.5;
 }
 
+/* Estilo para el enlace activo y hover */
 .nav a:hover,
-.nav a.activo { /* Se aplica tanto al hover como al activo */
-    background-color: #0056b3;
-    border-radius: 4px; }
+.nav a.activo { 
+    background-color: #4B688A; /* Nuevo color de selección acorde al nav */
+    border-radius: 4px;
+}
 
 /* Dropdown para la sección "Cuenta" */
 .dropdown {
@@ -42,6 +44,12 @@ a{
     height: 100%; /* Asegurar que ocupe el mismo alto que los demás enlaces */
 }
 
+/* Imagen en lugar de "Inicio" */
+.nav img {
+    height: 35px; /* Ajusta la altura de la imagen para que sea pequeña y uniforme */
+    width: auto;  /* Mantiene la proporción correcta de la imagen */
+    vertical-align: middle; /* Alinea verticalmente la imagen con el resto de los enlaces */
+}
 .dropdown .dropbtn {
     color: white;
     font-size: 18px;
@@ -105,46 +113,8 @@ a{
     background-color: #c82333; /* Cambio de color al pasar el mouse */
 }
 
-/* Contenedor principal */
-.container {
-    padding: 20px;
-}
 
-.columns {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-}
 
-.column {
-    width: 48%;
-}
-
-/* Estilos para tablas */
-table {
-    width: 100%;
-    margin: 20px 0;
-    border-collapse: collapse;
-    border: 1px solid #ddd;
-}
-
-th, td {
-    padding: 12px;
-    text-align: center;
-}
-
-th {
-    background-color: #007bff;
-    color: white;
-}
-
-td a {
-    color: #007bff;
-}
-
-td a:hover {
-    text-decoration: none;
-}
 
 /* Formularios */
 form {
@@ -177,13 +147,32 @@ button:hover {
     background-color: #0056b3;
 }
 
-/* Secciones de pendientes y atendidos */
+/* Contenedor principal */
+.container {
+    padding: 20px;
+}
+
+/* Contenedor principal para las columnas */
+.columns {
+    display: flex; /* Flexbox para poner las columnas lado a lado */
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+/* Ajustes para las columnas */
+.column {
+    width: 48%; /* Cada columna ocupa un 48% del ancho total */
+}
+
+/* Secciones de pendientes y atendidos con scroll */
 .pendientes-box, .atendidos-box {
     margin: 20px 0;
     border: 2px solid #ddd;
     padding: 15px;
     border-radius: 10px;
     background-color: #f9f9f9;
+    height: 400px; /* Altura fija para las cajas */
+    overflow-y: auto; /* Barra de desplazamiento cuando el contenido sea largo */
 }
 
 .pendiente-item, .atendido-item {
@@ -192,34 +181,59 @@ button:hover {
     justify-content: space-between;
 }
 
+
+/* Estilo para el paciente en la tabla */
+.paciente-info {
+    font-weight: bold;
+    color: #495057;
+}
+
 /* Botones */
-.btn-atender, .btn-borrar, .btn-vaciar {
+.btn-atender, .btn-borrar {
     color: white;
-    padding: 5px 10px;
+    padding: 8px 15px; /* Aumentado para mejor visibilidad */
     border: none;
     border-radius: 5px;
+    font-size: 14px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .btn-atender {
-    background-color: #28a745;
+    background-color: #28a745; /* Verde para "Atender" */
 }
 
 .btn-borrar {
-    background-color: #dc3545;
+    background-color: #dc3545; /* Rojo para "Borrar" */
 }
 
+/* Botón de vaciar atendidos */
 .btn-vaciar {
+    margin-left: -2px;
     background-color: #ffc107;
-    display: block;
-    margin-top: 10px;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    width: 100%; /* Para que ocupe todo el ancho de la columna */
+    margin-top: auto; /* Para que se ubique al final de la columna */
     text-align: center;
 }
 
+.btn-vaciar:hover {
+    background-color: #e0a800; /* Cambio de color al pasar el mouse */
+}
+
+
+/* Efectos hover */
 .btn-atender:hover, .btn-borrar:hover, .btn-vaciar:hover {
-    background-color: #0069d9;
+    background-color: #0056b3; /* Azul general al hover */
     cursor: pointer;
 }
 
+/* Efecto al presionar botones */
+.btn-atender:active, .btn-borrar:active, .btn-vaciar:active {
+    transform: scale(0.98); /* Efecto de presión */
+}
 /* Textos y encabezados */
 h2 {
     margin-left: 175px;
@@ -228,6 +242,14 @@ h2 {
 .MedEx {
     text-align: center;
     font-size: 30px;
+}
+
+.MedEx img{
+    height: 250px; /* Ajusta la altura de la imagen para que sea pequeña y uniforme */
+    width: auto;  /* Mantiene la proporción correcta de la imagen */
+    margin-top: -45px;
+    margin-bottom: -45px;
+    margin-left: -12px;
 }
 
 /* Footer */
@@ -240,4 +262,14 @@ footer {
 
 a{
     text-decoration: none;
+}
+/* Asegurar que los botones de SweetAlert2 estén uno debajo del otro */
+.swal2-actions {
+    flex-direction: column !important;
+}
+
+.swal2-confirm, .swal2-cancel {
+    padding: 12px 32px 12px 32px;  /* Más relleno para que se vean más grandes */
+    width: 100%;
+    margin: 5px 0; /* Separación entre los botones */
 }

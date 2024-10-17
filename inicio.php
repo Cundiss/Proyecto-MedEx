@@ -81,6 +81,7 @@ $atendidos = $conn->query($sql_atendidos);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="Styles/StyleInicio.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- SweetAlert2 -->
     <title>MedEx</title>
 </head>
 <body>
@@ -88,8 +89,14 @@ $atendidos = $conn->query($sql_atendidos);
     <nav class="nav">
         <a href="turnos.php" class="<?= (basename($_SERVER['PHP_SELF']) == 'turnos.php') ? 'activo' : ''; ?>">Turnos</a>
         <a href="pacientes.php" class="<?= (basename($_SERVER['PHP_SELF']) == 'pacientes.php') ? 'activo' : ''; ?>">Pacientes</a>
-        <a href="inicio.php" class="<?= (basename($_SERVER['PHP_SELF']) == 'inicio.php') ? 'activo' : ''; ?>">Inicio</a>
+
+        <!-- Reemplazo de "Inicio" por imagen -->
+        <a href="inicio.php" class="<?= (basename($_SERVER['PHP_SELF']) == 'inicio.php') ? 'activo' : ''; ?>">
+            <img src="icon.png" alt="Inicio">
+        </a>
+
         <a href="calendario.php" class="<?= (basename($_SERVER['PHP_SELF']) == 'calendario.php') ? 'activo' : ''; ?>">Calendario</a>
+        
         <div class="dropdown">
             <a class="dropbtn">Cuenta</a>
             <div class="dropdown-content">
@@ -103,9 +110,10 @@ $atendidos = $conn->query($sql_atendidos);
 
 
 
+
 <div class="container">
     <div class="MedEx">
-        <h1>MedEx</h1>
+    <img src="MedexPNG.png" alt="Inicio">
     </div>
 
     <div class="columns">
@@ -131,7 +139,9 @@ $atendidos = $conn->query($sql_atendidos);
                     <a href="?delete_atendido=<?= $row['atendido_id'] ?>" class="btn-borrar">Borrar</a>
                 </div>
             <?php endwhile; ?>
-            <a href="?vaciar_atendidos=true" class="btn-vaciar">Vaciar Atendidos</a>
+            <button id="vaciarAtendidos" class="btn-vaciar">Vaciar Atendidos</button>
+
+
         </div>
     </div>
 </div>
@@ -141,6 +151,8 @@ $atendidos = $conn->query($sql_atendidos);
     <p>&copy; 2024 MedEx - Todos los derechos reservados</p>
 </footer>
 -->
+
+
 </body>
 </html>
 <script>
@@ -161,6 +173,30 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
+<script>
+// SweetAlert2 para vaciar atendidos
+document.querySelector('.btn-vaciar').addEventListener('click', function() {
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: 'Esto eliminará todos los pacientes atendidos',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, vaciar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Redirigir al mismo archivo con el parámetro para vaciar
+            window.location.href = 'inicio.php?vaciar_atendidos=1';
+        }
+    });
+});
+
+
+
+</script>
+
 
 
 
@@ -175,8 +211,26 @@ if (isset($_GET['delete_atendido'])) {
 // Vaciar todos los pacientes atendidos del médico
 if (isset($_GET['vaciar_atendidos'])) {
     $sql_vaciar = "DELETE FROM atendidos WHERE medico_id=$medico_id";
-    $conn->query($sql_vaciar);
+    if ($conn->query($sql_vaciar) === TRUE) {
+        // Mostrar mensaje de éxito con SweetAlert2
+        echo "<script>
+            Swal.fire({
+                icon: 'success',
+                title: '¡Atendidos vaciados!',
+                showConfirmButton: false,
+                timer: 2000
+            }).then(function() {
+                // Recargar la página sin parámetros en la URL
+                window.location.href = 'inicio.php';
+            });
+        </script>";
+    } else {
+        echo "Error al vaciar atendidos: " . $conn->error;
+    }
 }
+
+
+
 
 $conn->close();
 ?>
