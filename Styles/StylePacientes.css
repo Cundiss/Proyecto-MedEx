@@ -2,7 +2,7 @@
 /* Estilo global */
 body {
     font-family: 'Roboto', sans-serif;
-    background-color: #e9ecef;
+    background-color: #c2d7ec;
     margin: 0;
     padding: 0;
     color: #495057;
@@ -154,6 +154,7 @@ table {
     width: 100%;
     margin: 20px 0;
     border-collapse: collapse;
+    background-color: white;
 }
 
 table, th, td {

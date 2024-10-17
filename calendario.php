@@ -77,7 +77,6 @@ $currentPage = basename($_SERVER['PHP_SELF']);
 </head>
 <body>
 <header>
-<header>
     <nav class="nav">
         <a href="turnos.php" class="<?= (basename($_SERVER['PHP_SELF']) == 'turnos.php') ? 'activo' : ''; ?>">Turnos</a>
         <a href="pacientes.php" class="<?= (basename($_SERVER['PHP_SELF']) == 'pacientes.php') ? 'activo' : ''; ?>">Pacientes</a>
