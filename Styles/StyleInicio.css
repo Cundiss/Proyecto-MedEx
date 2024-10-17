@@ -1,7 +1,7 @@
 /* Estilo global */
 body {
     font-family: 'Roboto', sans-serif;
-    background-color: #e9ecef;
+    background-color: #c2d7ec;
     margin: 0;
     padding: 0;
     color: #495057;
@@ -32,7 +32,7 @@ a{
 
 /* Estilo para el enlace activo y hover */
 .nav a:hover,
-.nav a.activo { 
+.nav a.activo {                                                                         
     background-color: #4B688A; /* Nuevo color de selección acorde al nav */
     border-radius: 4px;
 }
@@ -247,8 +247,8 @@ h2 {
 .MedEx img{
     height: 250px; /* Ajusta la altura de la imagen para que sea pequeña y uniforme */
     width: auto;  /* Mantiene la proporción correcta de la imagen */
-    margin-top: -45px;
-    margin-bottom: -45px;
+    margin-top: -50px;
+    margin-bottom: -50px;
     margin-left: -12px;
 }
 

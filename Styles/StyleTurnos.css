@@ -14,11 +14,11 @@ h1, h2, h3 {
 
 /* Navegación */
 .nav {
-    background-color: #007bff;
+    background-color: #6381A8; /* Nuevo color del nav */
     padding: 15px 10px;
     display: flex;
     justify-content: space-between;
-    align-items: center; /* Asegura que todo esté centrado verticalmente */
+    align-items: center;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
@@ -27,15 +27,17 @@ h1, h2, h3 {
     color: white;
     font-size: 18px;
     padding: 10px 20px;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, border-bottom 0.3s ease;
     display: inline-block;
-    line-height: 1.5; /* Ajustar la altura de línea */
+    line-height: 1.5;
 }
 
+/* Estilo para el enlace activo y hover */
 .nav a:hover,
-.nav a.activo { /* Se aplica tanto al hover como al activo */
-    background-color: #0056b3;
-    border-radius: 4px; }
+.nav a.activo {                                                                         
+    background-color: #4B688A; /* Nuevo color de selección acorde al nav */
+    border-radius: 4px;
+}
 
 /* Dropdown para la sección "Cuenta" */
 .dropdown {
@@ -44,6 +46,12 @@ h1, h2, h3 {
     height: 100%; /* Asegurar que ocupe el mismo alto que los demás enlaces */
 }
 
+/* Imagen en lugar de "Inicio" */
+.nav img {
+    height: 35px; /* Ajusta la altura de la imagen para que sea pequeña y uniforme */
+    width: auto;  /* Mantiene la proporción correcta de la imagen */
+    vertical-align: middle; /* Alinea verticalmente la imagen con el resto de los enlaces */
+}
 .dropdown .dropbtn {
     color: white;
     font-size: 18px;
