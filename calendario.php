@@ -104,11 +104,11 @@ $currentPage = basename($_SERVER['PHP_SELF']);
     <h2><?php echo date("F", mktime(0, 0, 0, $mes, 1, $año)) . " " . $año; ?></h2>
     <form method="get" action="calendario.php">
         <input type="hidden" name="año" value="<?php echo $año; ?>">
-        <button type="submit" name="mes" value="<?php echo $mes == 1 ? 12 : $mes - 1; ?>" 
+        <button class="buscar-btn" type="submit" name="mes" value="<?php echo $mes == 1 ? 12 : $mes - 1; ?>" 
                 onclick="this.form.año.value = '<?php echo $mes == 1 ? $año - 1 : $año; ?>'">
             Mes anterior
         </button>
-        <button type="submit" name="mes" value="<?php echo $mes == 12 ? 1 : $mes + 1; ?>" 
+        <button class="buscar-btn" type="submit" name="mes" value="<?php echo $mes == 12 ? 1 : $mes + 1; ?>" 
                 onclick="this.form.año.value = '<?php echo $mes == 12 ? $año + 1 : $año; ?>'">
             Mes siguiente
         </button>
@@ -226,6 +226,30 @@ function mostrarPacientes(pacientes) {
         showConfirmButton: false
     });
 }
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Seleccionar todos los formularios en la página
+    const forms = document.querySelectorAll('form');
+
+    forms.forEach(form => {
+        const inputs = form.querySelectorAll('input, select, textarea');
+
+        inputs.forEach(input => {
+            input.addEventListener('focus', () => {
+                form.classList.add('active');
+            });
+
+            input.addEventListener('blur', () => {
+                // Verificar si alguno de los inputs aún está enfocado
+                const isFocused = Array.from(inputs).some(input => input === document.activeElement);
+                if (!isFocused) {
+                    form.classList.remove('active');
+                }
+            });
+        });
+    });
+});
 </script>
 
 </body>

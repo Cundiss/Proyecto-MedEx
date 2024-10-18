@@ -180,16 +180,7 @@ td a:hover {
     text-decoration: none;
 }
 
-/* Estilo de formularios */
-form {
-    margin: 20px auto;
-    width: 80%;
-    max-width: 600px;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
+
 
 input, button {
     width: calc(50% - 10px);
@@ -206,16 +197,7 @@ input[type="text"], input[type="email"], input[type="number"] {
 button:hover {
     background-color: #0056b3;
 }
-/* Formularios */
-form {
-    margin: 20px auto;
-    width: 80%;
-    max-width: 600px;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
+
 
 select, input[type="date"], input[type="time"], input[type="text"], button, input[type="submit"] {
     width: calc(100% - 22px);
@@ -281,18 +263,6 @@ dialog p {
 }
 
 
-
-.btn {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    text-align: center;
-    text-decoration: none;
-    border-radius: 5px;
-    font-size: 16px;
-    transition: background-color 0.3s;
-}
-
 /* Reglas específicas para la clase delete-btn */
 .delete-btn {   
     display: block;
@@ -313,3 +283,116 @@ dialog p {
 .delete-btn:hover {
     background-color: darkred;   /* Color de fondo al pasar el ratón */
 }
+
+
+/* Estilos generales del formulario */
+form {
+    background-color: white;
+    margin: 20px auto;
+    width: 80%;
+    max-width: 800px; /* Aumentar el ancho máximo para acomodar más inputs en una fila */
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-wrap: wrap; /* Permitir que los campos se envuelvan si es necesario */
+    justify-content: space-between; /* Espaciar los elementos horizontalmente */
+    gap: 10px; /* Espacio entre los inputs */
+    transition: transform 0.3s ease-in-out; /* Transición para animaciones */
+}
+
+form:hover {
+    transform: scale(1.05); /* Aumenta el tamaño del formulario al pasar el cursor */
+}
+
+form.active {
+    transform: scale(1.05); /* Mantiene el tamaño agrandado */
+}
+
+form input, form select, form textarea, form button, form a {
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Transiciones para animaciones */
+}
+
+form input:hover, form select:hover, form textarea:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+form input:focus, form select:focus, form textarea:focus {
+    transform: scale(1.02);
+    box-shadow: 0 0 5px 2px rgba(0, 123, 255, 0.5);
+}
+
+/* Input y botón */
+form input, form button {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    flex: 1 1 45%; /* Hace que cada input ocupe el 45% del ancho del formulario */
+    box-sizing: border-box; /* Asegura que el padding y el borde estén incluidos en el tamaño total */
+}
+form a{
+    display: block;
+    padding: 10px;
+    border-radius: 4px;
+    flex: 1 1 45%; /* Hace que cada input ocupe el 45% del ancho del formulario */
+    box-sizing: border-box; /* Asegura que el padding y el borde estén incluidos en el tamaño total */
+}
+
+/* Estilo específico para el botón */
+form button {
+    flex: 1 1 100%; /* Hace que el botón ocupe todo el ancho */
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+form button:hover {
+    background-color: #0056b3;
+}
+
+/* Si la pantalla es muy pequeña, coloca los campos uno debajo del otro */
+@media (max-width: 600px) {
+    form input, form button {
+        flex: 1 1 100%; /* Cada input ocupa el 100% en pantallas pequeñas */
+    }
+}
+
+/* Ajuste específico para el formulario de búsqueda */
+form[method="GET"] {
+    display: flex;
+    align-items: center;
+}
+
+form[method="GET"] input {
+    flex: 1; /* El input de búsqueda ocupa el espacio restante */
+}
+
+form[method="GET"] button, form[method="GET"] a button {
+    flex: 0 1 auto;
+}
+
+.buscar-btn{
+    margin-top: -10px;
+}
+
+/* Estilo del enlace del botón de filtro */
+form[method="GET"] a button {
+    margin-top: -20px;
+    margin-bottom: -1px;
+    display: block;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+form[method="GET"] a button:hover {
+    background-color: #0056b3;
+}
+

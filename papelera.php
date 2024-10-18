@@ -144,8 +144,8 @@ $result = $conn->query($sql);
 <!-- Barra de búsqueda -->
 <form method="GET" action="papelera.php">
     <input type="text" name="search" placeholder="Buscar por nombre o apellido" value="<?php echo isset($_GET['search']) ? $_GET['search'] : ''; ?>">
-    <button type="submit">Buscar</button>
-    <a href="papelera.php"><button type="button">Quitar Filtro</button></a>
+    <button class="buscar-btn" type="submit">Buscar</button>
+    <a href="papelera.php"><button class="buscar-btn" type="button">Quitar Filtro</button></a>
 </form>
 
 <h3>Pacientes Eliminados</h3>
@@ -227,6 +227,30 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!dropdown.contains(e.target)) {
             dropdown.classList.remove('show');
         }
+    });
+});
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Seleccionar todos los formularios en la página
+    const forms = document.querySelectorAll('form');
+
+    forms.forEach(form => {
+        const inputs = form.querySelectorAll('input, select, textarea');
+
+        inputs.forEach(input => {
+            input.addEventListener('focus', () => {
+                form.classList.add('active');
+            });
+
+            input.addEventListener('blur', () => {
+                // Verificar si alguno de los inputs aún está enfocado
+                const isFocused = Array.from(inputs).some(input => input === document.activeElement);
+                if (!isFocused) {
+                    form.classList.remove('active');
+                }
+            });
+        });
     });
 });
 </script>

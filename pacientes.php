@@ -188,7 +188,7 @@ if (isset($_GET['mensaje'])) {
 <!-- Barra de búsqueda -->
 <form method="GET" action="pacientes.php">
     <input type="text" name="search" placeholder="Buscar por nombre o apellido" value="<?php echo isset($_GET['search']) ? $_GET['search'] : ''; ?>">
-    <button type="submit">Buscar</button>
+    <button class="buscar-btn" type="submit">Buscar</button>
     
     <!-- Botón "Quitar Filtro" como un enlace que actúa como botón -->
     <a href="pacientes.php" style="text-decoration: none;">
@@ -344,6 +344,30 @@ window.addEventListener('load', function () {
         window.scrollTo(0, scrollPosition);
         localStorage.removeItem('scrollPosition'); // Limpiar después de restaurar
     }
+});
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Seleccionar todos los formularios en la página
+    const forms = document.querySelectorAll('form');
+
+    forms.forEach(form => {
+        const inputs = form.querySelectorAll('input, select, textarea');
+
+        inputs.forEach(input => {
+            input.addEventListener('focus', () => {
+                form.classList.add('active');
+            });
+
+            input.addEventListener('blur', () => {
+                // Verificar si alguno de los inputs aún está enfocado
+                const isFocused = Array.from(inputs).some(input => input === document.activeElement);
+                if (!isFocused) {
+                    form.classList.remove('active');
+                }
+            });
+        });
+    });
 });
 </script>
 
