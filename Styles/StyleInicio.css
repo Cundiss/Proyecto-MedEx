@@ -269,7 +269,8 @@ a{
 }
 
 .swal2-confirm, .swal2-cancel {
-    padding: 12px 32px 12px 32px;  /* Más relleno para que se vean más grandes */
+    padding: 10px 80px 10px 80px;  /* Más relleno para que se vean más grandes */
     width: 100%;
     margin: 5px 0; /* Separación entre los botones */
+    display: block;
 }

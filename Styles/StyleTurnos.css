@@ -291,7 +291,7 @@ dialog p {
 
 
 /* Reglas específicas para la clase delete-btn */
-.delete-btn {
+.delete-btn, .borrar-turno {
     display: block;
     text-align: center;
     width: auto !important;      /* Asegura que el ancho sea el que defines aquí */
@@ -305,7 +305,7 @@ dialog p {
     font-size: 15px;
 }
 
-.delete-btn:hover {
+.delete-btn:hover, .borrar-turno:hover {
     background-color: darkred;   /* Color de fondo al pasar el ratón */
 }
 

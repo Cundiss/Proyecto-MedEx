@@ -204,7 +204,7 @@ $turnos = $conn->query($sql);
             <input type="hidden" name="turno_id" value="<?= $row['turno_id']; ?>">
             <input type="submit" name="guardar" value="Guardar">
             <!-- Enlace modificado para usar SweetAlert2 -->
-            <a href="#" class="delete-btn" data-id="<?= $row['turno_id']; ?>">Borrar</a>
+            <a href="#" class="borrar-turno" data-id="<?= $row['turno_id']; ?>">Borrar</a>
         </td>
     </form>
 </tr>
