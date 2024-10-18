@@ -147,35 +147,6 @@ button:hover, input[type="submit"]:hover {
     background-color: #0056b3;
 }
 
-/* Estilos para tablas */
-table {
-    width: 100%;
-    margin: 20px 0;
-    border-collapse: collapse;
-}
-
-table, th, td {
-    border: 1px solid #ddd;
-}
-
-th, td {
-    padding: 12px;
-    text-align: center;
-}
-
-th {
-    background-color: #007bff;
-    color: white;
-}
-
-td a {
-    color: #007bff;
-    text-decoration: none;
-}
-
-td a:hover {
-    text-decoration: none;
-}
 
 /* Estilo de formularios */
 form {
@@ -254,7 +225,7 @@ table {
 }
 
 table, th, td {
-    border: 1px solid #ddd;
+    border: 1px solid #000000;
 }
 
 th, td {
@@ -271,20 +242,23 @@ th {
 td a {
     color: #ffffff;
     text-decoration: none;
-    padding: 5px 10px;
     border-radius: 5px;
     background-color: #007bff;
+    transition: background-color 0.3s;
+    display: inline-block; /* Cambia a inline-block para que el padding se aplique correctamente */
+    padding: 10px 8px; 
 }
 
 td a:hover {
-    background-color: #64a7ff;
+    background-color: #0056b3;
+    cursor: pointer;
 }
 
 td input[type="submit"] {
     background-color: #28a745;
     color: white;
     border: none;
-    padding: 8px 12px;
+    padding: 10px 10px;
     border-radius: 5px;
     cursor: pointer;
 }
@@ -293,15 +267,7 @@ td input[type="submit"]:hover {
     background-color: #218838;
 }
 
-/* Botón de eliminar */
-td a.delete {
-    background-color: #dc3545;
-    color: white;
-}
 
-td a.borrar-turno:hover {
-    background-color: #c82333;
-}
 
 /* Modal */
 dialog {
@@ -323,17 +289,47 @@ dialog p {
     text-align: center;
 }
 
-.btn {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
+
+/* Reglas específicas para la clase delete-btn */
+.delete-btn {
+    display: block;
     text-align: center;
-    text-decoration: none;
-    border-radius: 5px;
-    font-size: 16px;
+    width: auto !important;      /* Asegura que el ancho sea el que defines aquí */
+    padding: 10px 15px !important; /* Ajusta el padding solo para este botón */
+    background-color: red;       /* Color de fondo solo para el botón eliminar */
+    color: white;                /* Color del texto */
+    border: none;                /* Sin borde */
+    border-radius: 5px;          /* Bordes redondeados */
+    cursor: pointer;             /* Cambia el cursor a pointer */
     transition: background-color 0.3s;
+    font-size: 15px;
 }
 
-.btn:hover {
-    background-color: #b31b00;
+.delete-btn:hover {
+    background-color: darkred;   /* Color de fondo al pasar el ratón */
 }
+
+a{
+    text-decoration: none;
+}
+
+
+.filtros-btn {
+    display: block;
+    text-align: center;
+    width: auto !important;      /* Asegura que el ancho sea el que defines aquí */
+    padding: 10px 15px !important; /* Ajusta el padding solo para este botón */
+    background-color: #007bff;       /* Color de fondo solo para el botón eliminar */
+    color: white;                /* Color del texto */
+    border: none;                /* Sin borde */
+    border-radius: 5px;          /* Bordes redondeados */
+    cursor: pointer;             /* Cambia el cursor a pointer */
+    transition: background-color 0.3s;
+    font-size: 15px;
+}
+.filtros-btn:hover {
+    background-color: #0056b3;   /* Color de fondo al pasar el ratón */
+}
+
+
+

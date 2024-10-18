@@ -137,98 +137,15 @@ button, input[type="submit"] {
     border: none;
     cursor: pointer;
     width: 100%;
+    transition: background-color 0.3s;
 }
 
 button:hover, input[type="submit"]:hover {
     background-color: #0056b3;
 }
 
-/* Tablas */
-table {
-    width: 100%;
-    margin: 20px 0;
-    border-collapse: collapse;
-}
 
-table, th, td {
-    border: 1px solid #ddd;
-}
 
-th, td {
-    padding: 12px;
-    text-align: center;
-}
-
-th {
-    background-color: #007bff;
-    color: white;
-}
-
-/* Estilos para los botones en las tablas */
-td a {
-    color: #dc3545;
-    text-decoration: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    background-color: #f8d7da;
-}
-
-td a:hover {
-    background-color: #f5c6cb;
-}
-
-td input[type="submit"] {
-    background-color: #28a745;
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-td input[type="submit"]:hover {
-    background-color: #218838;
-}
-
-/* Botón de eliminar */
-td a.delete {
-    background-color: #dc3545;
-    color: white;
-}
-
-td a.delete:hover {
-    background-color: #c82333;
-}
-/* Hacer que los cuadros de texto se vean discretos */
-.discreto-texto {
-    width: 100%;
-    border: none;
-    background-color: transparent;
-    resize: none;
-    font-size: 14px;
-    color: #333;
-}
-
-.discreto-texto:focus {
-    outline: none;
-    border-bottom: 1px solid #ccc;
-    background-color: #f9f9f9;
-}
-
-/* Estilizar los botones para que sean discretos */
-.discreto-boton {
-    background-color: transparent;
-    border: none;
-    color: #007bff;
-    cursor: pointer;
-    padding: 5px 10px;
-    text-decoration: underline;
-}
-
-.discreto-boton:hover {
-    color: #0056b3;
-    text-decoration: none;
-}
 
 
 /* Estilos para el calendario */
@@ -244,6 +161,7 @@ td a.delete:hover {
 table.calendar {
     width: 100%;
     border-collapse: collapse;
+    border: 2px solid black;
 }
 
 .calendar th {
@@ -252,6 +170,7 @@ table.calendar {
     font-size: 16px;
     padding: 10px 0;
     text-align: center;
+    border: 2px solid black;
 }
 
 .calendar td {
@@ -259,6 +178,7 @@ table.calendar {
     text-align: center;
     vertical-align: top;
     padding: 10px;
+    border: 2px solid black;    
 }
 
 .day-cell {
@@ -339,5 +259,36 @@ h1, h2, h3 {
     font-size: 45px;
     text-align: center;
     color: #007bff;
-    margin-bottom: -20px;
+    margin-bottom: 5px;
 }
+
+
+
+/* Estilos para los turnos */
+.turnos-list li {
+    padding: 5px;
+    border: 2px solid black; /* Marco fino en negro */
+    margin: 5px 0;
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
+}
+
+/* Turnos ocupados (ya tienen color rojo, lo dejamos) */
+.turnos-list li.ocupado {
+    background-color: rgb(235, 53, 53);
+    color: white;
+}
+
+/* Turnos libres (nuevo estilo en verde) */
+.turnos-list li:not(.ocupado) {
+    background-color: rgb(0, 185, 0);
+    color: white;
+}
+
+/* Cuando se pase el cursor sobre los turnos */
+.turnos-list li:hover {
+    opacity: 0.8; /* Efecto de opacidad al pasar el ratón por encima */
+}  
+
+

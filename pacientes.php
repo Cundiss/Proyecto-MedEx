@@ -181,7 +181,7 @@ if (isset($_GET['mensaje'])) {
     <button type="submit" name="add">Añadir Paciente</button>
 </form>
 <form action="papelera.php" method="get">
-    <button type="submit" class="btn">Ir a Papelera</button>
+    <button type="submit" class="papelera-btn">Ir a la Papelera</button>
 </form>
 
 
@@ -239,10 +239,10 @@ if (isset($_GET['mensaje'])) {
                     <td><input type='text' name='mutual' value='{$row['mutual']}'></td>
                     <td><input type='email' name='email' value='{$row['email']}'></td>
                     <td><input type='text' name='telefono' value='{$row['telefono']}'></td>
-                    <td><a href='turnos.php?paciente_id=$paciente_id'>Agendar Turno</a></td>
-                    <td><a href='historial.php?paciente_id=$paciente_id'>Ver Historial</a></td>
+                    <td><a href='turnos.php?paciente_id=$paciente_id'>Agendar</a></td>
+                    <td><a href='historial.php?paciente_id=$paciente_id'>Historial</a></td>
                     <td>
-                        <button type='submit' name='update'>Actualizar</button>
+                        <button type='submit' name='update' class='update-btn'>Actualizar</button>
                         <button type='button' class='delete-btn' data-id='$paciente_id'>Eliminar</button>
                     </td>
                 </form>

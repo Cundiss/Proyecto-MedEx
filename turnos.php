@@ -181,10 +181,10 @@ $turnos = $conn->query($sql);
     <input type="time" name="horario" placeholder="Horario" value="<?= isset($_GET['horario']) ? htmlspecialchars($_GET['horario']) : '' ?>">
     
     <button type="submit">Buscar</button>
-    <?php if (isset($_GET['buscar_paciente']) || isset($_GET['fecha']) || isset($_GET['horario'])): ?>
-        <a href="turnos.php" class="button">Quitar Filtro</a>
-    <?php endif; ?>
+    <!-- Mover el botón "Quitar Filtro" fuera del bloque condicional -->
+    <a href="turnos.php" class="filtros-btn">Quitar Filtro</a>
 </form>
+
 
 <h2>Turnos Registrados</h2>
 <table>
@@ -204,7 +204,7 @@ $turnos = $conn->query($sql);
             <input type="hidden" name="turno_id" value="<?= $row['turno_id']; ?>">
             <input type="submit" name="guardar" value="Guardar">
             <!-- Enlace modificado para usar SweetAlert2 -->
-            <a href="#" class="borrar-turno" data-id="<?= $row['turno_id']; ?>">Borrar</a>
+            <a href="#" class="delete-btn" data-id="<?= $row['turno_id']; ?>">Borrar</a>
         </td>
     </form>
 </tr>

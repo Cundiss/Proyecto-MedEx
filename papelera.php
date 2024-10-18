@@ -172,8 +172,8 @@ $result = $conn->query($sql);
                 <td>{$row['email']}</td>
                 <td>{$row['telefono']}</td>
                 <td>
-                    <a href='papelera.php?restore={$row['paciente_eliminado_id']}'>Restaurar</a>
-                    <a href='#' onclick='confirmDelete({$row['paciente_eliminado_id']})'>Eliminar definitivamente</a>
+                    <a class='update-btn' href='papelera.php?restore={$row['paciente_eliminado_id'] }'>Restaurar</a>
+                   <a href='#' class='delete-btn' onclick='confirmDelete({$row['paciente_eliminado_id']})'>Eliminar definitivamente</a>
                 </td>
             </tr>";
         }

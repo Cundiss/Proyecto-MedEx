@@ -136,17 +136,17 @@ select, input[type="date"], input[type="time"], input[type="text"], button, inpu
 
 
 
-button, input[type="submit"] {
-    background-color: #007bff;
+.update-btn {
+    background-color: #28a745;
     color: white;
     border: none;
+    padding: 10px 10px;
+    border-radius: 5px;
     cursor: pointer;
-    width: 100%;
-    transition: background-color 0.3s;
 }
 
-button:hover, input[type="submit"]:hover {
-    background-color: #0056b3;
+.update-btn:hover {
+    background-color: #218838;
 }
 
 /* Estilos para tablas */
@@ -158,7 +158,7 @@ table {
 }
 
 table, th, td {
-    border: 1px solid #ddd;
+    border: 1px solid #000000;
 }
 
 th, td {
@@ -203,14 +203,6 @@ input[type="text"], input[type="email"], input[type="number"] {
     width: calc(100% - 22px);
 }
 
-button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
 button:hover {
     background-color: #0056b3;
 }
@@ -235,39 +227,17 @@ select, input[type="date"], input[type="time"], input[type="text"], button, inpu
 
 
 
-button, input[type="submit"] {
+button{
+    width: 100%;
+    transition: background-color 0.3s;
     background-color: #007bff;
     color: white;
     border: none;
     cursor: pointer;
-    width: 100%;
     transition: background-color 0.3s;
 }
 
-button:hover, input[type="submit"]:hover {
-    background-color: #0056b3;
-}
 
-/* Tablas */
-table {
-    width: 100%;
-    margin: 20px 0;
-    border-collapse: collapse;
-}
-
-table, th, td {
-    border: 1px solid #ddd;
-}
-
-th, td {
-    padding: 12px;
-    text-align: center;
-}
-
-th {
-    background-color: #007bff;
-    color: white;
-}
 
 /* Estilos para los botones en las tablas */
 td a {
@@ -275,35 +245,20 @@ td a {
     text-decoration: none;
     padding: 5px 10px;
     border-radius: 5px;
-    background-color: #007bff;
+    background-color: #001fa7;
+    transition: background-color 0.3s;
+    display: inline-block; /* Cambia a inline-block para que el padding se aplique correctamente */
+    padding: 20px 20px; 
+    margin-left: 40px;
+    margin-right: 40px;
 }
 
 td a:hover {
-    background-color: #64a7ff;
-}
-
-td input[type="submit"] {
-    background-color: #28a745;
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 5px;
+    background-color: #00356e;
     cursor: pointer;
 }
 
-td input[type="submit"]:hover {
-    background-color: #218838;
-}
 
-/* Botón de eliminar */
-td a.delete {
-    background-color: #dc3545;
-    color: white;
-}
-
-td a.delete:hover {
-    background-color: #c82333;
-}
 
 /* Modal */
 dialog {
@@ -338,10 +293,23 @@ dialog p {
     transition: background-color 0.3s;
 }
 
-.btn:hover {
-    background-color: #b31b00;
+/* Reglas específicas para la clase delete-btn */
+.delete-btn {   
+    display: block;
+    width: auto !important;      /* Asegura que el ancho sea el que defines aquí */
+    padding: 10px 15px !important; /* Ajusta el padding solo para este botón */
+    background-color: red;       /* Color de fondo solo para el botón eliminar */
+    color: white;                /* Color del texto */
+    border: none;                /* Sin borde */
+    border-radius: 5px;          /* Bordes redondeados */
+    cursor: pointer;             /* Cambia el cursor a pointer */
+    transition: background-color 0.3s;
 }
 
-.delete-btn:hover{
-    background-color: red;
+.papelera-btn:hover{
+    background-color: darkred;
+}
+
+.delete-btn:hover {
+    background-color: darkred;   /* Color de fondo al pasar el ratón */
 }

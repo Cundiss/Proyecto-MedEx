@@ -208,7 +208,7 @@ if (isset($_GET['mensaje'])) {
                 <input type="hidden" name="historial_id" value="<?= $row['historial_id']; ?>">
                 <input type="submit" name="guardar_historial" value="Guardar">
                 <!-- Botón modificado para confirmar con SweetAlert2 -->
-                <button type="button" onclick="confirmarEliminacion(<?= $row['historial_id']; ?>)">Borrar</button>
+                <button type="button" class="delete-btn" onclick="confirmarEliminacion(<?= $row['historial_id']; ?>)">Borrar</button>
             </td>
         </form>
     </tr>
