@@ -274,3 +274,188 @@ a{
     margin: 5px 0; /* Separación entre los botones */
     display: block;
 }
+
+/* Para pantallas con un ancho máximo de 1440px */
+@media (max-width: 1440px) {
+    .nav a {
+        font-size: 16px;
+        padding: 8px 16px;
+    }
+
+    .dropdown .dropbtn {
+        font-size: 16px;
+        padding: 8px 16px;
+    }
+
+    .dropdown-content {
+        min-width: 180px;
+    }
+
+    form {
+        max-width: 550px;
+    }
+
+    .pendientes-box, .atendidos-box {
+        height: 350px; /* Altura más pequeña pero manteniendo el ancho */
+    }
+
+    h2 {
+        margin-left: 50px;
+    }
+
+    .MedEx img {
+        height: 200px;
+        margin-top: -30px;
+        margin-bottom: -30px;
+    }
+
+    /* Ajustar las columnas manteniéndolas en fila */
+    .columns {
+        flex-wrap: nowrap;
+        overflow-x: auto; /* Habilitar el scroll horizontal si es necesario */
+    }
+
+    .column {
+        width: 48%;
+    }
+}
+
+/* Para pantallas con un ancho máximo de 1024px */
+@media (max-width: 1024px) {
+    .nav a {
+        font-size: 14px;
+        padding: 6px 12px;
+    }
+
+    .dropdown .dropbtn {
+        font-size: 14px;
+        padding: 6px 12px;
+    }
+
+    form {
+        max-width: 500px;
+    }
+
+    .pendientes-box, .atendidos-box {
+        height: 300px; /* Altura más pequeña */
+    }
+
+    h2 {
+        margin-left: 25px;
+    }
+
+    .MedEx img {
+        height: 180px;
+        margin-top: -20px;
+        margin-bottom: -20px;
+    }
+
+    /* Mantener las columnas alineadas horizontalmente */
+    .columns {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+    }
+
+    .column {
+        width: 48%;
+    }
+
+    .btn-vaciar {
+        padding: 8px;
+    }
+}
+
+/* Para pantallas con un ancho máximo de 768px */
+@media (max-width: 768px) {
+    .nav {
+        flex-direction: column;
+        padding: 10px 5px;
+    }
+
+    .nav a {
+        font-size: 12px;
+        padding: 5px 10px;
+    }
+
+    .dropdown-content {
+        min-width: 160px;
+    }
+
+    form {
+        max-width: 450px;
+    }
+
+    .pendientes-box, .atendidos-box {
+        height: 250px;
+    }
+
+    h2 {
+        margin-left: 0;
+        text-align: center;
+    }
+
+    .MedEx img {
+        height: 150px;
+    }
+
+    footer {
+        padding: 10px;
+    }
+
+    /* Mantener las columnas alineadas horizontalmente */
+    .columns {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+    }
+
+    .column {
+        width: 48%;
+    }
+}
+
+/* Para pantallas con un ancho máximo de 480px */
+@media (max-width: 480px) {
+    .nav a {
+        font-size: 10px;
+        padding: 4px 8px;
+    }
+
+    .dropdown .dropbtn {
+        font-size: 12px;
+    }
+
+    form {
+        max-width: 400px;
+    }
+
+    .pendientes-box, .atendidos-box {
+        height: 200px;
+    }
+
+    .btn-atender, .btn-borrar {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+
+    .MedEx img {
+        height: 120px;
+    }
+
+    footer {
+        padding: 8px;
+    }
+
+    .swal2-confirm, .swal2-cancel {
+        padding: 8px 60px;
+    }
+
+    /* Mantener las columnas alineadas horizontalmente */
+    .columns {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+    }
+
+    .column {
+        width: 48%;
+    }
+}

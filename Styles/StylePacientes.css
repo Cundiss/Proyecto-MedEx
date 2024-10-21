@@ -396,3 +396,75 @@ form[method="GET"] a button:hover {
     background-color: #0056b3;
 }
 
+/* Estilos generales para formularios */
+form input, form select, form textarea {
+    width: 100%; /* Asegura que los inputs ocupen todo el ancho disponible */
+    padding: 10px;
+    font-size: 16px;
+    margin-bottom: 10px;
+    box-sizing: border-box; /* Incluye el padding dentro del ancho */
+}
+
+/* Ajustes para pantallas medianas (tablets y notebooks) */
+@media (max-width: 992px) {
+    form {
+        width: 100%; /* El formulario ocupará el 100% del ancho disponible */
+    }
+
+    form input, form select, form textarea {
+        font-size: 14px;
+        padding: 8px;
+        width: 100%; /* Asegura que los inputs ocupen todo el ancho disponible */
+    }
+}
+
+/* Ajustes para pantallas pequeñas (smartphones) */
+@media (max-width: 768px) {
+    form input, form select, form textarea {
+        font-size: 12px;
+        padding: 6px;
+        width: 100%; /* Asegura que los inputs ocupen todo el ancho disponible */
+    }
+}
+
+/* Ajustes para pantallas muy pequeñas (móviles pequeños) */
+@media (max-width: 480px) {
+    form input, form select, form textarea {
+        font-size: 12px;
+        padding: 5px;
+        width: 100%; /* Asegura que los inputs ocupen todo el ancho disponible */
+    }
+
+    /* Ajuste especial para evitar que se corte el texto */
+    input[type="email"] {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+
+/* Estilos para los inputs de la tabla */
+table input {
+    transition: all 0.3s ease; /* Suave transición */
+    padding: 8px;
+    font-size: 14px;
+    width: 100%; /* Para que ocupen el ancho completo */
+    position: relative; /* Los inputs están dentro del flujo de la tabla normalmente */
+    z-index: 1; /* Definir un nivel bajo en su estado normal */
+}
+
+/* Estilo para el campo seleccionado (con foco) */
+table input:focus {
+    position: absolute; /* Ahora el campo se posiciona fuera del flujo normal */
+    background-color: #f0f8ff; /* Color de fondo */
+    border: 2px solid #007bff; /* Borde más grueso cuando está activo */
+    box-shadow: 0px 0px 10px rgba(0, 123, 255, 0.5); /* Sombra */
+    font-size: 16px; /* Aumenta el tamaño de la fuente */
+    padding: 10px; /* Aumenta el padding */
+    width: auto; /* Elimina el ancho limitado de la celda */
+    z-index: 10; /* Eleva el input por encima de otros elementos */
+    left: 50%; /* Lo mueve horizontalmente */
+    transform: translateX(-50%); /* Centra horizontalmente */
+}
+
+

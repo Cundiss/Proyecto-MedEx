@@ -227,3 +227,92 @@ form.active {
 
 
 
+/* Media Queries para resoluciones más pequeñas */
+
+
+/* Pantallas menores o iguales a 1440px (portátiles y pantallas medianas) */
+@media (max-width: 1440px) {
+    .left-side {
+        width: 45%; /* Aumenta el tamaño de la izquierda para hacerla más equilibrada */
+    }
+
+    .right-side {
+        width: 55%;
+    }
+
+    form {
+        max-width: 320px;
+    }
+
+    input, button {
+        padding: 12px; /* Ajusta los campos de entrada y los botones para pantallas medianas */
+    }
+
+    h2 {
+        font-size: 35px; /* Reduce el tamaño del título */
+    }
+}
+
+/* Pantallas menores o iguales a 1024px (tablets y notebooks pequeños) */
+@media (max-width: 1024px) {
+    .container {
+        flex-direction: column; /* Cambia el diseño a columnas */
+    }
+
+    .left-side, .right-side {
+        width: 100%; /* Ambos lados toman el 100% del ancho */
+    }
+
+    form {
+        max-width: 300px;
+    }
+
+    input, button {
+        padding: 10px; /* Ajusta los botones y entradas */
+    }
+
+    h2 {
+        font-size: 30px;
+    }
+}
+
+/* Pantallas menores o iguales a 768px (tablets pequeñas y smartphones grandes) */
+@media (max-width: 768px) {
+    .left-side img {
+        height: 250px; /* Ajusta la altura de la imagen */
+    }
+
+    form {
+        max-width: 280px;
+        padding: 20px; /* Reduce el padding en formularios */
+    }
+
+    input, button {
+        padding: 8px;
+        font-size: 14px; /* Ajusta el tamaño de texto en entradas y botones */
+    }
+
+    h2 {
+        font-size: 25px;
+    }
+}
+
+/* Pantallas menores o iguales a 480px (smartphones) */
+@media (max-width: 480px) {
+    .left-side img {
+        height: 200px;
+    }
+
+    form {
+        max-width: 250px;
+    }
+
+    input, button {
+        padding: 6px;
+        font-size: 12px;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+}

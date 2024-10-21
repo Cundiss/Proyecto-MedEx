@@ -371,6 +371,24 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
+<script>
+// Seleccionar todos los inputs dentro de la tabla
+const tableInputs = document.querySelectorAll('table input');
+
+// Agregar eventos de 'focus' y 'blur' solo a los inputs de la tabla
+tableInputs.forEach(input => {
+    // Cuando el campo obtiene el foco
+    input.addEventListener('focus', () => {
+        input.classList.add('highlight'); // Añade la clase 'highlight' para agrandar
+    });
+
+    // Cuando el campo pierde el foco
+    input.addEventListener('blur', () => {
+        input.classList.remove('highlight'); // Remueve la clase 'highlight' cuando ya no está enfocado
+    });
+});
+</script>
+
 
 </body>
 </html>
