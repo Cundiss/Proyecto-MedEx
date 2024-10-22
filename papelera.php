@@ -255,6 +255,24 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
+
+<script>
+// Guardar la posición del scroll antes de recargar la página
+window.addEventListener('beforeunload', function () {
+    localStorage.setItem('scrollPosition', window.scrollY);
+});
+
+// Restaurar la posición del scroll después de recargar la página
+window.addEventListener('load', function () {
+    const scrollPosition = localStorage.getItem('scrollPosition');
+    if (scrollPosition) {
+        window.scrollTo(0, scrollPosition);
+        localStorage.removeItem('scrollPosition'); // Limpiar después de restaurar
+    }
+});
+</script>
+
+
 </body>
 </html>
 

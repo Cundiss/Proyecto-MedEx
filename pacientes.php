@@ -372,22 +372,52 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 <script>
-// Seleccionar todos los inputs dentro de la tabla
 const tableInputs = document.querySelectorAll('table input');
 
-// Agregar eventos de 'focus' y 'blur' solo a los inputs de la tabla
 tableInputs.forEach(input => {
-    // Cuando el campo obtiene el foco
-    input.addEventListener('focus', () => {
-        input.classList.add('highlight'); // Añade la clase 'highlight' para agrandar
-    });
+    input.addEventListener('focus', (event) => {
+        // Creamos el campo flotante
+        const inputFlotante = document.createElement('input');
+        inputFlotante.type = input.type;
+        inputFlotante.value = input.value;
+        inputFlotante.classList.add('input-flotante');
 
-    // Cuando el campo pierde el foco
-    input.addEventListener('blur', () => {
-        input.classList.remove('highlight'); // Remueve la clase 'highlight' cuando ya no está enfocado
+        // Obtenemos las dimensiones y posición del input original y su celda
+        const inputRect = input.getBoundingClientRect();
+        const td = input.closest('td');  // Encontramos la celda que contiene el input
+        const tdRect = td.getBoundingClientRect(); // Posición de la celda
+
+        // Posicionamos el campo flotante dentro de la celda y ajustamos la posición con desplazamientos personalizados
+        inputFlotante.style.top = `${tdRect.top + window.scrollY + 35}px`;  // Mover 10px hacia abajo
+        inputFlotante.style.left = `${tdRect.left + window.scrollX - -10}px`;  // Mover 5px hacia la izquierda
+        inputFlotante.style.width = `${tdRect.width}px`; // Ajustamos el ancho al de la celda
+
+        // Añadimos el campo flotante al body
+        document.body.appendChild(inputFlotante);
+
+        // Expandir el campo con animación
+        setTimeout(() => {
+            inputFlotante.classList.add('expandido');
+        }, 0);
+
+        // Sincronizar valores al escribir en el campo flotante
+        inputFlotante.addEventListener('input', () => {
+            input.value = inputFlotante.value;
+        });
+
+        // Cuando el campo flotante pierde el foco, lo removemos
+        inputFlotante.addEventListener('blur', () => {
+            document.body.removeChild(inputFlotante);
+            input.blur();
+        });
+
+        // Focar el campo flotante
+        inputFlotante.focus();
     });
 });
+
 </script>
+
 
 
 </body>

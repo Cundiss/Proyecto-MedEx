@@ -445,26 +445,45 @@ form input, form select, form textarea {
 
 /* Estilos para los inputs de la tabla */
 table input {
-    transition: all 0.3s ease; /* Suave transición */
+    transition: all 0.3s ease;
     padding: 8px;
     font-size: 14px;
-    width: 100%; /* Para que ocupen el ancho completo */
-    position: relative; /* Los inputs están dentro del flujo de la tabla normalmente */
-    z-index: 1; /* Definir un nivel bajo en su estado normal */
+    width: 100%;
+    position: relative;
+    z-index: 1;
+    background-color: white;
 }
 
-/* Estilo para el campo seleccionado (con foco) */
+/* Cuando el input tiene el foco, el campo de la tabla se vuelve invisible */
 table input:focus {
-    position: absolute; /* Ahora el campo se posiciona fuera del flujo normal */
-    background-color: #f0f8ff; /* Color de fondo */
-    border: 2px solid #007bff; /* Borde más grueso cuando está activo */
-    box-shadow: 0px 0px 10px rgba(0, 123, 255, 0.5); /* Sombra */
-    font-size: 16px; /* Aumenta el tamaño de la fuente */
-    padding: 10px; /* Aumenta el padding */
-    width: auto; /* Elimina el ancho limitado de la celda */
-    z-index: 10; /* Eleva el input por encima de otros elementos */
-    left: 50%; /* Lo mueve horizontalmente */
-    transform: translateX(-50%); /* Centra horizontalmente */
+    color: transparent;
+    caret-color: transparent;
+    background-color: transparent;
+    border-color: transparent;
+}
+
+/* Input flotante que aparece sobre la tabla */
+.input-flotante {
+    position: absolute;
+    background-color: #f0f8ff;
+    border: 2px solid #007bff;
+    box-shadow: 0px 0px 10px rgba(0, 123, 255, 0.5);
+    font-size: 14px;
+    padding: 10px;
+    z-index: 10;
+    transition: all 0.3s ease;
+    min-width: 200px; /* Asegurarse de tener un ancho mínimo */
+    left: 0; 
+    top: 0;
+    white-space: nowrap;
+    overflow: visible;
+    transform-origin: top left; /* Para alinear mejor el campo */
+}
+
+/* Input flotante expandido */
+.input-flotante.expandido {
+    width: auto;
+    transform: scale(1.2); /* Suavizar la expansión */
 }
 
 

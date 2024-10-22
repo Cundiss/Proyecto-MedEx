@@ -213,7 +213,7 @@ $turnos = $conn->query($sql);
 </table>
 
 <?php if ($turnos->num_rows == 0): ?>
-    <p>No se encontraron turnos registrados.</p>
+    <p class="noTurnos">No se encontraron turnos registrados.</p>
 <?php endif; ?>
 
 <!-- SweetAlert para notificaciones -->

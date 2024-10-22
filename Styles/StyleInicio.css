@@ -275,187 +275,134 @@ a{
     display: block;
 }
 
-/* Para pantallas con un ancho máximo de 1440px */
-@media (max-width: 1440px) {
-    .nav a {
-        font-size: 16px;
-        padding: 8px 16px;
-    }
 
-    .dropdown .dropbtn {
-        font-size: 16px;
-        padding: 8px 16px;
-    }
-
-    .dropdown-content {
-        min-width: 180px;
-    }
-
-    form {
-        max-width: 550px;
-    }
-
-    .pendientes-box, .atendidos-box {
-        height: 350px; /* Altura más pequeña pero manteniendo el ancho */
-    }
-
-    h2 {
-        margin-left: 50px;
-    }
-
-    .MedEx img {
-        height: 200px;
-        margin-top: -30px;
-        margin-bottom: -30px;
-    }
-
-    /* Ajustar las columnas manteniéndolas en fila */
-    .columns {
-        flex-wrap: nowrap;
-        overflow-x: auto; /* Habilitar el scroll horizontal si es necesario */
-    }
-
-    .column {
-        width: 48%;
-    }
+/* Estilos generales del formulario */
+form {
+    background-color: white;
+    margin: 20px auto;
+    width: 80%;
+    max-width: 800px; /* Aumentar el ancho máximo para acomodar más inputs en una fila */
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-wrap: wrap; /* Permitir que los campos se envuelvan si es necesario */
+    justify-content: space-between; /* Espaciar los elementos horizontalmente */
+    gap: 10px; /* Espacio entre los inputs */
+    transition: transform 0.3s ease-in-out; /* Transición para animaciones */
 }
 
-/* Para pantallas con un ancho máximo de 1024px */
-@media (max-width: 1024px) {
-    .nav a {
-        font-size: 14px;
-        padding: 6px 12px;
-    }
-
-    .dropdown .dropbtn {
-        font-size: 14px;
-        padding: 6px 12px;
-    }
-
-    form {
-        max-width: 500px;
-    }
-
-    .pendientes-box, .atendidos-box {
-        height: 300px; /* Altura más pequeña */
-    }
-
-    h2 {
-        margin-left: 25px;
-    }
-
-    .MedEx img {
-        height: 180px;
-        margin-top: -20px;
-        margin-bottom: -20px;
-    }
-
-    /* Mantener las columnas alineadas horizontalmente */
-    .columns {
-        flex-wrap: nowrap;
-        overflow-x: auto;
-    }
-
-    .column {
-        width: 48%;
-    }
-
-    .btn-vaciar {
-        padding: 8px;
-    }
+form:hover {
+    transform: scale(1.05); /* Aumenta el tamaño del formulario al pasar el cursor */
 }
 
-/* Para pantallas con un ancho máximo de 768px */
-@media (max-width: 768px) {
-    .nav {
-        flex-direction: column;
-        padding: 10px 5px;
-    }
-
-    .nav a {
-        font-size: 12px;
-        padding: 5px 10px;
-    }
-
-    .dropdown-content {
-        min-width: 160px;
-    }
-
-    form {
-        max-width: 450px;
-    }
-
-    .pendientes-box, .atendidos-box {
-        height: 250px;
-    }
-
-    h2 {
-        margin-left: 0;
-        text-align: center;
-    }
-
-    .MedEx img {
-        height: 150px;
-    }
-
-    footer {
-        padding: 10px;
-    }
-
-    /* Mantener las columnas alineadas horizontalmente */
-    .columns {
-        flex-wrap: nowrap;
-        overflow-x: auto;
-    }
-
-    .column {
-        width: 48%;
-    }
+form.active {
+    transform: scale(1.05); /* Mantiene el tamaño agrandado */
 }
 
-/* Para pantallas con un ancho máximo de 480px */
-@media (max-width: 480px) {
-    .nav a {
-        font-size: 10px;
-        padding: 4px 8px;
-    }
-
-    .dropdown .dropbtn {
-        font-size: 12px;
-    }
-
-    form {
-        max-width: 400px;
-    }
-
-    .pendientes-box, .atendidos-box {
-        height: 200px;
-    }
-
-    .btn-atender, .btn-borrar {
-        padding: 6px 12px;
-        font-size: 12px;
-    }
-
-    .MedEx img {
-        height: 120px;
-    }
-
-    footer {
-        padding: 8px;
-    }
-
-    .swal2-confirm, .swal2-cancel {
-        padding: 8px 60px;
-    }
-
-    /* Mantener las columnas alineadas horizontalmente */
-    .columns {
-        flex-wrap: nowrap;
-        overflow-x: auto;
-    }
-
-    .column {
-        width: 48%;
-    }
+form input, form select, form textarea, form button, form a {
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Transiciones para animaciones */
 }
+
+form input:hover, form select:hover, form textarea:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+form input:focus, form select:focus, form textarea:focus {
+    transform: scale(1.02);
+    box-shadow: 0 0 5px 2px rgba(0, 123, 255, 0.5);
+}
+
+/* Input y botón */
+form input, form button {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    flex: 1 1 45%; /* Hace que cada input ocupe el 45% del ancho del formulario */
+    box-sizing: border-box; /* Asegura que el padding y el borde estén incluidos en el tamaño total */
+}
+form a{
+    display: block;
+    padding: 10px;
+    border-radius: 4px;
+    flex: 1 1 45%; /* Hace que cada input ocupe el 45% del ancho del formulario */
+    box-sizing: border-box; /* Asegura que el padding y el borde estén incluidos en el tamaño total */
+}
+
+/* Estilo específico para el botón */
+form button {
+    flex: 1 1 100%; /* Hace que el botón ocupe todo el ancho */
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+form button:hover {
+    background-color: #0056b3;
+}
+
+
+
+
+/* Estilo para cada item de paciente en las listas pendientes y atendidos */
+.pendiente-item, .atendido-item {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 120px; /* Añadimos una columna fija de 120px para los botones */
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+
+    align-items: center;
+}
+
+/* Ajuste de las columnas dentro de cada item */
+.pendiente-nombre, .atendido-nombre {
+    text-align: left; /* Alinea los nombres a la izquierda */
+    padding-right: 10px; /* Espacio entre las columnas */
+}
+
+.pendiente-dni, .atendido-dni,
+.pendiente-fecha, .atendido-fecha {
+    text-align: left;
+}
+
+
+/* Fija un ancho mínimo para las columnas del DNI y Fecha para que no varíen tanto */
+.pendiente-dni, .atendido-dni {
+    min-width: 120px;
+}
+
+.pendiente-fecha, .atendido-fecha {
+    min-width: 100px;
+}
+
+/* Asegura que el contenido no se desborde */
+.pendiente-item div, .atendido-item div {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis; /* Trunca el texto largo con "..." */
+}
+
+/* Estilo del botón dentro de la última columna */
+.btn-atender {
+    width: 80px;
+    text-align: center;
+    padding: 5px 10px;
+}
+
+.btn-borrar{
+    width: 30px;
+    text-align: center;
+    padding: 5px 0px;
+}
+
+.btn-borrar img {
+    width: 15px;
+}
+
+

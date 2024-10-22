@@ -121,9 +121,9 @@ $atendidos = $conn->query($sql_atendidos);
             <h3>Pendientes</h3>
             <?php while ($row = $pendientes->fetch_assoc()): ?>
                 <div class="pendiente-item">
-                    <span><?= date('d-m-Y', strtotime($row['fecha'])) ?> <?= $row['horario'] ?></span>
-                    <span><?= $row['nombre'] ?> <?= $row['apellido'] ?></span>
-                    <span><?= $row['dni'] ?></span>
+                    <span class="pendiente-fecha"><?= date('d-m-Y', strtotime($row['fecha'])) ?> <?= $row['horario'] ?></span>
+                    <span class="pendiente-nombre"><?= $row['nombre'] ?> <?= $row['apellido'] ?></span>
+                    <span class="pendiente-dni"><?= $row['dni'] ?></span>
                     <a href="?atender=<?= $row['turno_id'] ?>" class="btn-atender">Atender</a>
                 </div>
             <?php endwhile; ?>
@@ -133,10 +133,12 @@ $atendidos = $conn->query($sql_atendidos);
             <h3>Atendidos</h3>
             <?php while ($row = $atendidos->fetch_assoc()): ?>
                 <div class="atendido-item">
-                    <span><?= $row['nombre'] ?> <?= $row['apellido'] ?></span>
-                    <span><?= $row['dni'] ?></span>
-                    <span><?= date('d-m-Y', strtotime($row['fecha_atencion'])) ?></span>
-                    <a href="?delete_atendido=<?= $row['atendido_id'] ?>" class="btn-borrar">Borrar</a>
+                    <span class="atendido-nombre"><?= $row['nombre'] ?> <?= $row['apellido'] ?></span>
+                    <span class="atendido-dni"><?= $row['dni'] ?></span>
+                    <span class="atendido-fecha"><?= date('d-m-Y', strtotime($row['fecha_atencion'])) ?></span>
+                    <a href="sgsg">DEJAR ESPACIO PARA LOS BOTONES</a>
+                    <a href="borrar_atendido" class="btn-borrar" data-id="<?= $row['atendido_id'] ?>"><img src="tacho.png" alt=""></a>
+
                 </div>
             <?php endwhile; ?>
             <button id="vaciarAtendidos" class="btn-vaciar">Vaciar Atendidos</button>
@@ -145,7 +147,9 @@ $atendidos = $conn->query($sql_atendidos);
         </div>
     </div>
 </div>
-
+<form action="registro_atendidos.php" method="get">
+    <button type="submit">Ir al registro de atendidos</button>
+</form>
 <!--
 <footer>
     <p>&copy; 2024 MedEx - Todos los derechos reservados</p>
@@ -196,6 +200,60 @@ document.querySelector('.btn-vaciar').addEventListener('click', function() {
 
 
 </script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Seleccionar todos los formularios en la página
+    const forms = document.querySelectorAll('form');
+
+    forms.forEach(form => {
+        const inputs = form.querySelectorAll('input, select, textarea');
+
+        inputs.forEach(input => {
+            input.addEventListener('focus', () => {
+                form.classList.add('active');
+            });
+
+            input.addEventListener('blur', () => {
+                // Verificar si alguno de los inputs aún está enfocado
+                const isFocused = Array.from(inputs).some(input => input === document.activeElement);
+                if (!isFocused) {
+                    form.classList.remove('active');
+                }
+            });
+        });
+    });
+});
+</script>
+<script>
+document.querySelectorAll('.btn-borrar').forEach(function(button) {
+    button.addEventListener('click', function(event) {
+        event.preventDefault();
+        var atendidoId = this.getAttribute('data-id');
+        
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: 'Esta acción eliminará al paciente atendido.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, borrar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Redirigir para eliminar el paciente atendido
+                window.location.href = 'inicio.php?delete_atendido=' + atendidoId;
+            }
+        });
+    });
+});
+</script>
+
+
+
+
+
+
 
 
 
@@ -205,8 +263,24 @@ document.querySelector('.btn-vaciar').addEventListener('click', function() {
 if (isset($_GET['delete_atendido'])) {
     $atendido_id = $_GET['delete_atendido'];
     $sql_delete = "DELETE FROM atendidos WHERE atendido_id=$atendido_id AND medico_id=$medico_id";
-    $conn->query($sql_delete);
+    
+    if ($conn->query($sql_delete) === TRUE) {
+        // Recargar la página después de borrar
+        echo "<script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Paciente atendido eliminado',
+                showConfirmButton: false,
+                timer: 1500
+            }).then(function() {
+                window.location.href = 'inicio.php';
+            });
+        </script>";
+    } else {
+        echo "Error al borrar atendido: " . $conn->error;
+    }
 }
+
 
 // Vaciar todos los pacientes atendidos del médico
 if (isset($_GET['vaciar_atendidos'])) {
