@@ -20,6 +20,11 @@ if ($conn->connect_error) {
 // Obtener el medico_id de la sesión
 $medico_id = $_SESSION['medico_id'];
 
+// Obtener datos del médico logueado
+$sql_medico = "SELECT nombre, email FROM medicos WHERE medico_id = $medico_id";
+$result_medico = $conn->query($sql_medico);
+$medico = $result_medico->fetch_assoc();
+
 // Buscar pacientes atendidos por nombre o apellido
 $search = '';
 if (isset($_GET['search'])) {
@@ -105,6 +110,24 @@ $atendidos = $conn->query($sql_atendidos);
     </table>
 </div>
 
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var dropdown = document.querySelector('.dropdown');
+    var dropbtn = document.querySelector('.dropbtn');
+
+    // Agregar un evento de clic para mostrar/ocultar el menú
+    dropbtn.addEventListener('click', function() {
+        dropdown.classList.toggle('show'); // Alterna la clase 'show' para el menú
+    });
+
+    // Cerrar el menú si se hace clic fuera del dropdown
+    window.addEventListener('click', function(e) {
+        if (!dropdown.contains(e.target)) {
+            dropdown.classList.remove('show');
+        }
+    });
+});
+</script>
 <script>
 // SweetAlert2 para confirmar eliminación
 document.querySelectorAll('.delete-btn').forEach(function(button) {

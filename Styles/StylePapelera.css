@@ -73,6 +73,7 @@ h1, h2, h3 {
     min-width: 200px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Suave sombra */
     z-index: 1;
+    padding: 10px;
     right: 0;
     top: 100%;
     opacity: 0;
@@ -113,6 +114,7 @@ h1, h2, h3 {
 .dropdown-content a.logout-btn:hover {
     background-color: #c82333; /* Cambio de color al pasar el mouse */
 }
+
 /* Formularios */
 form {
     margin: 20px auto;

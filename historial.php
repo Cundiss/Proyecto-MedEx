@@ -1,7 +1,10 @@
 <?php
 // Iniciar sesión para capturar el id del médico
 session_start();
-
+if (!isset($_SESSION['medico_id'])) {
+    header("Location: index.php");
+    exit;
+}
 // Conexión a la base de datos
 $servername = "localhost";
 $username = "root";

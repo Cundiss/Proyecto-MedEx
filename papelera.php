@@ -11,8 +11,14 @@ if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }
 
-// Iniciar sesión para acceder a medico_id
 session_start();
+// Obtener el medico_id de la sesión actual (esto debería estar configurado en tu sistema de autenticación)
+if (!isset($_SESSION['medico_id'])) {
+    // Si no está definida la sesión, redirigir al login
+    header("Location: index.php");
+    exit();
+}
+// Simular el medico_id de la sesión (aquí deberías obtener el medico_id de la sesión de tu sistema de autenticación)
 $medico_id = $_SESSION['medico_id'];
 
 // Consultar los datos del médico para mostrarlos en la sección "Cuenta"
