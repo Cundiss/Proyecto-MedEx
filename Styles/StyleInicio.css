@@ -189,7 +189,8 @@ button:hover {
 }
 
 /* Botones */
-.btn-atender, .btn-borrar {
+.btn-atender, .btn-borrar, .btn-aplazar {
+    text-align: center;
     color: white;
     padding: 8px 15px; /* Aumentado para mejor visibilidad */
     border: none;
@@ -225,13 +226,13 @@ button:hover {
 
 
 /* Efectos hover */
-.btn-atender:hover, .btn-borrar:hover, .btn-vaciar:hover {
+.btn-atender:hover, .btn-borrar:hover, .btn-vaciar:hover, .btn-aplazar:hover  {
     background-color: #0056b3; /* Azul general al hover */
     cursor: pointer;
 }
 
 /* Efecto al presionar botones */
-.btn-atender:active, .btn-borrar:active, .btn-vaciar:active {
+.btn-atender:active, .btn-borrar:active, .btn-vaciar:active, .btn-aplazar:active {
     transform: scale(0.98); /* Efecto de presión */
 }
 /* Textos y encabezados */
@@ -396,13 +397,43 @@ form button:hover {
 }
 
 .btn-borrar{
-    width: 30px;
+    width: 100px;
     text-align: center;
     padding: 5px 0px;
 }
 
-.btn-borrar img {
-    width: 15px;
+.btn-aplazar {
+    width: 80px;
+    background-color: #f39c12;
+    color: white;
+    padding: 5px 10px;
+    text-decoration: none;
+    border-radius: 5px;
 }
+
+/* Aseguramos que los botones estén alineados horizontalmente */
+.pendiente-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pendiente-item .btn-atender, .pendiente-item .btn-borrar, .pendiente-item .btn-aplazar {
+    display: inline-block; /* Hace que los botones estén en línea */
+    margin-left: -55px; /* Espacio entre los botones */
+}
+
+/* Mover el nombre y DNI más a la izquierda */
+.paciente-info {
+    margin-right: auto; /* Esto empuja el contenido hacia la izquierda */
+    margin-left: 0; /* Ajusta el margen izquierdo si es necesario */
+    display: flex;
+    flex-direction: column; /* Para que el nombre y DNI queden en bloques */
+}
+
+.paciente-info span {
+    margin-left: 10px; /* Ajustar la posición del texto si es necesario */
+}
+
 
 

@@ -49,6 +49,31 @@ if (isset($_GET['atender'])) {
         }
     }
 }
+// Mover paciente a la sección "Atendidos" como aplazado
+if (isset($_GET['aplazar'])) {
+    $turno_id = $_GET['aplazar'];
+
+    // Obtener los datos del turno a mover
+    $sql = "SELECT t.*, p.nombre, p.apellido, p.dni 
+            FROM turnos t
+            JOIN pacientes p ON t.paciente_id = p.paciente_id 
+            WHERE t.turno_id = $turno_id AND p.medico_id = $medico_id";
+    $result = $conn->query($sql);
+    $row = $result->fetch_assoc();
+
+    if ($row) {
+        // Insertar en la tabla "atendidos" con aplazado=1
+        $sql_insert = "INSERT INTO atendidos (pacientes_id, medico_id, fecha_atencion, nombre, apellido, dni, motivo, aplazado)
+                       VALUES ('{$row['paciente_id']}', '$medico_id', NOW(), '{$row['nombre']}', '{$row['apellido']}', '{$row['dni']}', '', 1)";
+
+        if ($conn->query($sql_insert) === TRUE) {
+            // Eliminar el turno de la tabla "turnos"
+            $sql_delete = "DELETE FROM turnos WHERE turno_id=$turno_id";
+            $conn->query($sql_delete);
+        }
+    }
+}
+
 
 // Obtener el próximo paciente (turno más cercano) del médico
 $sql_proximo = "SELECT t.*, p.nombre, p.apellido, p.dni 
@@ -121,26 +146,27 @@ $atendidos = $conn->query($sql_atendidos);
             <h3>Pendientes</h3>
             <?php while ($row = $pendientes->fetch_assoc()): ?>
                 <div class="pendiente-item">
-                    <span class="pendiente-fecha"><?= date('d-m-Y', strtotime($row['fecha'])) ?> <?= $row['horario'] ?></span>
-                    <span class="pendiente-nombre"><?= $row['nombre'] ?> <?= $row['apellido'] ?></span>
-                    <span class="pendiente-dni"><?= $row['dni'] ?></span>
-                    <a href="?atender=<?= $row['turno_id'] ?>" class="btn-atender">Atender</a>
-                </div>
+    <span class="pendiente-fecha"><?= date('d-m-Y', strtotime($row['fecha'])) ?> <?= $row['horario'] ?></span>
+    <span class="pendiente-nombre"><?= $row['nombre'] ?> <?= $row['apellido'] ?></span>
+    <span class="pendiente-dni"><?= $row['dni'] ?></span>
+    <a href="?atender=<?= $row['turno_id'] ?>" class="btn-atender">Atender</a>
+    <a href="?aplazar=<?= $row['turno_id'] ?>" class="btn-aplazar">Aplazar</a> <!-- Nuevo botón Aplazar -->
+</div>
+
             <?php endwhile; ?>
         </div>
 
         <div class="column atendidos-box">
             <h3>Atendidos</h3>
             <?php while ($row = $atendidos->fetch_assoc()): ?>
-                <div class="atendido-item">
-                    <span class="atendido-nombre"><?= $row['nombre'] ?> <?= $row['apellido'] ?></span>
-                    <span class="atendido-dni"><?= $row['dni'] ?></span>
-                    <span class="atendido-fecha"><?= date('d-m-Y', strtotime($row['fecha_atencion'])) ?></span>
-                    <a href="sgsg">DEJAR ESPACIO PARA LOS BOTONES</a>
-                    <a href="borrar_atendido" class="btn-borrar" data-id="<?= $row['atendido_id'] ?>"><img src="tacho.png" alt=""></a>
+    <div class="atendido-item" style="background-color: <?= $row['aplazado'] ? '#f8d7da' : 'transparent' ?>;">
+        <span class="atendido-nombre"><?= $row['nombre'] ?> <?= $row['apellido'] ?></span>
+        <span class="atendido-dni"><?= $row['dni'] ?></span>
+        <span class="atendido-fecha"><?= date('d-m-Y', strtotime($row['fecha_atencion'])) ?></span>
+        <a href="borrar_atendido" class="btn-borrar" data-id="<?= $row['atendido_id'] ?>">Borrar</a>
+    </div>
+<?php endwhile; ?>
 
-                </div>
-            <?php endwhile; ?>
             <button id="vaciarAtendidos" class="btn-vaciar">Vaciar Atendidos</button>
 
 
