@@ -31,11 +31,13 @@ if (isset($_GET['search'])) {
     $search = $_GET['search'];
 }
 
+// Añadir el campo `aplazado` a la consulta
 $sql_atendidos = "SELECT * FROM atendidos 
                   WHERE medico_id = $medico_id 
                   AND (nombre LIKE '%$search%' OR apellido LIKE '%$search%' OR dni LIKE '%$search%')
                   ORDER BY fecha_atencion DESC";
 $atendidos = $conn->query($sql_atendidos);
+
 
 ?>
 
@@ -95,13 +97,13 @@ $atendidos = $conn->query($sql_atendidos);
         </thead>
         <tbody>
             <?php while ($row = $atendidos->fetch_assoc()): ?>
-                <tr>
+                <!-- Agregar clase 'aplazado' si el paciente está aplazado -->
+                <tr class="<?= $row['aplazado'] == 1 ? 'aplazado' : '' ?>">
                     <td><?= $row['nombre'] ?></td>
                     <td><?= $row['apellido'] ?></td>
                     <td><?= $row['dni'] ?></td>
                     <td><?= date('d-m-Y H:i', strtotime($row['fecha_atencion'])) ?></td>
                     <td>
-                        <!-- Botón para borrar el paciente atendido -->
                         <a href="?delete_atendido=<?= $row['atendido_id'] ?>" class='delete-btn'>Borrar</a>
                     </td>
                 </tr>
