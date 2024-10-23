@@ -40,7 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="right-side">
             <h2>Registro</h2>
             <form method="POST" action="registro.php">
-                <input type="text" name="nombre" placeholder="Nombre y Apellido" required>
+                <input type="text" name="nombre" placeholder="Nombre de usuario" required>
                 <input type="email" name="email" placeholder="Email" required>
                 <input type="password" name="password" placeholder="Contraseña" required minlength="3">
                 <button type="submit">Registrarse</button>
