@@ -231,10 +231,6 @@ button:hover {
     cursor: pointer;
 }
 
-/* Efecto al presionar botones */
-.btn-atender:active, .btn-borrar:active, .btn-vaciar:active, .btn-aplazar:active {
-    transform: scale(0.98); /* Efecto de presión */
-}
 /* Textos y encabezados */
 h2 {
     margin-left: 175px;

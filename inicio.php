@@ -41,13 +41,18 @@ if (isset($_GET['atender'])) {
         // Insertar en la tabla "atendidos"
         $sql_insert = "INSERT INTO atendidos (pacientes_id, medico_id, fecha_atencion, nombre, apellido, dni, motivo)
                        VALUES ('{$row['paciente_id']}', '$medico_id', NOW(), '{$row['nombre']}', '{$row['apellido']}', '{$row['dni']}', '')";
-
+    
         if ($conn->query($sql_insert) === TRUE) {
             // Eliminar el turno de la tabla "turnos"
             $sql_delete = "DELETE FROM turnos WHERE turno_id=$turno_id";
             $conn->query($sql_delete);
+    
+            // Redirigir con el parámetro "atendido" para mostrar la alerta
+            header("Location: inicio.php?atendido=1");
+            exit;
         }
     }
+    
 }
 // Mover paciente a la sección "Atendidos" como aplazado
 if (isset($_GET['aplazar'])) {
@@ -70,9 +75,14 @@ if (isset($_GET['aplazar'])) {
             // Eliminar el turno de la tabla "turnos"
             $sql_delete = "DELETE FROM turnos WHERE turno_id=$turno_id";
             $conn->query($sql_delete);
+
+            // Redirigir con el parámetro "aplazado" para mostrar la alerta
+            header("Location: inicio.php?aplazado=1");
+            exit;
         }
     }
 }
+
 
 
 // Obtener el próximo paciente (turno más cercano) del médico
@@ -150,7 +160,9 @@ $atendidos = $conn->query($sql_atendidos);
     <span class="pendiente-nombre"><?= $row['nombre'] ?> <?= $row['apellido'] ?></span>
     <span class="pendiente-dni"><?= $row['dni'] ?></span>
     <a href="?atender=<?= $row['turno_id'] ?>" class="btn-atender">Atender</a>
-    <a href="?aplazar=<?= $row['turno_id'] ?>" class="btn-aplazar">Aplazar</a> <!-- Nuevo botón Aplazar -->
+    <!-- Aplazar -->
+<a href="?aplazar=<?= $row['turno_id'] ?>" class="btn-aplazar" data-id="<?= $row['turno_id'] ?>">Aplazar</a> <!-- Nuevo botón Aplazar -->
+
 </div>
 
             <?php endwhile; ?>
@@ -203,6 +215,32 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
+
+<script>
+// Verificar si el parámetro "atendido" o "aplazado" está en la URL
+const urlParams = new URLSearchParams(window.location.search);
+
+if (urlParams.has('atendido')) {
+    Swal.fire({
+        icon: 'success',
+        title: 'Paciente atendido',
+        showConfirmButton: false,
+        timer: 2000  // La alerta desaparecerá automáticamente después de 2 segundos
+    });
+}
+
+if (urlParams.has('aplazado')) {
+    Swal.fire({
+        icon: 'success',
+        title: 'Paciente aplazado',
+        icon: 'success',
+        showConfirmButton: false,
+        timer: 2000  // La alerta desaparecerá automáticamente después de 2 segundos
+    });
+}
+</script>
+
+
 <script>
 // SweetAlert2 para vaciar atendidos
 document.querySelector('.btn-vaciar').addEventListener('click', function() {
@@ -250,6 +288,33 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
+
+<script>
+    // SweetAlert2 para aplazar turnos
+document.querySelectorAll('.btn-aplazar').forEach(function(button) {
+    button.addEventListener('click', function(event) {
+        event.preventDefault();  // Prevenir la acción predeterminada
+        var turnoId = this.getAttribute('data-id');  // Obtener el ID del turno
+
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: 'Esta acción aplazará el turno del paciente.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, aplazar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Redirigir para aplazar el turno
+                window.location.href = 'inicio.php?aplazar=' + turnoId;
+            }
+        });
+    });
+});
+
+</script>
 <script>
 document.querySelectorAll('.btn-borrar').forEach(function(button) {
     button.addEventListener('click', function(event) {
@@ -284,6 +349,7 @@ document.querySelectorAll('.btn-borrar').forEach(function(button) {
 
 
 
+
 <?php
 // Borrar un paciente atendido individualmente
 if (isset($_GET['delete_atendido'])) {
@@ -306,6 +372,7 @@ if (isset($_GET['delete_atendido'])) {
         echo "Error al borrar atendido: " . $conn->error;
     }
 }
+
 
 
 // Vaciar todos los pacientes atendidos del médico
