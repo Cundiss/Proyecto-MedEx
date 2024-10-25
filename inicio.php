@@ -143,17 +143,41 @@ $atendidos = $conn->query($sql_atendidos);
     </nav>
 </header>
 
+<!-- Contenedor del próximo paciente -->
+<?php if ($proximo_paciente): ?>
+    <div class="proximo-paciente-container">
+        <div class="proximo-paciente-box">
+            <form class="proximo-paciente-form">
+                <h2 class="titulo-proximo">Próximo Paciente</h2>
+                <input class="text-prox" type="text" name="nombre" id="nombre" placeholder="Nombre" value="<?= $proximo_paciente['nombre'] ?>" readonly>
+                <input class="text-prox" type="text" name="apellido" id="apellido" placeholder="Apellido" value="<?= $proximo_paciente['apellido'] ?>" readonly>
+                <input class="text-prox" type="text" name="dni" id="dni" placeholder="DNI" value="<?= $proximo_paciente['dni'] ?>" readonly>
+                <input class="text-prox" type="text" name="fecha" id="fecha" placeholder="Fecha" value="<?= date('d-m-Y', strtotime($proximo_paciente['fecha'])) ?>" readonly>
+                <input class="text-prox" type="text" name="horario" id="horario" placeholder="Horario" value="<?= $proximo_paciente['horario'] ?>" readonly>
+                <a href="?atender=<?= $proximo_paciente['turno_id'] ?>" class="btn-atender">Atender</a>
+            </form>
+        </div>
+    </div>
+<?php else: ?>
+    <p class="text-no-pendientes">No hay pacientes pendientes</p>
+<?php endif; ?>
+
 
 
 
 <div class="container">
+    <!--
     <div class="MedEx">
     <img src="MedexPNG.png" alt="Inicio">
     </div>
+    -->
+
+    
+
 
     <div class="columns">
     <div class="column pendientes-box">
-    <h3>Pendientes</h3>
+    <h3>PENDIENTES</h3>
     <?php while ($row = $pendientes->fetch_assoc()): ?>
         <div class="pendiente-item">
             <!-- Cambiado el orden de los elementos -->
@@ -171,7 +195,7 @@ $atendidos = $conn->query($sql_atendidos);
 
 
         <div class="column atendidos-box">
-            <h3>Atendidos</h3>
+            <h3>ATENDIDOS</h3>
             <?php while ($row = $atendidos->fetch_assoc()): ?>
     <div class="atendido-item" style="background-color: <?= $row['aplazado'] ? '#f8d7da' : 'transparent' ?>;">
         <span class="atendido-nombre"><?= $row['nombre'] ?> <?= $row['apellido'] ?></span>
