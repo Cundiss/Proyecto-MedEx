@@ -152,21 +152,23 @@ $atendidos = $conn->query($sql_atendidos);
     </div>
 
     <div class="columns">
-        <div class="column pendientes-box">
-            <h3>Pendientes</h3>
-            <?php while ($row = $pendientes->fetch_assoc()): ?>
-                <div class="pendiente-item">
-    <span class="pendiente-fecha"><?= date('d-m-Y', strtotime($row['fecha'])) ?> <?= $row['horario'] ?></span>
-    <span class="pendiente-nombre"><?= $row['nombre'] ?> <?= $row['apellido'] ?></span>
-    <span class="pendiente-dni"><?= $row['dni'] ?></span>
-    <a href="?atender=<?= $row['turno_id'] ?>" class="btn-atender">Atender</a>
-    <!-- Aplazar -->
-<a href="?aplazar=<?= $row['turno_id'] ?>" class="btn-aplazar" data-id="<?= $row['turno_id'] ?>">Aplazar</a> <!-- Nuevo botón Aplazar -->
-
+    <div class="column pendientes-box">
+    <h3>Pendientes</h3>
+    <?php while ($row = $pendientes->fetch_assoc()): ?>
+        <div class="pendiente-item">
+            <!-- Cambiado el orden de los elementos -->
+            <span class="pendiente-nombre"><?= $row['nombre'] ?> <?= $row['apellido'] ?></span>
+            <span class="pendiente-dni"><?= $row['dni'] ?></span>
+            <span class="pendiente-fecha"><?= date('d-m-Y', strtotime($row['fecha'])) ?> <?= $row['horario'] ?></span>
+            <div class="btn-group">
+            <a href="?atender=<?= $row['turno_id'] ?>" class="btn-atender">Atender</a>
+            <!-- Aplazar -->
+            <a href="?aplazar=<?= $row['turno_id'] ?>" class="btn-aplazar" data-id="<?= $row['turno_id'] ?>">Aplazar</a>
+            </div>
+        </div>
+    <?php endwhile; ?>
 </div>
 
-            <?php endwhile; ?>
-        </div>
 
         <div class="column atendidos-box">
             <h3>Atendidos</h3>

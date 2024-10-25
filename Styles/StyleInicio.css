@@ -30,7 +30,7 @@ a{
     line-height: 1.5;
 }
 
-/* Estilo para el enlace activo y hover */
+/* Estilo para el enlace activo y hover */  
 .nav a:hover,
 .nav a.activo {                                                                         
     background-color: #4B688A; /* Nuevo color de selección acorde al nav */
@@ -387,19 +387,19 @@ form button:hover {
 
 /* Estilo del botón dentro de la última columna */
 .btn-atender {
-    width: 80px;
+    width: 60px;
     text-align: center;
     padding: 5px 10px;
 }
 
 .btn-borrar{
-    width: 100px;
+    width: 80px;
     text-align: center;
     padding: 5px 0px;
 }
 
 .btn-aplazar {
-    width: 80px;
+    width: 60px;
     background-color: #f39c12;
     color: white;
     padding: 5px 10px;
@@ -430,6 +430,85 @@ form button:hover {
 .paciente-info span {
     margin-left: 10px; /* Ajustar la posición del texto si es necesario */
 }
+
+
+/* Estilo para cada item de paciente en las listas pendientes y atendidos */
+.pendiente-item, .atendido-item {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 120px; /* Estructura de columnas igual para ambos */
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    align-items: center;
+    gap: 10px; /* Añadir espacio entre columnas */
+}
+
+/* Ajuste de las columnas dentro de cada item */
+.pendiente-nombre, .atendido-nombre {
+    text-align: left;
+    padding-right: 10px; /* Espacio entre las columnas */
+}
+
+.pendiente-dni, .atendido-dni,
+.pendiente-fecha, .atendido-fecha {
+    text-align: left;
+}
+
+/* Fija un ancho mínimo para las columnas del DNI y Fecha para que no varíen tanto */
+.pendiente-dni, .atendido-dni {
+    min-width: 120px;
+}
+
+.pendiente-fecha, .atendido-fecha {
+    min-width: 100px;
+}
+
+/* Asegura que el contenido no se desborde */
+.pendiente-item div, .atendido-item div {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis; /* Trunca el texto largo con "..." */
+}
+
+
+
+/* Aseguramos que los botones estén alineados horizontalmente */
+.pendiente-item .btn-atender, .pendiente-item .btn-borrar, .pendiente-item .btn-aplazar {
+    display: inline-block;
+    margin-left: 10px; /* Ajustar espacio entre botones */
+}
+
+/* Mover el nombre y DNI más a la izquierda */
+.paciente-info {
+    margin-right: auto;
+    margin-left: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Ajustar la posición del texto si es necesario */
+.paciente-info span {
+    margin-left: 10px;
+}
+
+
+
+/* Aseguramos que los botones estén alineados en columna */
+.pendiente-item .btn-group, .atendido-item .btn-group {
+    display: flex;
+    flex-direction: column; /* Cambiar la disposición de los botones a columna */
+    align-items: flex-end; /* Alinea los botones a la derecha si lo deseas */
+    gap: 10px; /* Espacio entre los botones */
+}
+
+/* Mantener el tamaño de los botones */
+.btn-atender, .btn-aplazar {
+    width: 100px; /* Ancho fijo para mantener consistencia */
+    text-align: center;
+    padding: 5px 10px;
+}
+
 
 
 
