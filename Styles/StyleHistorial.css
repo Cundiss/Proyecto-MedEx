@@ -321,3 +321,14 @@ form input:focus, form select:focus, form textarea:focus {
     transform: scale(1.02);
     box-shadow: 0 0 5px 2px rgba(0, 123, 255, 0.5);
 }
+
+textarea {
+    width: 97%; /* Ajusta el ancho del textarea al 100% del contenedor */
+    height: 150px; /* Incrementa la altura a 150px (puedes ajustar según prefieras) */
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: vertical; /* Permite redimensionar solo en altura */
+}
+

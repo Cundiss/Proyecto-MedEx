@@ -145,7 +145,7 @@ form {
     background-color: rgba(255, 255, 255, 0.1);
     border-radius: 10px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(50px);
     transition: transform 0.3s ease-in-out;
 }
 
@@ -170,6 +170,20 @@ input:focus {
     background-color: rgba(255, 255, 255, 0.3);
     border: 1px solid #007bff;
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+form input {
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Transiciones para animaciones */
+}
+
+form input:hover{
+    transform: scale(1.02);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+form input:focus {
+    transform: scale(1.02);
+    box-shadow: 0 0 5px 2px rgba(0, 123, 255, 0.5);
 }
 
 button {
