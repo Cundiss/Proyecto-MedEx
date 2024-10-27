@@ -163,18 +163,27 @@ if (isset($_GET['mensaje'])) {
 
 <header>
     <nav class="nav">
+        <div class="nav-scale">
         <a href="turnos.php" class="<?= (basename($_SERVER['PHP_SELF']) == 'turnos.php') ? 'activo' : ''; ?>">Turnos</a>
+        </div>
+        <div class="nav-scale">
         <a href="pacientes.php" class="<?= (basename($_SERVER['PHP_SELF']) == 'pacientes.php') ? 'activo' : ''; ?>">Pacientes</a>
+        </div>
 
         <!-- Reemplazo de "Inicio" por imagen -->
+         <div class="nav-scale">
         <a href="inicio.php" class="<?= (basename($_SERVER['PHP_SELF']) == 'inicio.php') ? 'activo' : ''; ?>">
             <img src="icon.png" alt="Inicio">
         </a>
-
+        </div>
+        <div class="nav-scale">
         <a href="calendario.php" class="<?= (basename($_SERVER['PHP_SELF']) == 'calendario.php') ? 'activo' : ''; ?>">Calendario</a>
+        </div>
         
         <div class="dropdown">
+            <div class="nav-scale">
             <a class="dropbtn">Cuenta</a>
+            </div>
             <div class="dropdown-content">
                 <p><strong>Nombre:</strong> <?= $medico['nombre']; ?></p>
                 <p><strong>Email:</strong> <?= $medico['email']; ?></p>

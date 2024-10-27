@@ -68,33 +68,35 @@ h1, h2, h3 {
 }
 
 /* Estilo inicial del menú */
+/* Dropdown para la sección "Cuenta" */
 .dropdown-content {
     position: absolute;
     background-color: white;
-    min-width: 200px;
+    min-width: 250px; /* Establece un ancho mínimo para que el contenido se ajuste mejor */
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Suave sombra */
     z-index: 1;
     padding: 10px;
     right: 0;
     top: 100%;
     opacity: 0;
-    visibility: hidden; /* Para que no se pueda interactuar cuando está oculto */
-    transform: translateY(-10px); /* Comienza ligeramente por encima */
-    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s; /* Transición suave */
-    border-radius: 8px; /* Bordes redondeados */
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+    border-radius: 8px;
+    white-space: normal; /* Permite que el texto se ajuste a múltiples líneas */
 }
 
 .dropdown.show .dropdown-content {
     opacity: 1;
     visibility: visible;
-    transform: translateY(0); /* Aparece suavemente desde arriba */
+    transform: translateY(0);
 }
-
 .dropdown-content p, .dropdown-content a {
     color: #495057;
     padding: 8px 12px;
     text-decoration: none;
     display: block;
+    word-wrap: break-word; /* Asegura que el contenido largo se divida en palabras */
 }
 
 .dropdown-content a:hover {
@@ -103,7 +105,7 @@ h1, h2, h3 {
 
 /* Estilo del botón "Cerrar Sesión" */
 .dropdown-content a.logout-btn {
-    background-color: #dc3545; /* Color de fondo rojo */
+    background-color: #dc3545;
     color: white;
     padding: 8px 12px;
     text-align: center;
@@ -115,6 +117,14 @@ h1, h2, h3 {
 .dropdown-content a.logout-btn:hover {
     background-color: #c82333; /* Cambio de color al pasar el mouse */
 }
+
+.nav-scale{
+    transition: transform 0.3s ease-in-out;
+}
+.nav-scale:hover{
+    transform: scale(1.1);
+}
+
 /* Formularios */
 form {
     margin: 20px auto;
