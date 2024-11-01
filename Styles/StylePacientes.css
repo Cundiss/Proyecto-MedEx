@@ -473,7 +473,7 @@ table input:focus {
 .input-flotante {
     position: absolute;
     background-color: #f0f8ff;
-    border: 2px solid #007bff;
+    border: 1px solid #007bff;
     box-shadow: 0px 0px 10px rgba(0, 123, 255, 0.5);
     font-size: 14px;
     padding: 10px;
@@ -493,4 +493,14 @@ table input:focus {
     transform: scale(1.2); /* Suavizar la expansión */
 }
 
+/* Aplicar estilo general a todos los botones y enlaces, excepto los enlaces en nav */
+button, input[type="submit"], input[type="button"], a:not(.nav a) {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 15px;
+}
 
+/* Estilo específico para los botones "Actualizar" y "Eliminar" */
+button.update-btn, button.delete-btn {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 12px;
+}

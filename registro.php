@@ -7,16 +7,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
     $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
 
-    // Insertar el nuevo usuario en la base de datos
-    $query = "INSERT INTO medicos (nombre, email, password) VALUES (?, ?, ?)";
+    // Verificar si el nombre o el email ya existen en la base de datos
+    $query = "SELECT * FROM medicos WHERE nombre = ? OR email = ?";
     $stmt = $conn->prepare($query);
-    $stmt->bind_param('sss', $nombre, $email, $password);
+    $stmt->bind_param('ss', $nombre, $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-    if ($stmt->execute()) {
-        header("Location: index.php");
-        exit;
+    if ($result->num_rows > 0) {
+        // Si existe un usuario con el mismo nombre o email, muestra un mensaje de error
+        $error = "Nombre de usuario o email en uso";
     } else {
-        $error = "Hubo un error al registrar al usuario.";
+        // Si no existe, procede a insertar el nuevo usuario
+        $query = "INSERT INTO medicos (nombre, email, password) VALUES (?, ?, ?)";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param('sss', $nombre, $email, $password);
+
+        if ($stmt->execute()) {
+            header("Location: index.php");
+            exit;
+        } else {
+            $error = "Hubo un error al registrar al usuario.";
+        }
     }
 }
 ?>
@@ -31,12 +43,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
     <div class="container">
-        <!-- Sección izquierda con el logo centrado -->
+        <!-- Sección izquierda para el logo -->
         <div class="left-side">
             <img src="Medex.png" alt="Logo de MedEx">
         </div>
         
-        <!-- Sección derecha con el formulario -->
+        <!-- Sección derecha para el formulario -->
         <div class="right-side">
             <h2>Registro</h2>
             <form method="POST" action="registro.php">
@@ -45,15 +57,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <input type="password" name="password" placeholder="Contraseña" required minlength="3">
                 <button type="submit">Registrarse</button>
             </form>
+
+            <?php if (isset($error)) { echo "<p style='color: white; font-size: 18px; font-weight: bold; animation: blink 3s; margin-top: 15px'>$error</p>"; } ?>
             
             <form action="index.php" method="get">
                 <button type="submit">Volver</button>
             </form>
+
         </div>
     </div>
-
-    <?php if (isset($error)) { echo "<p style='color: red;'>$error</p>"; } ?>
-
+    <!-- Script para asegurar caracteres minimos para la contraseña-->
     <script>
         document.querySelector('form').addEventListener('submit', function(event) {
             var password = document.querySelector('input[name="password"]').value;
@@ -64,6 +77,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         });
     </script>
+    <!-- Script para agrandar forms al pasar el puntero -->
     <script>
     const inputs = document.querySelectorAll('input');
     const form = document.querySelector('form');
@@ -77,8 +91,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             form.classList.remove('active');
         });
     });
-</script>
+    </script>
+    <!-- Animación de parpadeo para el mensaje de error -->
+<style>
+        @keyframes blink {
+    0%, 50%, 100% {
+        opacity: 1;
+    }
+    25%, 75% {
+        opacity: 0;
+    }
+}
+    </style>
 </body>
 </html>
+
 
 

@@ -197,7 +197,7 @@ if (isset($_GET['mensaje'])) {
 
 <!-- Barra de búsqueda -->
 <form method="GET" action="pacientes.php">
-    <input type="text" name="search" placeholder="Buscar por nombre o apellido" value="<?php echo isset($_GET['search']) ? $_GET['search'] : ''; ?>">
+    <input type="text" name="search" placeholder="Buscar por nombre, apellido o DNI" value="<?php echo isset($_GET['search']) ? $_GET['search'] : ''; ?>">
     <button class="buscar-btn" type="submit">Buscar</button>
     
     <!-- Botón "Quitar Filtro" como un enlace que actúa como botón -->

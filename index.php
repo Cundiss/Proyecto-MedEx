@@ -43,12 +43,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
     <div class="container">
-        <!-- Sección izquierda con el logo centrado -->
+        <!-- Sección izquierda para el logo-->
         <div class="left-side">
             <img src="Medex.png" alt="Logo de MedEx">
         </div>
         
-        <!-- Sección derecha con el formulario -->
+        <!-- Sección derecha para el formulario -->
         <div class="right-side">
             <h2>Inicio de Sesión</h2>
             <form method="POST" action="index.php">
@@ -82,7 +82,7 @@ document.querySelector('form').addEventListener('submit', function(event) {
 });
 
 </script>
-
+<!-- Script para agrandar forms al pasar el puntero -->
 <script>
     const inputs = document.querySelectorAll('input');
     const form = document.querySelector('form');

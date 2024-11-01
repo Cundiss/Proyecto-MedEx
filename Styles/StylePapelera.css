@@ -370,3 +370,13 @@ form input:focus, form select:focus, form textarea:focus {
 .aplazado {
     background-color: #ffb4bb; /* Rojo claro */
 }
+
+.buscar-btn{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 15px;
+}
+a .buscar-btn{
+    margin-top: -5px;
+    margin-bottom: 1px;
+
+}
