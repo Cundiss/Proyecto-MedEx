@@ -142,7 +142,7 @@ button:hover, input[type="submit"]:hover {
 /* Estilos para tablas */
 table {
     width: 100%;
-    margin: 20px 0;
+    margin: 0px 0;
     border-collapse: collapse;
     background-color: white;
 }
@@ -230,6 +230,26 @@ td input[type="submit"] {
 td input[type="submit"]:hover {
     background-color: #218838;
 }
+
+td input, td button{
+    font-size: 15px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+        color: #ffffff;
+        text-decoration: none;
+        border-radius: 5px;
+        background-color: #007bff;
+        transition: background-color 0.3s;
+        display: inline-block; /* Cambia a inline-block para que el padding se aplique correctamente */
+        padding: 10px 8px; 
+        display: block;
+        margin-bottom: 10px;
+        margin-top: 10px;
+    }
+
+    td input:hover, td button:hover{
+        background-color: #0056b3;
+        cursor: pointer;
+    }
 
 
 /* Modal */
@@ -339,3 +359,25 @@ textarea {
     resize: vertical; /* Permite redimensionar solo en altura */
 }
 
+
+.update-btn {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.update-btn:hover {
+    background-color: #218838;
+}
+
+.buscar-btn{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 15px;
+}
+a .buscar-btn{
+    margin-top: -5px;
+    margin-bottom: 1px;
+
+}

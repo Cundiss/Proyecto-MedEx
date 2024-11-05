@@ -201,7 +201,7 @@ if (isset($_GET['mensaje'])) {
     <input type="hidden" name="medico_id" value="<?= $medico_id; ?>">
     <input type="date" name="fecha" id="fecha" required>  <!-- Campo de fecha autocompletado -->
     <textarea name="detalle" placeholder="Detalles del historial" required></textarea>
-    <input type="submit" name="agregar_historial" value="Agregar Historial">
+    <input class="buscar-btn" type="submit" name="agregar_historial" value="Agregar Historial">
 </form>
 
 <h2>Historial de Paciente</h2>
@@ -218,7 +218,7 @@ if (isset($_GET['mensaje'])) {
             <td><textarea name="detalle"><?= htmlspecialchars($row['detalle']); ?></textarea></td>
             <td>
                 <input type="hidden" name="historial_id" value="<?= $row['historial_id']; ?>">
-                <input type="submit" name="guardar_historial" value="Guardar">
+                <input class="update-btn" type="submit" name="guardar_historial" value="Guardar">
                 <!-- Botón modificado para confirmar con SweetAlert2 -->
                 <button type="button" class="delete-btn" onclick="confirmarEliminacion(<?= $row['historial_id']; ?>)">Borrar</button>
             </td>
