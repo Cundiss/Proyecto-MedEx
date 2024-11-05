@@ -89,7 +89,7 @@ $atendidos = $conn->query($sql_atendidos);
 
     <!-- Buscador de pacientes -->
     <form method="get" action="registro_atendidos.php">
-        <input type="text" name="search" placeholder="Buscar por nombre o apellido" value="<?= htmlspecialchars($search) ?>">
+        <input type="text" name="search" placeholder="Buscar por nombre, apellido o DNI" value="<?= htmlspecialchars($search) ?>">
         <button type="submit" class="buscar-btn">Buscar</button>
         <a href="registro_atendidos.php"><button class="buscar-btn" type="button">Quitar Filtro</button></a>
     </form>

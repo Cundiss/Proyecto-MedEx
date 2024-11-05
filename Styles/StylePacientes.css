@@ -162,7 +162,7 @@ select, input[type="date"], input[type="time"], input[type="text"], button, inpu
 /* Estilos para tablas */
 table {
     width: 100%;
-    margin: 20px 0;
+    margin: 0px 0;
     border-collapse: collapse;
     background-color: white;
 }
@@ -361,12 +361,6 @@ form button:hover {
     background-color: #0056b3;
 }
 
-/* Si la pantalla es muy pequeña, coloca los campos uno debajo del otro */
-@media (max-width: 600px) {
-    form input, form button {
-        flex: 1 1 100%; /* Cada input ocupa el 100% en pantallas pequeñas */
-    }
-}
 
 /* Ajuste específico para el formulario de búsqueda */
 form[method="GET"] {

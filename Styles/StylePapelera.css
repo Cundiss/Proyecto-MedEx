@@ -230,7 +230,7 @@ button:hover, .borrar-turno, input[type="submit"]:hover {
 /* Tablas */
 table {
     width: 100%;
-    margin: 20px 0;
+    margin: 0px 0;
     border-collapse: collapse;
     background-color: white;
 }

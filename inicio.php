@@ -175,51 +175,42 @@ $atendidos = $conn->query($sql_atendidos);
 
 
 <div class="container">
-    <!--
-    <div class="MedEx">
-    <img src="MedexPNG.png" alt="Inicio">
-    </div>
-    -->
-
-    
-
-
     <div class="columns">
-    <div class="column pendientes-box">
-    <h3>PENDIENTES</h3>
-    <?php while ($row = $pendientes->fetch_assoc()): ?>
-        <div class="pendiente-item">
-            <!-- Cambiado el orden de los elementos -->
-            <span class="pendiente-nombre"><?= $row['nombre'] ?> <?= $row['apellido'] ?></span>
-            <span class="pendiente-dni"><?= $row['dni'] ?></span>
-            <span class="pendiente-fecha"><?= date('d-m-Y', strtotime($row['fecha'])) ?> <?= $row['horario'] ?></span>
-            <div class="btn-group">
-            <a href="?atender=<?= $row['turno_id'] ?>" class="btn-atender">Atender</a>
-            <!-- Aplazar -->
-            <a href="?aplazar=<?= $row['turno_id'] ?>" class="btn-aplazar" data-id="<?= $row['turno_id'] ?>">Aplazar</a>
+        <div class="column pendientes-box">
+            <h3 class="title-fixed">PENDIENTES</h3>
+            <div class="scrollable-content">
+                <?php while ($row = $pendientes->fetch_assoc()): ?>
+                    <div class="pendiente-item">
+                        <span class="pendiente-nombre"><?= $row['nombre'] ?> <?= $row['apellido'] ?></span>
+                        <span class="pendiente-dni"><?= $row['dni'] ?></span>
+                        <span class="pendiente-fecha"><?= date('d-m-Y', strtotime($row['fecha'])) ?> <?= $row['horario'] ?></span>
+                        <div class="btn-group">
+                            <a href="?atender=<?= $row['turno_id'] ?>" class="btn-atender">Atender</a>
+                            <a href="?aplazar=<?= $row['turno_id'] ?>" class="btn-aplazar" data-id="<?= $row['turno_id'] ?>">Aplazar</a>
+                        </div>
+                    </div>
+                <?php endwhile; ?>
             </div>
         </div>
-    <?php endwhile; ?>
-</div>
-
 
         <div class="column atendidos-box">
-            <h3>ATENDIDOS</h3>
-            <?php while ($row = $atendidos->fetch_assoc()): ?>
-    <div class="atendido-item" style="background-color: <?= $row['aplazado'] ? '#f8d7da' : 'transparent' ?>;">
-        <span class="atendido-nombre"><?= $row['nombre'] ?> <?= $row['apellido'] ?></span>
-        <span class="atendido-dni"><?= $row['dni'] ?></span>
-        <span class="atendido-fecha"><?= date('d-m-Y', strtotime($row['fecha_atencion'])) ?></span>
-        <a href="borrar_atendido" class="btn-borrar" data-id="<?= $row['atendido_id'] ?>">Borrar</a>
-    </div>
-<?php endwhile; ?>
-
-            <button id="vaciarAtendidos" class="btn-vaciar">Vaciar Atendidos</button>
-
-
+            <h3 class="title-fixed">ATENDIDOS</h3>
+            <div class="scrollable-content">
+                <?php while ($row = $atendidos->fetch_assoc()): ?>
+                    <div class="atendido-item" style="background-color: <?= $row['aplazado'] ? '#f8d7da' : 'transparent' ?>;">
+                        <span class="atendido-nombre"><?= $row['nombre'] ?> <?= $row['apellido'] ?></span>
+                        <span class="atendido-dni"><?= $row['dni'] ?></span>
+                        <span class="atendido-fecha"><?= date('d-m-Y', strtotime($row['fecha_atencion'])) ?></span>
+                        <a href="borrar_atendido" class="btn-borrar" data-id="<?= $row['atendido_id'] ?>">Borrar</a>
+                    </div>
+                <?php endwhile; ?>
+            
+            <button id="vaciarAtendidos" class="btn-vaciar">VACIAR ATENDIDOS</button>
+            </div>
         </div>
     </div>
 </div>
+
 <form action="registro_atendidos.php" method="get">
     <button type="submit">Ir al registro de atendidos</button>
 </form>

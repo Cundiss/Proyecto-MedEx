@@ -202,7 +202,7 @@ if (isset($_GET['mensaje'])) {
     
     <!-- Botón "Quitar Filtro" como un enlace que actúa como botón -->
     <a href="pacientes.php" style="text-decoration: none;">
-        <button type="button">Quitar Filtro</button>
+        <button type="button" >Quitar Filtro</button>
     </a>
 </form>
 
